@@ -10,7 +10,7 @@ import com.citizenwarwick.memset.router.Composer
 import com.citizenwarwick.memset.router.Router
 import com.citizenwarwick.ui.MemsetBottomNavigation
 
-class HomeScreen(private val router: Router) : Composer() {
+class HomeScreenComposer(private val router: Router) : Composer() {
     @Composable
     override fun compose() {
         MaterialTheme {

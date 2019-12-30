@@ -8,7 +8,7 @@ class Mapper(
     private val hosts: MutableList<Regex>,
     private val paths: MutableList<Pair<Regex, () -> Composer>>
 ) {
-    infix fun String.mapTo(composer: () -> Composer) {
+    infix fun String.composeWith(composer: () -> Composer) {
         paths.add(toRegex() to composer)
     }
 
@@ -21,7 +21,7 @@ class Mapper(
         })
     }
 
-    infix fun Array<String>.mapTo(composer: () -> Composer) {
+    infix fun Array<String>.composeWith(composer: () -> Composer) {
         this.forEach {
             paths.add(it.toRegex() to composer)
         }

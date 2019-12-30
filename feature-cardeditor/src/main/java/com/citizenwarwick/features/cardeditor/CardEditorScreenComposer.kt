@@ -44,7 +44,7 @@ import com.citizenwarwick.memset.router.Composer
 import com.citizenwarwick.memset.router.Router
 import com.citizenwarwick.ui.MemsetBottomNavigation
 
-class CardEditorScreen(
+class CardEditorScreenComposer(
     private val router: Router,
     private val model: CardEditorModel
 ) : Composer() {

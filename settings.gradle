@@ -1,0 +1,6 @@
+include ':ui-shared'
+include ':feature-cardeditor'
+include ':feature-home'
+include ':router'
+include ':app'
+rootProject.name = "Memset"

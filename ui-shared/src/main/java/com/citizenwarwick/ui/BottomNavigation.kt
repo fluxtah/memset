@@ -1,41 +1,47 @@
 package com.citizenwarwick.ui
 
 import androidx.compose.Composable
+import androidx.compose.ambient
 import androidx.compose.unaryPlus
+import androidx.ui.core.Alignment
+import androidx.ui.core.Text
 import androidx.ui.core.dp
 import androidx.ui.foundation.Clickable
 import androidx.ui.graphics.vector.DrawVector
 import androidx.ui.graphics.vector.VectorAsset
+import androidx.ui.layout.Column
 import androidx.ui.layout.Container
 import androidx.ui.layout.EdgeInsets
+import androidx.ui.layout.ExpandedHeight
 import androidx.ui.layout.FlexRow
 import androidx.ui.material.MaterialTheme
 import androidx.ui.material.ripple.Ripple
 import androidx.ui.material.surface.Surface
 import androidx.ui.res.vectorResource
-import com.citizenwarwick.memset.router.Router
+import com.citizenwarwick.memset.router.ActiveRouter
 
 private val BottomNavigationHeight = 56.dp
 private val BottomNavigationIconHeight = 48.dp
-private val BottomNavigationPadding = 16.dp
+private val BottomNavigationPadding = 8.dp
 
 @Composable
-fun MemsetBottomNavigation(router: Router) {
+fun MemsetBottomNavigation() {
+    val router = +ambient(ActiveRouter)
     Surface(color = (+MaterialTheme.colors()).primary) {
         Container(
             height = BottomNavigationHeight,
             expanded = true,
-            padding = EdgeInsets(left = BottomNavigationPadding, right = BottomNavigationPadding)
+            padding = EdgeInsets(BottomNavigationPadding)
         ) {
             FlexRow {
-                flexible(1f) {
-                    NavItem(icon = +vectorResource(R.drawable.ic_nav_home)) {
-                        router.navigate("http://memset.com/")
+                expanded(1f) {
+                    NavItem("Home", icon = +vectorResource(R.drawable.ic_nav_home)) {
+                        router.goto("http://memset.com/")
                     }
                 }
-                flexible(1f) {
-                    NavItem(icon = +vectorResource(R.drawable.ic_nav_global)) {
-                        router.navigate("http://memset.com/global")
+                expanded(1f) {
+                    NavItem("Shared", icon = +vectorResource(R.drawable.ic_nav_global)) {
+                        router.goto("http://memset.com/global")
                     }
                 }
             }
@@ -44,11 +50,16 @@ fun MemsetBottomNavigation(router: Router) {
 }
 
 @Composable
-fun NavItem(icon: VectorAsset, onClick: () -> Unit) {
-    Clickable(onClick = onClick) {
-        Container(width = BottomNavigationIconHeight, height = BottomNavigationIconHeight) {
-            Ripple(bounded = false) {
-                DrawVector(vectorImage = icon)
+fun NavItem(label: String, icon: VectorAsset, onClick: () -> Unit) {
+    Container(width = BottomNavigationIconHeight, height = BottomNavigationIconHeight) {
+        Ripple(bounded = false) {
+            Clickable(onClick = onClick) {
+                Column(modifier = ExpandedHeight) {
+                    DrawVector(vectorImage = icon, alignment = Alignment.TopCenter)
+                    Container(modifier = ExpandedHeight, alignment = Alignment.BottomCenter) {
+                        Text(label)
+                    }
+                }
             }
         }
     }

@@ -3,7 +3,6 @@ package com.citizenwarwick.memset.router
 import androidx.compose.Composable
 
 class Mapper(
-    val router: Router,
     private val schemes: MutableList<Regex>,
     private val hosts: MutableList<Regex>,
     private val paths: MutableList<Pair<Regex, () -> Composer>>

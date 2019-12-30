@@ -15,11 +15,12 @@ class MainActivity : AppCompatActivity() {
         schemes("https", "http")
         hosts("memset.com", "www.memset.com")
 
-        "/" composeWith { HomeScreenComposer(router) }
-        "/cardeditor" composeWith { CardEditorScreenComposer(router, model(CardEditorViewModel::class)) }
+        "/" composeWith { HomeScreenComposer() }
+        "/cardeditor" composeWith { CardEditorScreenComposer(model(CardEditorViewModel::class)) }
         ".*" composeTo { Text("404 Not Found") }
 
     }.startAt("https://memset.com/")
 
     private fun <T : ViewModel> model(type: KClass<T>): T = ViewModelProviders.of(this).get(type.java)
 }
+

@@ -3,6 +3,7 @@ package com.citizenwarwick.memset.router
 import android.net.Uri
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.Ambient
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
@@ -44,20 +45,20 @@ class Router : LifecycleObserver {
     private fun configure(mappings: Mapper.() -> Unit) {
         activity.lifecycle.addObserver(this)
         val group = CommandGroup()
-        mappings(Mapper(this, group.schemes, group.hosts, group.paths))
+        mappings(Mapper(group.schemes, group.hosts, group.paths))
         commandGroups.add(group)
     }
 
     fun add(groupIndex: Int, mappings: Mapper.() -> Unit) {
         val group = commandGroups[groupIndex]
-        mappings(Mapper(this, group.schemes, group.hosts, group.paths))
+        mappings(Mapper(group.schemes, group.hosts, group.paths))
     }
 
-    fun navigate(uri: String) {
-        navigate(Uri.parse(uri))
+    fun goto(uri: String) {
+        goto(Uri.parse(uri))
     }
 
-    fun navigate(uri: Uri) {
+    fun goto(uri: Uri) {
         val group = commandGroups
             .firstOrNull { group ->
                 group.schemes.any { it.matches(uri.scheme!!) } &&
@@ -80,7 +81,9 @@ class Router : LifecycleObserver {
             uri = navigateUri
             logger.log("Compose", "${javaClass.simpleName} for $uri")
             activity.setContent {
-                compose()
+                ActiveRouter.Provider(value = this@Router) {
+                    compose()
+                }
             }
         }
         model.currentUri = navigateUri
@@ -95,11 +98,11 @@ class Router : LifecycleObserver {
     private fun onActivityCreated() {
         model = ViewModelProviders.of(activity).get(RouterViewModel::class.java)
         if (model.currentUri != Uri.EMPTY) {
-            navigate(model.currentUri)
+            goto(model.currentUri)
         } else {
             model.startUri = startUri
             if (startUri != Uri.EMPTY) {
-                navigate(startUri)
+                goto(startUri)
             }
         }
     }
@@ -117,3 +120,5 @@ class Router : LifecycleObserver {
         var currentUri: Uri = Uri.EMPTY
     }
 }
+
+val ActiveRouter = Ambient.of<Router> { error("No active router set!") }

@@ -1,6 +1,8 @@
 package com.citizenwarwick.features.cardeditor
 
+import MemsetMainTemplate
 import androidx.compose.Composable
+import androidx.compose.ambient
 import androidx.compose.unaryPlus
 import androidx.ui.core.Alignment
 import androidx.ui.core.Text
@@ -18,13 +20,11 @@ import androidx.ui.layout.Container
 import androidx.ui.layout.CrossAxisAlignment
 import androidx.ui.layout.EdgeInsets
 import androidx.ui.layout.ExpandedWidth
-import androidx.ui.layout.FlexColumn
 import androidx.ui.layout.FlexRow
 import androidx.ui.layout.Row
 import androidx.ui.layout.Spacing
 import androidx.ui.layout.Stack
 import androidx.ui.material.Button
-import androidx.ui.material.MaterialTheme
 import androidx.ui.material.Slider
 import androidx.ui.material.SliderPosition
 import androidx.ui.material.surface.Card
@@ -40,28 +40,18 @@ import com.citizenwarwick.features.cardeditor.config.EditorConfiguration.Compani
 import com.citizenwarwick.features.cardeditor.config.EditorConfiguration.Companion.ELEMENT_TYPE_TEXT_DEFAULT_MIN_SIZE_EM
 import com.citizenwarwick.features.cardeditor.config.EditorFunctionConfig
 import com.citizenwarwick.features.cardeditor.model.MemoryCardElement
+import com.citizenwarwick.memset.router.ActiveRouter
 import com.citizenwarwick.memset.router.Composer
-import com.citizenwarwick.memset.router.Router
-import com.citizenwarwick.ui.MemsetBottomNavigation
 
 class CardEditorScreenComposer(
-    private val router: Router,
     private val model: CardEditorModel
 ) : Composer() {
-    @Composable
     override fun compose() {
-        MaterialTheme {
-            FlexColumn {
-                expanded(1f) {
-                    when (model.state.loadingState) {
-                        LoadingState.Loading -> CardEditorLoading()
-                        LoadingState.Loaded -> CardEditorContent()
-                        LoadingState.Error -> CardEditorLoadingError()
-                    }
-                }
-                inflexible {
-                    MemsetBottomNavigation(router)
-                }
+        MemsetMainTemplate {
+            when (model.state.loadingState) {
+                LoadingState.Loading -> CardEditorLoading()
+                LoadingState.Loaded -> CardEditorContent()
+                LoadingState.Error -> CardEditorLoadingError()
             }
         }
     }
@@ -82,8 +72,9 @@ class CardEditorScreenComposer(
 
     @Composable
     private fun HomeButton() {
+        val router = +ambient(ActiveRouter)
         Button(text = "Go Home", onClick = {
-            router.navigate("http://memset.com/")
+            router.goto("http://memset.com/")
         })
     }
 

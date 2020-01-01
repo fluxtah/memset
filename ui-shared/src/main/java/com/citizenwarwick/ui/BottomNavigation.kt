@@ -1,7 +1,6 @@
 package com.citizenwarwick.ui
 
 import androidx.compose.Composable
-import androidx.compose.ambient
 import androidx.compose.unaryPlus
 import androidx.ui.core.Alignment
 import androidx.ui.core.Text
@@ -18,7 +17,7 @@ import androidx.ui.material.MaterialTheme
 import androidx.ui.material.ripple.Ripple
 import androidx.ui.material.surface.Surface
 import androidx.ui.res.vectorResource
-import com.citizenwarwick.memset.router.ActiveRouter
+import com.citizenwarwick.memset.router.goto
 
 private val BottomNavigationHeight = 56.dp
 private val BottomNavigationIconHeight = 48.dp
@@ -26,7 +25,6 @@ private val BottomNavigationPadding = 8.dp
 
 @Composable
 fun MemsetBottomNavigation() {
-    val router = +ambient(ActiveRouter)
     Surface(color = (+MaterialTheme.colors()).primary) {
         Container(
             height = BottomNavigationHeight,
@@ -36,12 +34,12 @@ fun MemsetBottomNavigation() {
             FlexRow {
                 expanded(1f) {
                     NavItem("Home", icon = +vectorResource(R.drawable.ic_nav_home)) {
-                        router.goto("http://memset.com/")
+                        goto("http://memset.com/")
                     }
                 }
                 expanded(1f) {
                     NavItem("Shared", icon = +vectorResource(R.drawable.ic_nav_global)) {
-                        router.goto("http://memset.com/global")
+                        goto("http://memset.com/global")
                     }
                 }
             }

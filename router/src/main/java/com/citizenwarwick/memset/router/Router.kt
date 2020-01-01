@@ -1,40 +1,30 @@
 package com.citizenwarwick.memset.router
 
 import android.net.Uri
-import android.util.Log
-import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.Ambient
-import androidx.lifecycle.Lifecycle
+import androidx.compose.Composable
+import androidx.compose.state
+import androidx.compose.unaryPlus
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LifecycleObserver
-import androidx.lifecycle.OnLifecycleEvent
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProviders
-import androidx.ui.core.setContent
 
 class Router : LifecycleObserver {
-    constructor(activity: AppCompatActivity, mappings: Mapper.() -> Unit = {}) {
-        this.activity = activity
-        configure(mappings)
-    }
-
-    constructor(activity: AppCompatActivity, vararg mappings: Mapper.() -> Unit) {
-        this.activity = activity
-        mappings.forEach {
-            configure(it)
-        }
-    }
-
     private lateinit var model: RouterViewModel
+    private val homeUri: Uri
     private val commandGroups: MutableList<CommandGroup> = mutableListOf()
-    private val activity: AppCompatActivity
-    private val logger = Logger(false)
-    private var startUri: Uri = Uri.EMPTY
 
-    var enableLogging: Boolean = false
-        set(value) {
-            logger.enabled = value
-            field = value
+    constructor(homeUri: String, mappings: Mapper.() -> Unit = {}) {
+        this.homeUri = Uri.parse(homeUri)
+        register(mappings)
+    }
+
+    constructor(homeUri: String, vararg mappings: Mapper.() -> Unit) {
+        this.homeUri = Uri.parse(homeUri)
+        mappings.forEach {
+            register(it)
         }
+    }
 
     private data class CommandGroup(
         val paths: MutableList<Pair<Regex, () -> Composer>> = mutableListOf(),
@@ -42,8 +32,7 @@ class Router : LifecycleObserver {
         val hosts: MutableList<Regex> = mutableListOf()
     )
 
-    private fun configure(mappings: Mapper.() -> Unit) {
-        activity.lifecycle.addObserver(this)
+    private fun register(mappings: Mapper.() -> Unit) {
         val group = CommandGroup()
         mappings(Mapper(group.schemes, group.hosts, group.paths))
         commandGroups.add(group)
@@ -59,6 +48,10 @@ class Router : LifecycleObserver {
     }
 
     fun goto(uri: Uri) {
+
+    }
+
+    private fun findMapping(uri: Uri): () -> Composer {
         val group = commandGroups
             .firstOrNull { group ->
                 group.schemes.any { it.matches(uri.scheme!!) } &&
@@ -66,53 +59,30 @@ class Router : LifecycleObserver {
             }
             ?: throw RuntimeException("no matching scheme for $uri")
 
-        return when (val match = group.paths.firstOrNull { it.first.matches(uri.path!!) }) {
+        when (val match = group.paths.firstOrNull { it.first.matches(uri.path!!) }) {
             null -> {
                 throw RuntimeException("no route mapped for $uri")
             }
             else -> {
-                compose(match.second, uri)
+                return match.second
             }
         }
     }
 
-    private fun compose(createComposer: () -> Composer, navigateUri: Uri) {
-        createComposer().apply {
-            uri = navigateUri
-            logger.log("Compose", "${javaClass.simpleName} for $uri")
-            activity.setContent {
-                ActiveRouter.Provider(value = this@Router) {
-                    compose()
-                }
-            }
-        }
-        model.currentUri = navigateUri
-    }
-
-    fun startAt(startUri: String): Router {
-        this.startUri = Uri.parse(startUri)
-        return this
-    }
-
-    @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
-    private fun onActivityCreated() {
+    @Composable
+    fun startComposing(activity: FragmentActivity) {
         model = ViewModelProviders.of(activity).get(RouterViewModel::class.java)
-        if (model.currentUri != Uri.EMPTY) {
-            goto(model.currentUri)
-        } else {
-            model.startUri = startUri
-            if (startUri != Uri.EMPTY) {
-                goto(startUri)
-            }
-        }
-    }
 
-    class Logger(var enabled: Boolean) {
-        val tag = Router::class.java.simpleName
-
-        fun log(state: String, message: String = "") {
-            if (enabled) Log.d(tag, "[$state] $message")
+        if (model.currentUri == Uri.EMPTY) {
+            model.currentUri = homeUri
         }
+
+        var currentUri by +state { model.currentUri }
+        gotoDelegate = {
+            model.currentUri = Uri.parse(it)
+            currentUri = Uri.parse(it)
+        }
+        findMapping(currentUri)().compose()
     }
 
     internal class RouterViewModel : ViewModel() {
@@ -121,4 +91,7 @@ class Router : LifecycleObserver {
     }
 }
 
-val ActiveRouter = Ambient.of<Router> { error("No active router set!") }
+private var gotoDelegate: (uri: String) -> Unit = {}
+fun goto(uri: String) {
+    gotoDelegate(uri)
+}

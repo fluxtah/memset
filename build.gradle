@@ -4,7 +4,7 @@ buildscript {
     ext.build_tools = '4.0.0-alpha06'
     ext.kotlin_version = '1.3.61'
     ext.kotlinx_coroutines_version = '1.3.0'
-    ext.androidx_ui_version = '0.1.0-dev03'
+    ext.androidx_ui_version = '0.+'
     repositories {
         google()
         jcenter()

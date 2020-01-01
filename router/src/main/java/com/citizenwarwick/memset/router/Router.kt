@@ -5,11 +5,10 @@ import androidx.compose.Composable
 import androidx.compose.state
 import androidx.compose.unaryPlus
 import androidx.fragment.app.FragmentActivity
-import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProviders
 
-class Router : LifecycleObserver {
+class Router {
     private lateinit var model: RouterViewModel
     private val homeUri: Uri
     private val commandGroups: MutableList<CommandGroup> = mutableListOf()
@@ -43,19 +42,11 @@ class Router : LifecycleObserver {
         mappings(Mapper(group.schemes, group.hosts, group.paths))
     }
 
-    fun goto(uri: String) {
-        goto(Uri.parse(uri))
-    }
-
-    fun goto(uri: Uri) {
-
-    }
-
     private fun findMapping(uri: Uri): () -> Composer {
         val group = commandGroups
             .firstOrNull { group ->
-                group.schemes.any { it.matches(uri.scheme!!) } &&
-                    group.hosts.any { it.matches(uri.host!!) }
+                group.schemes.any { uri.scheme?.matches(it) ?: false } &&
+                    group.hosts.any { uri.host?.matches(it) ?: false }
             }
             ?: throw RuntimeException("no matching scheme for $uri")
 
@@ -73,8 +64,15 @@ class Router : LifecycleObserver {
     fun startComposing(activity: FragmentActivity) {
         model = ViewModelProviders.of(activity).get(RouterViewModel::class.java)
 
-        if (model.currentUri == Uri.EMPTY) {
-            model.currentUri = homeUri
+        val intentUri = activity.intent.data
+
+        when {
+            intentUri != null -> {
+                model.currentUri = intentUri
+            }
+            model.currentUri == Uri.EMPTY -> {
+                model.currentUri = homeUri
+            }
         }
 
         var currentUri by +state { model.currentUri }

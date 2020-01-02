@@ -32,8 +32,8 @@ class CardEditorScreenComposer(
     override fun compose() {
         MemsetMainTemplate {
             when (model.state.loadingState) {
-                LoadingState.Loading -> CardEditorLoading()
                 LoadingState.Loaded -> CardEditorContent()
+                LoadingState.Loading -> CardEditorLoading()
                 LoadingState.Error -> CardEditorLoadingError()
             }
         }

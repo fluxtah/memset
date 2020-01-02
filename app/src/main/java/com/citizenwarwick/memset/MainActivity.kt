@@ -25,7 +25,7 @@ class MainActivity : AppCompatActivity() {
                 "/cardeditor" composeWith { CardEditorScreenComposer(model(CardEditorViewModel::class)) }
                 ".*" composeTo { Text("404 Not Found") }
 
-            }.startComposing(activity = this)
+            }.startComposing(intent)
         }
     }
 

@@ -1,15 +1,12 @@
 package com.citizenwarwick.memset.router
 
+import android.content.Intent
 import android.net.Uri
 import androidx.compose.Composable
 import androidx.compose.state
 import androidx.compose.unaryPlus
-import androidx.fragment.app.FragmentActivity
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProviders
 
 class Router {
-    private lateinit var model: RouterViewModel
     private val homeUri: Uri
     private val commandGroups: MutableList<CommandGroup> = mutableListOf()
 
@@ -61,35 +58,31 @@ class Router {
     }
 
     @Composable
-    fun startComposing(activity: FragmentActivity) {
-        model = ViewModelProviders.of(activity).get(RouterViewModel::class.java)
-
-        val intentUri = activity.intent.data
+    fun startComposing(intent: Intent? = null) {
+        val intentUri = intent?.data
 
         when {
             intentUri != null -> {
-                model.currentUri = intentUri
+                currentUri = intentUri
             }
-            model.currentUri == Uri.EMPTY -> {
-                model.currentUri = homeUri
+            currentUri == Uri.EMPTY -> {
+                currentUri = homeUri
             }
         }
 
-        var currentUri by +state { model.currentUri }
+        var currentUri by +state { currentUri }
         gotoDelegate = {
-            model.currentUri = Uri.parse(it)
+            currentUri = Uri.parse(it)
             currentUri = Uri.parse(it)
         }
         findMapping(currentUri)().compose()
     }
-
-    internal class RouterViewModel : ViewModel() {
-        lateinit var startUri: Uri
-        var currentUri: Uri = Uri.EMPTY
-    }
 }
 
+private lateinit var startUri: Uri
+private var currentUri: Uri = Uri.EMPTY
 private var gotoDelegate: (uri: String) -> Unit = {}
+
 fun goto(uri: String) {
     gotoDelegate(uri)
 }

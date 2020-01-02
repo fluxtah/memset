@@ -1,6 +1,7 @@
 package com.citizenwarwick.features.cardeditor.editorfunctions
 
 import androidx.ui.core.Alignment
+import com.citizenwarwick.features.cardeditor.config.EditorConfiguration.Companion.ELEMENT_PROPERTY_TEXT_ALIGNMENT
 import com.citizenwarwick.features.cardeditor.config.EditorConfiguration.Companion.ELEMENT_TYPE_TEXT
 import com.citizenwarwick.features.cardeditor.model.CardEditorState
 import com.citizenwarwick.features.cardeditor.model.MemoryCardElement
@@ -12,7 +13,7 @@ class AddTextEditorFunction : EditorFunction {
         backElements: MutableList<MemoryCardElement>
     ) {
         frontElements.add(MemoryCardElement(ELEMENT_TYPE_TEXT).apply {
-            properties["alignment"] = Alignment.Center.name
+            properties[ELEMENT_PROPERTY_TEXT_ALIGNMENT] = Alignment.Center.name
         })
     }
 }

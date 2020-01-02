@@ -11,6 +11,7 @@ import androidx.ui.material.surface.Surface
 import androidx.ui.text.TextStyle
 import com.citizenwarwick.features.cardeditor.CardEditorModel
 import com.citizenwarwick.features.cardeditor.config.EditorConfiguration
+import com.citizenwarwick.features.cardeditor.config.EditorConfiguration.Companion.ELEMENT_PROPERTY_TEXT_ALIGNMENT
 import com.citizenwarwick.features.cardeditor.model.MemoryCardElement
 
 @Composable
@@ -19,9 +20,7 @@ fun TextElement(model: CardEditorModel, element: MemoryCardElement) {
         ?: EditorConfiguration.ELEMENT_TYPE_TEXT_DEFAULT_SIZE_EM
 
     Align(
-        alignment = Alignment.valueOf(
-            element.properties["alignment"]!!
-        )
+        element.properties[ELEMENT_PROPERTY_TEXT_ALIGNMENT]?.let { Alignment.valueOf(it) } ?: Alignment.Center
     ) {
         Clickable(onClick = { model.selectElement(element) }) {
             if (model.state.selectedElement == element) {

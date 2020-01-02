@@ -24,5 +24,6 @@ data class EditorConfiguration(
         const val ELEMENT_TYPE_BG_IMAGE = "background-image"
 
         const val ELEMENT_PROPERTY_TEXT_SIZE = "textSize"
+        const val ELEMENT_PROPERTY_TEXT_ALIGNMENT = "textAlignment"
     }
 }

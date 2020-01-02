@@ -18,7 +18,7 @@ fun SliderElementControl(
     defaultValue: Float,
     valueRange: ClosedFloatingPointRange<Float>
 ) {
-    val fontSize = element.properties[propertyName]?.toFloat() ?: defaultValue
+    val size = element.properties[propertyName]?.toFloat() ?: defaultValue
 
     FlexRow(crossAxisAlignment = CrossAxisAlignment.Center) {
         expanded(1f) {
@@ -26,14 +26,14 @@ fun SliderElementControl(
         }
         expanded(2f) {
             Slider(
-                position = SliderPosition(fontSize, valueRange),
+                position = SliderPosition(size, valueRange),
                 modifier = ExpandedWidth,
                 onValueChange = {
                     element.properties[propertyName] = it.toString()
                 })
         }
         inflexible {
-            Text(text = "${fontSize.toStringAsFixed(1)}em")
+            Text(text = size.toStringAsFixed(1))
         }
     }
 }

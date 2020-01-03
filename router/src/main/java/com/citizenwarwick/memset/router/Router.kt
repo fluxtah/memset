@@ -40,13 +40,16 @@ class Router {
     }
 
     private fun findMapping(uri: Uri): () -> Composer {
-        val group = commandGroups
-            .firstOrNull { group ->
-                group.schemes.any { uri.scheme?.matches(it) ?: false } &&
-                    group.hosts.any { uri.host?.matches(it) ?: false }
-            }
-            ?: throw RuntimeException("no matching scheme for $uri")
-
+        val group = if (uri.scheme != null && uri.host != null) {
+            commandGroups
+                .firstOrNull { group ->
+                    group.schemes.any { uri.scheme?.matches(it) ?: false } &&
+                        group.hosts.any { uri.host?.matches(it) ?: false }
+                }
+                ?: throw RuntimeException("no matching scheme for $uri")
+        } else {
+            commandGroups.first()
+        }
         when (val match = group.paths.firstOrNull { it.first.matches(uri.path!!) }) {
             null -> {
                 throw RuntimeException("no route mapped for $uri")
@@ -62,7 +65,7 @@ class Router {
         val intentUri = intent?.data
 
         when {
-            intentUri != null -> {
+            intentUri != null && currentUri == Uri.EMPTY -> {
                 currentUri = intentUri
             }
             currentUri == Uri.EMPTY -> {
@@ -70,16 +73,15 @@ class Router {
             }
         }
 
-        var currentUri by +state { currentUri }
+        var currentUriState by +state { currentUri }
         gotoDelegate = {
-            currentUri = Uri.parse(it)
-            currentUri = Uri.parse(it)
+            currentUriState = Uri.parse(it)
+            currentUri = currentUriState
         }
-        findMapping(currentUri)().compose()
+        findMapping(currentUriState)().compose()
     }
 }
 
-private lateinit var startUri: Uri
 private var currentUri: Uri = Uri.EMPTY
 private var gotoDelegate: (uri: String) -> Unit = {}
 

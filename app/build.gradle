@@ -36,6 +36,7 @@ android {
 }
 
 dependencies {
+    implementation project(":core")
     implementation project(":router")
     implementation project(':feature-home')
     implementation project(':feature-cardeditor')

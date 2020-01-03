@@ -3,4 +3,5 @@ include ':feature-cardeditor'
 include ':feature-home'
 include ':router'
 include ':app'
+include ':core'
 rootProject.name = "Memset"

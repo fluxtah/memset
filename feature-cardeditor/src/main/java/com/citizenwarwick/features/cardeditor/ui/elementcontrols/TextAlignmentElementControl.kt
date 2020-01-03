@@ -13,6 +13,7 @@ import androidx.ui.graphics.vector.DrawVector
 import androidx.ui.layout.Container
 import androidx.ui.layout.CrossAxisAlignment
 import androidx.ui.layout.FlexRow
+import androidx.ui.layout.Spacing
 import androidx.ui.material.MaterialTheme
 import androidx.ui.material.surface.Surface
 import androidx.ui.res.vectorResource
@@ -153,7 +154,7 @@ private fun EditorControlOptionButton(@DrawableRes vectorResourceId: Int, select
     } else {
         Color.Transparent
     }
-    Surface(color = selectedColor, shape = RoundedCornerShape(4.dp)) {
+    Surface(color = selectedColor, shape = RoundedCornerShape(4.dp), modifier = Spacing(2.dp)) {
         Clickable(onClick = onClick) {
             Container(width = 32.dp, height = 32.dp) {
                 DrawVector(vectorImage = vector, tintColor = selectedOnColor)

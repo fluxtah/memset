@@ -16,5 +16,6 @@ fun TextElementControls(element: MemoryCardElement) {
             valueRange = EditorConfiguration.ELEMENT_TYPE_TEXT_DEFAULT_MIN_SIZE_EM..EditorConfiguration.ELEMENT_TYPE_TEXT_DEFAULT_MAX_SIZE_EM
         )
         TextAlignmentEditorControl(element)
+        TextColorElementControl(element)
     }
 }

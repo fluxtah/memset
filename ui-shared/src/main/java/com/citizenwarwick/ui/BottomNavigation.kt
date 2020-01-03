@@ -17,7 +17,8 @@ import androidx.ui.material.MaterialTheme
 import androidx.ui.material.ripple.Ripple
 import androidx.ui.material.surface.Surface
 import androidx.ui.res.vectorResource
-import com.citizenwarwick.memset.router.goto
+import com.citizenwarwick.memset.core.Destination
+import com.citizenwarwick.memset.core.goto
 
 private val BottomNavigationHeight = 56.dp
 private val BottomNavigationIconHeight = 48.dp
@@ -34,12 +35,12 @@ fun MemsetBottomNavigation() {
             FlexRow {
                 expanded(1f) {
                     NavItem("Home", icon = +vectorResource(R.drawable.ic_nav_home)) {
-                        goto("http://memset.com/")
+                        goto(Destination.HomeScreen)
                     }
                 }
                 expanded(1f) {
                     NavItem("Shared", icon = +vectorResource(R.drawable.ic_nav_global)) {
-                        goto("http://memset.com/global")
+                        goto(Destination.QuxScreen)
                     }
                 }
             }

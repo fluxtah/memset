@@ -23,6 +23,8 @@ import androidx.ui.material.surface.Surface
 import androidx.ui.res.vectorResource
 import com.citizenwarwick.features.cardeditor.config.EditorConfiguration
 import com.citizenwarwick.features.cardeditor.config.EditorFunctionConfig
+import com.citizenwarwick.features.cardeditor.model.CardEditorModel
+import com.citizenwarwick.features.cardeditor.model.LoadingState
 import com.citizenwarwick.features.cardeditor.ui.elementcontrols.ElementControls
 import com.citizenwarwick.features.cardeditor.ui.elements.EditorElement
 import com.citizenwarwick.memset.router.Composer

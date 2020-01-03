@@ -3,8 +3,8 @@ package com.citizenwarwick.features.cardeditor.model.vm
 import androidx.compose.frames.ModelList
 import androidx.compose.frames.modelListOf
 import androidx.lifecycle.ViewModel
-import com.citizenwarwick.features.cardeditor.CardEditorModel
-import com.citizenwarwick.features.cardeditor.LoadingState
+import com.citizenwarwick.features.cardeditor.model.CardEditorModel
+import com.citizenwarwick.features.cardeditor.model.LoadingState
 import com.citizenwarwick.features.cardeditor.config.EditorConfiguration
 import com.citizenwarwick.features.cardeditor.config.EditorFunctionConfig
 import com.citizenwarwick.features.cardeditor.editorfunctions.AddBackgroundImageEditorFunction
@@ -19,7 +19,8 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-class CardEditorViewModel : ViewModel(), CardEditorModel {
+class CardEditorViewModel : ViewModel(),
+    CardEditorModel {
     private val cardFrontElements: ModelList<MemoryCardElement> = modelListOf()
     private val cardBackElements: ModelList<MemoryCardElement> = modelListOf()
     /**

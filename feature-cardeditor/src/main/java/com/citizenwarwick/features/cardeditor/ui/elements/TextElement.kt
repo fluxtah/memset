@@ -7,11 +7,11 @@ import androidx.ui.core.TextUnit
 import androidx.ui.foundation.Clickable
 import androidx.ui.graphics.Color
 import androidx.ui.layout.Align
-import androidx.ui.material.surface.Surface
 import androidx.ui.text.TextStyle
-import com.citizenwarwick.features.cardeditor.CardEditorModel
 import com.citizenwarwick.features.cardeditor.config.EditorConfiguration
 import com.citizenwarwick.features.cardeditor.config.EditorConfiguration.ELEMENT_PROPERTY_TEXT_ALIGNMENT
+import com.citizenwarwick.features.cardeditor.config.EditorConfiguration.ELEMENT_PROPERTY_TEXT_COLOR
+import com.citizenwarwick.features.cardeditor.model.CardEditorModel
 import com.citizenwarwick.features.cardeditor.model.MemoryCardElement
 
 @Composable
@@ -23,23 +23,14 @@ fun TextElement(model: CardEditorModel, element: MemoryCardElement) {
         element.properties[ELEMENT_PROPERTY_TEXT_ALIGNMENT]?.let { Alignment.valueOf(it) } ?: Alignment.Center
     ) {
         Clickable(onClick = { model.selectElement(element) }) {
-            if (model.state.selectedElement == element) {
-                Surface(color = Color.Yellow) {
-                    Text(
-                        text = element.type,
-                        style = TextStyle(
-                            fontSize = TextUnit.Em(fontSize)
-                        )
-                    )
-                }
-            } else {
-                Text(
-                    text = element.type,
-                    style = TextStyle(
-                        fontSize = TextUnit.Em(fontSize)
-                    )
+            Text(
+                text = element.type,
+                style = TextStyle(
+                    background = if (model.state.selectedElement == element) Color.LightGray else null,
+                    fontSize = TextUnit.Em(fontSize),
+                    color = element.properties[ELEMENT_PROPERTY_TEXT_COLOR]?.toInt()?.let { Color(it) }
                 )
-            }
+            )
         }
     }
 }

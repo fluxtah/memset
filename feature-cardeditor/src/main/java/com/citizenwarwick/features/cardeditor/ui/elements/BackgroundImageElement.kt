@@ -7,7 +7,7 @@ import androidx.ui.foundation.Clickable
 import androidx.ui.graphics.Color
 import androidx.ui.layout.Align
 import androidx.ui.material.surface.Surface
-import com.citizenwarwick.features.cardeditor.CardEditorModel
+import com.citizenwarwick.features.cardeditor.model.CardEditorModel
 import com.citizenwarwick.features.cardeditor.model.MemoryCardElement
 
 @Composable

@@ -1,4 +1,4 @@
-package com.citizenwarwick.features.cardeditor
+package com.citizenwarwick.features.cardeditor.model
 
 sealed class LoadingState {
     object Loading : LoadingState()

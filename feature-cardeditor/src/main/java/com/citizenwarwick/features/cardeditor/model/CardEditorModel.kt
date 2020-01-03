@@ -1,4 +1,4 @@
-package com.citizenwarwick.features.cardeditor
+package com.citizenwarwick.features.cardeditor.model
 
 import com.citizenwarwick.features.cardeditor.config.EditorFunctionConfig
 import com.citizenwarwick.features.cardeditor.model.CardEditorState

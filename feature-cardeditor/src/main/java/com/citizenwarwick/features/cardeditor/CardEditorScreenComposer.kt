@@ -21,6 +21,7 @@ import androidx.ui.layout.Stack
 import androidx.ui.material.surface.Card
 import androidx.ui.material.surface.Surface
 import androidx.ui.res.vectorResource
+import com.citizenwarwick.features.cardeditor.config.EditorConfiguration
 import com.citizenwarwick.features.cardeditor.config.EditorFunctionConfig
 import com.citizenwarwick.features.cardeditor.ui.elementcontrols.ElementControls
 import com.citizenwarwick.features.cardeditor.ui.elements.EditorElement
@@ -73,7 +74,7 @@ class CardEditorScreenComposer(
     @Composable
     private fun EditorToolbar() {
         Row(modifier = ExpandedWidth, arrangement = Arrangement.End) {
-            for (editorFunction in model.state.editorConfiguration.editorFunctions) {
+            for (editorFunction in EditorConfiguration.editorFunctions) {
                 EditorToolbarButton(editorFunction, onClick = {
                     model.applyEditorFunction(editorFunction)
                 })

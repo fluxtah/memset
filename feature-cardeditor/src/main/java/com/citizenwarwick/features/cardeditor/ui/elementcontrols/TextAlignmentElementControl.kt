@@ -18,7 +18,7 @@ import androidx.ui.material.MaterialTheme
 import androidx.ui.material.surface.Surface
 import androidx.ui.res.vectorResource
 import com.citizenwarwick.features.cardeditor.R
-import com.citizenwarwick.features.cardeditor.config.EditorConfiguration.Companion.ELEMENT_PROPERTY_TEXT_ALIGNMENT
+import com.citizenwarwick.features.cardeditor.config.EditorConfiguration.ELEMENT_PROPERTY_TEXT_ALIGNMENT
 import com.citizenwarwick.features.cardeditor.model.MemoryCardElement
 
 @Composable

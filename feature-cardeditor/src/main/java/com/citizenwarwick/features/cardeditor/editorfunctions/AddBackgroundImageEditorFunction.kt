@@ -1,6 +1,6 @@
 package com.citizenwarwick.features.cardeditor.editorfunctions
 
-import com.citizenwarwick.features.cardeditor.config.EditorConfiguration.Companion.ELEMENT_TYPE_BG_IMAGE
+import com.citizenwarwick.features.cardeditor.config.EditorConfiguration.ELEMENT_TYPE_BG_IMAGE
 import com.citizenwarwick.features.cardeditor.model.CardEditorState
 import com.citizenwarwick.features.cardeditor.model.MemoryCardElement
 

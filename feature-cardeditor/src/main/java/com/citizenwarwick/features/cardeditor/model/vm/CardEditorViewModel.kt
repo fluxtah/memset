@@ -3,15 +3,17 @@ package com.citizenwarwick.features.cardeditor.model.vm
 import androidx.compose.frames.ModelList
 import androidx.compose.frames.modelListOf
 import androidx.lifecycle.ViewModel
-import com.citizenwarwick.features.cardeditor.model.CardEditorModel
-import com.citizenwarwick.features.cardeditor.model.LoadingState
 import com.citizenwarwick.features.cardeditor.config.EditorConfiguration
 import com.citizenwarwick.features.cardeditor.config.EditorFunctionConfig
-import com.citizenwarwick.features.cardeditor.editorfunctions.AddBackgroundImageEditorFunction
+import com.citizenwarwick.features.cardeditor.editorfunctions.AddOvalShapeEditorFunction
 import com.citizenwarwick.features.cardeditor.editorfunctions.AddTextEditorFunction
 import com.citizenwarwick.features.cardeditor.editorfunctions.ClearAllEditorFunction
+import com.citizenwarwick.features.cardeditor.editorfunctions.DeleteElementEditorFunction
 import com.citizenwarwick.features.cardeditor.editorfunctions.EditorFunction
+import com.citizenwarwick.features.cardeditor.model.CardEditorModel
 import com.citizenwarwick.features.cardeditor.model.CardEditorState
+import com.citizenwarwick.features.cardeditor.model.CardSurface
+import com.citizenwarwick.features.cardeditor.model.LoadingState
 import com.citizenwarwick.features.cardeditor.model.MemoryCard
 import com.citizenwarwick.features.cardeditor.model.MemoryCardElement
 import kotlinx.coroutines.Dispatchers
@@ -32,21 +34,21 @@ class CardEditorViewModel : ViewModel(),
     override val state: CardEditorState =
         CardEditorState(
             loadingState = LoadingState.Loaded,
-            card = MemoryCard(cardFrontElements, cardBackElements)
+            card = MemoryCard(
+                CardSurface(elements = cardFrontElements),
+                CardSurface(elements = cardBackElements)
+            )
         )
 
     private val editorFunctions: Map<String, EditorFunction> = mapOf(
         Pair(EditorConfiguration.FUNC_ADD_TEXT, AddTextEditorFunction()),
-        Pair(EditorConfiguration.FUNC_ADD_BG_IMAGE, AddBackgroundImageEditorFunction()),
+        Pair(EditorConfiguration.FUNC_ADD_SHAPE_OVAL, AddOvalShapeEditorFunction()),
+        Pair(EditorConfiguration.FUNC_DELETE_ELEMENT, DeleteElementEditorFunction()),
         Pair(EditorConfiguration.FUNC_CLEAR_ALL, ClearAllEditorFunction())
     )
 
     override fun applyEditorFunction(editorFunction: EditorFunctionConfig) {
         editorFunctions[editorFunction.name]?.apply(state, cardFrontElements, cardBackElements)
-    }
-
-    override fun selectElement(element: MemoryCardElement) {
-        state.selectedElement = element
     }
 
     init {

@@ -1,6 +1,7 @@
 package com.citizenwarwick.features.cardeditor.ui.elementcontrols
 
 import androidx.compose.Composable
+import androidx.compose.frames.ModelMap
 import androidx.ui.core.Text
 import androidx.ui.core.dp
 import androidx.ui.foundation.Clickable
@@ -22,38 +23,39 @@ import androidx.ui.layout.CrossAxisAlignment
 import androidx.ui.layout.FlexRow
 import androidx.ui.layout.Spacing
 import androidx.ui.material.surface.Surface
-import com.citizenwarwick.features.cardeditor.config.EditorConfiguration.ELEMENT_PROPERTY_TEXT_COLOR
-import com.citizenwarwick.features.cardeditor.model.MemoryCardElement
 
 @Composable
-fun TextColorElementControl(
-    element: MemoryCardElement
+fun ColorPropertyControl(
+    label: String,
+    properties: ModelMap<String, String>,
+    propertyKey: String,
+    defaultColor: Color = White
 ) {
-    val selectedColor = element.properties[ELEMENT_PROPERTY_TEXT_COLOR]?.toInt()?.let { Color(it) } ?: Black
+    val selectedColor = properties[propertyKey]?.toInt()?.let { Color(it) } ?: defaultColor
 
     FlexRow(crossAxisAlignment = CrossAxisAlignment.Center) {
         expanded(1f) {
-            Text(text = "Text Color")
+            Text(text = label)
         }
         listOf(Black, Red, Yellow, Blue, Green, Cyan, Gray, White).forEach {
             inflexible {
-                ColorOptionButton(element, it, selectedColor == it)
+                ColorOptionButton(properties, propertyKey, it, selectedColor == it)
             }
         }
     }
 }
 
 @Composable
-fun ColorOptionButton(element: MemoryCardElement, color: Color, selected: Boolean) {
+fun ColorOptionButton(properties: ModelMap<String, String>, propertyKey: String, color: Color, selected: Boolean) {
     Surface(
         modifier = Spacing(2.dp),
         shape = RoundedCornerShape(4.dp),
         color = color.let { if (selected) lerp(it, White, 0.1f) else it },
         elevation = if (selected) 6.dp else 0.dp,
-        border = Border(Color.LightGray, width = 2.dp)
+        border = Border(Color.LightGray, width = if (selected) 0.dp else 2.dp)
     ) {
         Clickable(onClick = {
-            element.properties[ELEMENT_PROPERTY_TEXT_COLOR] = color.toArgb().toString()
+            properties[propertyKey] = color.toArgb().toString()
         }) {
             Container(width = 32.dp, height = 32.dp) {}
         }

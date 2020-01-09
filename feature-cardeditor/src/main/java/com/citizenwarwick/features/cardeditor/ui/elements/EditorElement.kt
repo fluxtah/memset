@@ -12,7 +12,7 @@ fun EditorElement(model: CardEditorModel, element: MemoryCardElement) {
             model,
             element
         )
-        EditorConfiguration.ELEMENT_TYPE_BG_IMAGE -> BackgroundImageElement(
+        EditorConfiguration.ELEMENT_TYPE_SHAPE_OVAL -> OvalShapeElement(
             model,
             element
         )

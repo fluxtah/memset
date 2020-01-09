@@ -17,7 +17,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            Router("https://memset.com/") {
+            Router("https://memset.com/cardeditor") {
                 schemes("https", "http")
                 hosts("memset.com", "www.memset.com")
 

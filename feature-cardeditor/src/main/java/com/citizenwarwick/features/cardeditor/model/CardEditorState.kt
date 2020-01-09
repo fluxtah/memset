@@ -6,5 +6,7 @@ import androidx.compose.Model
 data class CardEditorState(
     var loadingState: LoadingState,
     var card: MemoryCard,
-    var selectedElement: MemoryCardElement? = null
-)
+    var selectedElement: MemoryCardElement? = null,
+    var editElement: MemoryCardElement? = null
+) {
+}

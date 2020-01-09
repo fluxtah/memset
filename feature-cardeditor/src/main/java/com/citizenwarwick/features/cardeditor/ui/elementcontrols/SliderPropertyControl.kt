@@ -8,17 +8,14 @@ import androidx.ui.layout.FlexRow
 import androidx.ui.material.Slider
 import androidx.ui.material.SliderPosition
 import androidx.ui.toStringAsFixed
-import com.citizenwarwick.features.cardeditor.model.MemoryCardElement
 
 @Composable
-fun SliderElementControl(
-    element: MemoryCardElement,
-    propertyName: String,
+fun SliderPropertyControl(
     label: String,
-    defaultValue: Float,
-    valueRange: ClosedFloatingPointRange<Float>
+    initialValue: Float,
+    valueRange: ClosedFloatingPointRange<Float>,
+    onValueChanged: (value: Float) -> Unit
 ) {
-    val size = element.properties[propertyName]?.toFloat() ?: defaultValue
 
     FlexRow(crossAxisAlignment = CrossAxisAlignment.Center) {
         expanded(1f) {
@@ -26,14 +23,14 @@ fun SliderElementControl(
         }
         expanded(2f) {
             Slider(
-                position = SliderPosition(size, valueRange),
+                position = SliderPosition(initialValue, valueRange),
                 modifier = ExpandedWidth,
                 onValueChange = {
-                    element.properties[propertyName] = it.toString()
+                    onValueChanged(it)
                 })
         }
         inflexible {
-            Text(text = size.toStringAsFixed(1))
+            Text(text = initialValue.toStringAsFixed(1))
         }
     }
 }

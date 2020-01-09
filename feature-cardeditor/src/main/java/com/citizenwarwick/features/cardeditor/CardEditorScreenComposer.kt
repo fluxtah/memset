@@ -7,7 +7,9 @@ import androidx.ui.core.Alignment
 import androidx.ui.core.Text
 import androidx.ui.core.dp
 import androidx.ui.foundation.Clickable
+import androidx.ui.foundation.VerticalScroller
 import androidx.ui.foundation.shape.corner.RoundedCornerShape
+import androidx.ui.graphics.Color
 import androidx.ui.graphics.vector.DrawVector
 import androidx.ui.layout.Arrangement
 import androidx.ui.layout.AspectRatio
@@ -18,10 +20,12 @@ import androidx.ui.layout.ExpandedWidth
 import androidx.ui.layout.Row
 import androidx.ui.layout.Spacing
 import androidx.ui.layout.Stack
+import androidx.ui.material.Divider
 import androidx.ui.material.surface.Card
 import androidx.ui.material.surface.Surface
 import androidx.ui.res.vectorResource
 import com.citizenwarwick.features.cardeditor.config.EditorConfiguration
+import com.citizenwarwick.features.cardeditor.config.EditorConfiguration.SURFACE_PROPERTY_COLOR
 import com.citizenwarwick.features.cardeditor.config.EditorFunctionConfig
 import com.citizenwarwick.features.cardeditor.model.CardEditorModel
 import com.citizenwarwick.features.cardeditor.model.LoadingState
@@ -48,8 +52,9 @@ class CardEditorScreenComposer(
             Column {
                 EditorToolbar()
                 EditorSurface()
-                model.state.selectedElement?.let {
-                    ElementControls(it)
+                Divider(height = 8.dp, color = Color.Transparent)
+                VerticalScroller {
+                    ElementControls(model)
                 }
             }
         }
@@ -57,15 +62,31 @@ class CardEditorScreenComposer(
 
     @Composable
     private fun EditorSurface() {
-        Card(shape = RoundedCornerShape(4.dp), elevation = 4.dp, modifier = AspectRatio(1.7f) wraps ExpandedWidth) {
-            Container {
-                Stack {
-                    for (element in model.state.card.frontElements) {
-                        aligned(Alignment.Center) {
-                            EditorElement(
-                                model,
-                                element
-                            )
+        val selectedColor =
+            model.state.card.upSide.properties[SURFACE_PROPERTY_COLOR]?.toInt()?.let { Color(it) } ?: Color.White
+
+        Clickable(onClick = {
+            val editElement = model.state.editElement
+            model.state.editElement = null
+            if (editElement == null) {
+                model.state.selectedElement = null
+            }
+        }) {
+            Card(
+                shape = RoundedCornerShape(4.dp),
+                elevation = 4.dp,
+                modifier = AspectRatio(1.7f) wraps ExpandedWidth,
+                color = selectedColor
+            ) {
+                Container {
+                    Stack {
+                        for (element in model.state.card.upSide.elements) {
+                            aligned(Alignment.Center) {
+                                EditorElement(
+                                    model,
+                                    element
+                                )
+                            }
                         }
                     }
                 }

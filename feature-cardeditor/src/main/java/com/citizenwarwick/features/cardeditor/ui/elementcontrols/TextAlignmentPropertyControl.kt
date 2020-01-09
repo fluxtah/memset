@@ -2,6 +2,7 @@ package com.citizenwarwick.features.cardeditor.ui.elementcontrols
 
 import androidx.annotation.DrawableRes
 import androidx.compose.Composable
+import androidx.compose.frames.ModelMap
 import androidx.compose.unaryPlus
 import androidx.ui.core.Alignment
 import androidx.ui.core.Text
@@ -19,13 +20,12 @@ import androidx.ui.material.surface.Surface
 import androidx.ui.res.vectorResource
 import com.citizenwarwick.features.cardeditor.R
 import com.citizenwarwick.features.cardeditor.config.EditorConfiguration.ELEMENT_PROPERTY_TEXT_ALIGNMENT
-import com.citizenwarwick.features.cardeditor.model.MemoryCardElement
 
 @Composable
-fun TextAlignmentEditorControl(
-    element: MemoryCardElement
+fun TextAlignmentPropertyControl(
+    properties: ModelMap<String, String>
 ) {
-    val textAlignment = element.properties[ELEMENT_PROPERTY_TEXT_ALIGNMENT]?.let {
+    val textAlignment = properties[ELEMENT_PROPERTY_TEXT_ALIGNMENT]?.let {
         Alignment.valueOf(it)
     } ?: Alignment.Center
 
@@ -40,15 +40,15 @@ fun TextAlignmentEditorControl(
                     textAlignment == Alignment.CenterLeft ||
                     textAlignment == Alignment.BottomLeft)
             ) {
-                when (textAlignment) {
+                properties[ELEMENT_PROPERTY_TEXT_ALIGNMENT] = when (textAlignment) {
                     Alignment.Center, Alignment.CenterRight ->
-                        element.properties[ELEMENT_PROPERTY_TEXT_ALIGNMENT] = Alignment.CenterLeft.name
+                        Alignment.CenterLeft.name
                     Alignment.BottomCenter, Alignment.BottomRight ->
-                        element.properties[ELEMENT_PROPERTY_TEXT_ALIGNMENT] = Alignment.BottomLeft.name
+                        Alignment.BottomLeft.name
                     Alignment.TopCenter, Alignment.TopRight ->
-                        element.properties[ELEMENT_PROPERTY_TEXT_ALIGNMENT] = Alignment.TopLeft.name
+                        Alignment.TopLeft.name
                     else ->
-                        element.properties[ELEMENT_PROPERTY_TEXT_ALIGNMENT] = Alignment.CenterLeft.name
+                        Alignment.CenterLeft.name
                 }
             }
             EditorControlOptionButton(
@@ -57,15 +57,15 @@ fun TextAlignmentEditorControl(
                     textAlignment == Alignment.BottomCenter ||
                     textAlignment == Alignment.Center)
             ) {
-                when (textAlignment) {
+                properties[ELEMENT_PROPERTY_TEXT_ALIGNMENT] = when (textAlignment) {
                     Alignment.CenterRight, Alignment.CenterLeft ->
-                        element.properties[ELEMENT_PROPERTY_TEXT_ALIGNMENT] = Alignment.Center.name
+                        Alignment.Center.name
                     Alignment.BottomRight, Alignment.BottomLeft ->
-                        element.properties[ELEMENT_PROPERTY_TEXT_ALIGNMENT] = Alignment.BottomCenter.name
+                        Alignment.BottomCenter.name
                     Alignment.TopRight, Alignment.TopLeft ->
-                        element.properties[ELEMENT_PROPERTY_TEXT_ALIGNMENT] = Alignment.TopCenter.name
+                        Alignment.TopCenter.name
                     else ->
-                        element.properties[ELEMENT_PROPERTY_TEXT_ALIGNMENT] = Alignment.Center.name
+                        Alignment.Center.name
                 }
             }
             EditorControlOptionButton(
@@ -74,15 +74,15 @@ fun TextAlignmentEditorControl(
                     textAlignment == Alignment.BottomRight ||
                     textAlignment == Alignment.CenterRight)
             ) {
-                when (textAlignment) {
+                properties[ELEMENT_PROPERTY_TEXT_ALIGNMENT] = when (textAlignment) {
                     Alignment.Center, Alignment.CenterLeft ->
-                        element.properties[ELEMENT_PROPERTY_TEXT_ALIGNMENT] = Alignment.CenterRight.name
+                        Alignment.CenterRight.name
                     Alignment.BottomCenter, Alignment.BottomLeft ->
-                        element.properties[ELEMENT_PROPERTY_TEXT_ALIGNMENT] = Alignment.BottomRight.name
+                        Alignment.BottomRight.name
                     Alignment.TopCenter, Alignment.TopLeft ->
-                        element.properties[ELEMENT_PROPERTY_TEXT_ALIGNMENT] = Alignment.TopRight.name
+                        Alignment.TopRight.name
                     else ->
-                        element.properties[ELEMENT_PROPERTY_TEXT_ALIGNMENT] = Alignment.CenterRight.name
+                        Alignment.CenterRight.name
                 }
             }
             EditorControlOptionButton(
@@ -91,15 +91,15 @@ fun TextAlignmentEditorControl(
                     textAlignment == Alignment.BottomCenter ||
                     textAlignment == Alignment.BottomLeft)
             ) {
-                when (textAlignment) {
+                properties[ELEMENT_PROPERTY_TEXT_ALIGNMENT] = when (textAlignment) {
                     Alignment.Center, Alignment.TopCenter ->
-                        element.properties[ELEMENT_PROPERTY_TEXT_ALIGNMENT] = Alignment.BottomCenter.name
+                        Alignment.BottomCenter.name
                     Alignment.CenterLeft, Alignment.TopLeft ->
-                        element.properties[ELEMENT_PROPERTY_TEXT_ALIGNMENT] = Alignment.BottomLeft.name
+                        Alignment.BottomLeft.name
                     Alignment.CenterRight, Alignment.TopRight ->
-                        element.properties[ELEMENT_PROPERTY_TEXT_ALIGNMENT] = Alignment.BottomRight.name
+                        Alignment.BottomRight.name
                     else ->
-                        element.properties[ELEMENT_PROPERTY_TEXT_ALIGNMENT] = Alignment.BottomCenter.name
+                        Alignment.BottomCenter.name
                 }
             }
             EditorControlOptionButton(
@@ -108,15 +108,15 @@ fun TextAlignmentEditorControl(
                     textAlignment == Alignment.CenterLeft ||
                     textAlignment == Alignment.CenterRight)
             ) {
-                when (textAlignment) {
+                properties[ELEMENT_PROPERTY_TEXT_ALIGNMENT] = when (textAlignment) {
                     Alignment.BottomCenter, Alignment.TopCenter ->
-                        element.properties[ELEMENT_PROPERTY_TEXT_ALIGNMENT] = Alignment.Center.name
+                        Alignment.Center.name
                     Alignment.TopLeft, Alignment.BottomLeft ->
-                        element.properties[ELEMENT_PROPERTY_TEXT_ALIGNMENT] = Alignment.CenterLeft.name
+                        Alignment.CenterLeft.name
                     Alignment.TopRight, Alignment.BottomRight ->
-                        element.properties[ELEMENT_PROPERTY_TEXT_ALIGNMENT] = Alignment.CenterRight.name
+                        Alignment.CenterRight.name
                     else ->
-                        element.properties[ELEMENT_PROPERTY_TEXT_ALIGNMENT] = Alignment.Center.name
+                        Alignment.Center.name
                 }
             }
             EditorControlOptionButton(
@@ -125,15 +125,15 @@ fun TextAlignmentEditorControl(
                     textAlignment == Alignment.TopCenter ||
                     textAlignment == Alignment.TopLeft)
             ) {
-                when (textAlignment) {
+                properties[ELEMENT_PROPERTY_TEXT_ALIGNMENT] = when (textAlignment) {
                     Alignment.Center, Alignment.BottomCenter ->
-                        element.properties[ELEMENT_PROPERTY_TEXT_ALIGNMENT] = Alignment.TopCenter.name
+                        Alignment.TopCenter.name
                     Alignment.CenterRight, Alignment.BottomRight ->
-                        element.properties[ELEMENT_PROPERTY_TEXT_ALIGNMENT] = Alignment.TopRight.name
+                        Alignment.TopRight.name
                     Alignment.CenterLeft, Alignment.BottomLeft ->
-                        element.properties[ELEMENT_PROPERTY_TEXT_ALIGNMENT] = Alignment.TopLeft.name
+                        Alignment.TopLeft.name
                     else ->
-                        element.properties[ELEMENT_PROPERTY_TEXT_ALIGNMENT] = Alignment.TopCenter.name
+                        Alignment.TopCenter.name
                 }
             }
         }

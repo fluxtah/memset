@@ -10,9 +10,10 @@ fun MemsetMainTemplate(content: @Composable() () -> Unit) {
             expanded(1f) {
                 content()
             }
-            inflexible {
-                MemsetBottomNavigation()
-            }
+// TODO Maybe something for later...
+//            inflexible {
+//                MemsetBottomNavigation()
+//            }
         }
     }
 }

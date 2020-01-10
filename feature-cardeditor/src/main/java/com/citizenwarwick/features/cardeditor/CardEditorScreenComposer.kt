@@ -17,6 +17,7 @@ package com.citizenwarwick.features.cardeditor
 
 import MemsetMainTemplate
 import androidx.compose.Composable
+import androidx.compose.frames.ModelList
 import androidx.compose.unaryPlus
 import androidx.ui.core.Alignment
 import androidx.ui.core.Text
@@ -30,12 +31,16 @@ import androidx.ui.layout.Arrangement
 import androidx.ui.layout.AspectRatio
 import androidx.ui.layout.Column
 import androidx.ui.layout.Container
+import androidx.ui.layout.CrossAxisAlignment
 import androidx.ui.layout.EdgeInsets
 import androidx.ui.layout.ExpandedWidth
+import androidx.ui.layout.FlexRow
+import androidx.ui.layout.Padding
 import androidx.ui.layout.Row
 import androidx.ui.layout.Spacing
 import androidx.ui.layout.Stack
 import androidx.ui.material.Divider
+import androidx.ui.material.ripple.Ripple
 import androidx.ui.material.surface.Card
 import androidx.ui.material.surface.Surface
 import androidx.ui.res.vectorResource
@@ -44,6 +49,8 @@ import com.citizenwarwick.features.cardeditor.config.EditorConfiguration.SURFACE
 import com.citizenwarwick.features.cardeditor.config.EditorFunctionConfig
 import com.citizenwarwick.features.cardeditor.model.CardEditorModel
 import com.citizenwarwick.features.cardeditor.model.LoadingState
+import com.citizenwarwick.features.cardeditor.model.MemoryCardElement
+import com.citizenwarwick.features.cardeditor.ui.elementcontrols.DropDownMenu
 import com.citizenwarwick.features.cardeditor.ui.elementcontrols.ElementControls
 import com.citizenwarwick.features.cardeditor.ui.elements.EditorElement
 import com.citizenwarwick.memset.router.Composer
@@ -67,6 +74,8 @@ class CardEditorScreenComposer(
             Column {
                 EditorToolbar()
                 EditorSurface()
+                Divider(height = 8.dp, color = Color.Transparent)
+                LayersDropDown()
                 Divider(height = 8.dp, color = Color.Transparent)
                 VerticalScroller {
                     ElementControls(model)
@@ -143,6 +152,48 @@ class CardEditorScreenComposer(
     private fun CardEditorLoadingError() {
         Column(modifier = Spacing(4.dp)) {
             Text(text = "Error...")
+        }
+    }
+
+    @Composable
+    private fun LayersDropDown() {
+        DropDownMenu(
+            selectedItem = model.state.selectedElement,
+            selectedItemLabelText = { it.type },
+            items = ModelList<MemoryCardElement>().apply { addAll(model.state.card.upSide.elements) }
+        ) { item ->
+            LayersDropDownItem(item)
+        }
+    }
+
+    @Composable
+    private fun LayersDropDownItem(item: MemoryCardElement) {
+        Surface(color = if (model.state.selectedElement == item) Color.LightGray else Color.Transparent) {
+            Padding(padding = 2.dp) {
+                FlexRow(crossAxisAlignment = CrossAxisAlignment.Center) {
+                    expanded(1f) {
+                        Ripple(bounded = true) {
+                            Clickable(onClick = { model.state.selectedElement = item }) {
+                                Container(expanded = true) {
+                                    Text(modifier = Spacing(4.dp), text = item.type)
+                                }
+                            }
+                        }
+                    }
+                    inflexible {
+                        Surface {
+                            Ripple(bounded = true) {
+                                Clickable(onClick = { model.removeElement(item) }) {
+                                    val vector = +vectorResource(R.drawable.ic_editor_tool_delete)
+                                    Container(width = 32.dp, height = 32.dp) {
+                                        DrawVector(vectorImage = vector)
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }

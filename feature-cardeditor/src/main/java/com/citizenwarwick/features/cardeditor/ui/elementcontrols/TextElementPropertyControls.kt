@@ -16,6 +16,7 @@
 package com.citizenwarwick.features.cardeditor.ui.elementcontrols
 
 import androidx.compose.Composable
+import androidx.compose.frames.modelListOf
 import androidx.ui.graphics.Color
 import androidx.ui.layout.Column
 import com.citizenwarwick.features.cardeditor.config.EditorConfiguration
@@ -85,3 +86,4 @@ fun TextElementPropertyControls(element: MemoryCardElement) {
         )
     }
 }
+

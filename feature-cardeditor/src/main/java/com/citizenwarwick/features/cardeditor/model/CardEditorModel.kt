@@ -20,4 +20,5 @@ import com.citizenwarwick.features.cardeditor.config.EditorFunctionConfig
 interface CardEditorModel {
     val state: CardEditorState
     fun applyEditorFunction(editorFunction: EditorFunctionConfig)
+    fun removeElement(item: MemoryCardElement)
 }

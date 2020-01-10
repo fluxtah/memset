@@ -17,9 +17,13 @@ package com.citizenwarwick.features.cardeditor.ui.elementcontrols
 
 import androidx.compose.Composable
 import androidx.compose.frames.ModelMap
+import androidx.ui.core.Dp
+import androidx.ui.core.Modifier
 import androidx.ui.core.Text
 import androidx.ui.core.dp
+import androidx.ui.engine.geometry.Shape
 import androidx.ui.foundation.Clickable
+import androidx.ui.foundation.shape.RectangleShape
 import androidx.ui.foundation.shape.border.Border
 import androidx.ui.foundation.shape.corner.RoundedCornerShape
 import androidx.ui.graphics.Color
@@ -33,11 +37,14 @@ import androidx.ui.graphics.Color.Companion.White
 import androidx.ui.graphics.Color.Companion.Yellow
 import androidx.ui.graphics.lerp
 import androidx.ui.graphics.toArgb
+import androidx.ui.layout.Column
 import androidx.ui.layout.Container
 import androidx.ui.layout.CrossAxisAlignment
 import androidx.ui.layout.FlexRow
+import androidx.ui.layout.Row
 import androidx.ui.layout.Spacing
 import androidx.ui.material.surface.Surface
+import androidx.ui.tooling.preview.Preview
 
 @Composable
 fun ColorPropertyControl(
@@ -54,27 +61,37 @@ fun ColorPropertyControl(
         }
         listOf(Black, Red, Yellow, Blue, Green, Cyan, Gray, White).forEach {
             inflexible {
-                ColorOptionButton(properties, propertyKey, it, selectedColor == it)
+                ColorOptionButton(color = it, selected = selectedColor == it) {
+                    properties[propertyKey] = it.toArgb().toString()
+                }
             }
         }
     }
 }
 
 @Composable
-fun ColorOptionButton(properties: ModelMap<String, String>, propertyKey: String, color: Color, selected: Boolean) {
+fun ColorOptionButton(
+    modifier: Modifier = Spacing(2.dp),
+    shape: Shape = RoundedCornerShape(4.dp),
+    width: Dp = 32.dp,
+    height: Dp = 32.dp,
+    borderSize: Dp = 2.dp,
+    color: Color,
+    selected: Boolean,
+    onClick: (selectedColor: Color) -> Unit
+) {
     Surface(
-        modifier = Spacing(2.dp),
-        shape = RoundedCornerShape(4.dp),
+        modifier = modifier,
+        shape = shape,
         color = color.let { if (selected) lerp(it, White, 0.1f) else it },
         elevation = if (selected) 6.dp else 0.dp,
-        border = Border(Color.LightGray, width = if (selected) 0.dp else 2.dp)
+        border = Border(Color.LightGray, width = if (selected) 0.dp else borderSize)
     ) {
         Clickable(onClick = {
-            properties[propertyKey] = color.toArgb().toString()
+            onClick(color)
         }) {
-            Container(width = 32.dp, height = 32.dp) {}
+            Container(width = width, height = height) {}
         }
     }
 }
-
 

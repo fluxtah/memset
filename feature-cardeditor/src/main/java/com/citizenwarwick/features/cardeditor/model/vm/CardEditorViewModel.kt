@@ -66,6 +66,16 @@ class CardEditorViewModel : ViewModel(),
         editorFunctions[editorFunction.name]?.apply(state, cardFrontElements, cardBackElements)
     }
 
+    override fun removeElement(item: MemoryCardElement) {
+        if (isCardFacingUp()) {
+            cardFrontElements.remove(item)
+        } else {
+            cardBackElements.remove(item)
+        }
+    }
+
+    private fun isCardFacingUp(): Boolean = state.card.upSide.elements == cardFrontElements
+
     init {
         state.loadingState = LoadingState.Loading
 

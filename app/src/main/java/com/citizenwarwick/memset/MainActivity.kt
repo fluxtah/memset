@@ -15,7 +15,6 @@ import kotlin.reflect.KClass
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         setContent {
             Router("https://memset.com/cardeditor") {
                 schemes("https", "http")

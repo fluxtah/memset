@@ -44,6 +44,7 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.core:core-ktx:1.1.0'
+    implementation "androidx.ui:ui-foundation:$androidx_ui_version"
     implementation "androidx.ui:ui-framework:$androidx_ui_version"
     implementation "androidx.ui:ui-layout:$androidx_ui_version"
     implementation "androidx.ui:ui-material:$androidx_ui_version"

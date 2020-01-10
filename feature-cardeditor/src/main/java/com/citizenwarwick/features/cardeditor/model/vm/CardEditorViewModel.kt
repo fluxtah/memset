@@ -66,15 +66,36 @@ class CardEditorViewModel : ViewModel(),
         editorFunctions[editorFunction.name]?.apply(state, cardFrontElements, cardBackElements)
     }
 
-    override fun removeElement(item: MemoryCardElement) {
-        if (isCardFacingUp()) {
-            cardFrontElements.remove(item)
-        } else {
-            cardBackElements.remove(item)
+    override fun removeElement(element: MemoryCardElement) {
+        getUpSideElements().remove(element)
+    }
+
+    override fun moveElementUp(element: MemoryCardElement) {
+        val elements = getUpSideElements()
+        val index = elements.indexOf(element)
+        if (index > 0) {
+            val prevIndex = index - 1
+            val prevElement = elements[prevIndex]
+            elements[prevIndex] = element
+            elements[index] = prevElement
         }
     }
 
-    private fun isCardFacingUp(): Boolean = state.card.upSide.elements == cardFrontElements
+    override fun moveElementDown(element: MemoryCardElement) {
+        val elements = getUpSideElements()
+        val index = elements.indexOf(element)
+        if (index < elements.size.dec()) {
+            val nextIndex = index + 1
+            val nextElement = elements[nextIndex]
+            elements[nextIndex] = element
+            elements[index] = nextElement
+        }
+    }
+
+    private fun getUpSideElements(): MutableList<MemoryCardElement> =
+        if (isCardFacingFront()) cardFrontElements else cardBackElements
+
+    private fun isCardFacingFront(): Boolean = state.card.upSide.elements == cardFrontElements
 
     init {
         state.loadingState = LoadingState.Loading

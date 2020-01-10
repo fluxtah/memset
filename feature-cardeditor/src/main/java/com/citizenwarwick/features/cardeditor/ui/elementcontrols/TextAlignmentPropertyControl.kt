@@ -15,26 +15,15 @@
  */
 package com.citizenwarwick.features.cardeditor.ui.elementcontrols
 
-import androidx.annotation.DrawableRes
 import androidx.compose.Composable
 import androidx.compose.frames.ModelMap
-import androidx.compose.unaryPlus
 import androidx.ui.core.Alignment
 import androidx.ui.core.Text
-import androidx.ui.core.dp
-import androidx.ui.foundation.Clickable
-import androidx.ui.foundation.shape.corner.RoundedCornerShape
-import androidx.ui.graphics.Color
-import androidx.ui.graphics.vector.DrawVector
-import androidx.ui.layout.Container
 import androidx.ui.layout.CrossAxisAlignment
 import androidx.ui.layout.FlexRow
-import androidx.ui.layout.Spacing
-import androidx.ui.material.MaterialTheme
-import androidx.ui.material.surface.Surface
-import androidx.ui.res.vectorResource
 import com.citizenwarwick.features.cardeditor.R
 import com.citizenwarwick.features.cardeditor.config.EditorConfiguration.ELEMENT_PROPERTY_TEXT_ALIGNMENT
+import com.citizenwarwick.ui.IconButton
 
 @Composable
 fun TextAlignmentPropertyControl(
@@ -49,7 +38,7 @@ fun TextAlignmentPropertyControl(
             Text(text = "Text Alignment")
         }
         inflexible {
-            EditorControlOptionButton(
+            IconButton(
                 R.drawable.ic_editor_tool_align_left,
                 (textAlignment == Alignment.TopLeft ||
                     textAlignment == Alignment.CenterLeft ||
@@ -66,7 +55,7 @@ fun TextAlignmentPropertyControl(
                         Alignment.CenterLeft.name
                 }
             }
-            EditorControlOptionButton(
+            IconButton(
                 R.drawable.ic_editor_tool_align_center,
                 (textAlignment == Alignment.TopCenter ||
                     textAlignment == Alignment.BottomCenter ||
@@ -83,7 +72,7 @@ fun TextAlignmentPropertyControl(
                         Alignment.Center.name
                 }
             }
-            EditorControlOptionButton(
+            IconButton(
                 R.drawable.ic_editor_tool_align_right,
                 (textAlignment == Alignment.TopRight ||
                     textAlignment == Alignment.BottomRight ||
@@ -100,7 +89,7 @@ fun TextAlignmentPropertyControl(
                         Alignment.CenterRight.name
                 }
             }
-            EditorControlOptionButton(
+            IconButton(
                 R.drawable.ic_editor_tool_vertical_align_bottom,
                 (textAlignment == Alignment.BottomRight ||
                     textAlignment == Alignment.BottomCenter ||
@@ -117,7 +106,7 @@ fun TextAlignmentPropertyControl(
                         Alignment.BottomCenter.name
                 }
             }
-            EditorControlOptionButton(
+            IconButton(
                 R.drawable.ic_editor_tool_vertical_align_center,
                 (textAlignment == Alignment.Center ||
                     textAlignment == Alignment.CenterLeft ||
@@ -134,7 +123,7 @@ fun TextAlignmentPropertyControl(
                         Alignment.Center.name
                 }
             }
-            EditorControlOptionButton(
+            IconButton(
                 R.drawable.ic_editor_tool_vertical_align_top,
                 (textAlignment == Alignment.TopRight ||
                     textAlignment == Alignment.TopCenter ||
@@ -150,29 +139,6 @@ fun TextAlignmentPropertyControl(
                     else ->
                         Alignment.TopCenter.name
                 }
-            }
-        }
-    }
-}
-
-@Composable
-private fun EditorControlOptionButton(@DrawableRes vectorResourceId: Int, selected: Boolean, onClick: () -> Unit) {
-    val vector = +vectorResource(vectorResourceId)
-    val colors = (+MaterialTheme.colors())
-    val selectedColor = if (selected) {
-        colors.primary
-    } else {
-        Color.Transparent
-    }
-    val selectedOnColor = if (selected) {
-        colors.onPrimary
-    } else {
-        Color.Transparent
-    }
-    Surface(color = selectedColor, shape = RoundedCornerShape(4.dp), modifier = Spacing(2.dp)) {
-        Clickable(onClick = onClick) {
-            Container(width = 32.dp, height = 32.dp) {
-                DrawVector(vectorImage = vector, tintColor = selectedOnColor)
             }
         }
     }

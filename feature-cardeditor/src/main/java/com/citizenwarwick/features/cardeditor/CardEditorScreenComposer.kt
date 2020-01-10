@@ -50,10 +50,11 @@ import com.citizenwarwick.features.cardeditor.config.EditorFunctionConfig
 import com.citizenwarwick.features.cardeditor.model.CardEditorModel
 import com.citizenwarwick.features.cardeditor.model.LoadingState
 import com.citizenwarwick.features.cardeditor.model.MemoryCardElement
-import com.citizenwarwick.features.cardeditor.ui.elementcontrols.DropDownMenu
 import com.citizenwarwick.features.cardeditor.ui.elementcontrols.ElementControls
 import com.citizenwarwick.features.cardeditor.ui.elements.EditorElement
 import com.citizenwarwick.memset.router.Composer
+import com.citizenwarwick.ui.DropDownMenu
+import com.citizenwarwick.ui.IconButton
 
 class CardEditorScreenComposer(
     private val model: CardEditorModel
@@ -181,16 +182,19 @@ class CardEditorScreenComposer(
                         }
                     }
                     inflexible {
-                        Surface {
-                            Ripple(bounded = true) {
-                                Clickable(onClick = { model.removeElement(item) }) {
-                                    val vector = +vectorResource(R.drawable.ic_editor_tool_delete)
-                                    Container(width = 32.dp, height = 32.dp) {
-                                        DrawVector(vectorImage = vector)
-                                    }
-                                }
-                            }
-                        }
+                        val vector = +vectorResource(R.drawable.ic_move_up)
+                        val onClick = { model.moveElementUp(item) }
+                        IconButton(iconVector = vector, onClick = onClick)
+                    }
+                    inflexible {
+                        val vector = +vectorResource(R.drawable.ic_move_down)
+                        val onClick = { model.moveElementDown(item) }
+                        IconButton(iconVector = vector, onClick = onClick)
+                    }
+                    inflexible {
+                        val vector = +vectorResource(R.drawable.ic_editor_tool_delete)
+                        val onClick = { model.removeElement(item) }
+                        IconButton(iconVector = vector, onClick = onClick)
                     }
                 }
             }

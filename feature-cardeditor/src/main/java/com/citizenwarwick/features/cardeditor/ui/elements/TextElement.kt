@@ -24,7 +24,6 @@ import androidx.ui.core.dp
 import androidx.ui.core.gesture.DoubleTapGestureDetector
 import androidx.ui.foundation.Clickable
 import androidx.ui.graphics.Color
-import androidx.ui.layout.Align
 import androidx.ui.layout.Spacing
 import androidx.ui.text.TextStyle
 import com.citizenwarwick.features.cardeditor.model.CardEditorModel
@@ -33,25 +32,23 @@ import com.citizenwarwick.features.cardeditor.ui.SelectionBorder
 
 @Composable
 fun TextElement(model: CardEditorModel, element: TextElement) {
-    Align(element.alignment) {
-        val onTextClick = { model.state.selectedElement = element }
-        val onTextDoubleTap = { _: PxPosition -> model.state.editElement = element }
+    val onTextClick = { model.state.selectedElement = element }
+    val onTextDoubleTap = { _: PxPosition -> model.state.editElement = element }
 
-        Clickable(onClick = onTextClick) {
-            when {
-                model.state.editElement == element -> {
-                    SelectionBorder { Text(element, true) }
-                }
-                model.state.selectedElement == element -> {
-                    SelectionBorder {
-                        DoubleTapGestureDetector(onDoubleTap = onTextDoubleTap) {
-                            Text(element)
-                        }
+    Clickable(onClick = onTextClick) {
+        when {
+            model.state.editElement == element -> {
+                SelectionBorder { Text(element, true) }
+            }
+            model.state.selectedElement == element -> {
+                SelectionBorder {
+                    DoubleTapGestureDetector(onDoubleTap = onTextDoubleTap) {
+                        Text(element)
                     }
                 }
-                else -> {
-                    DoubleTapGestureDetector(onDoubleTap = onTextDoubleTap) { Text(element) }
-                }
+            }
+            else -> {
+                DoubleTapGestureDetector(onDoubleTap = onTextDoubleTap) { Text(element) }
             }
         }
     }

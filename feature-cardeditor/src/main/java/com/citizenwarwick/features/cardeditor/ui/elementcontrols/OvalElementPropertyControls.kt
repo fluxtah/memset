@@ -49,5 +49,12 @@ fun OvalElementPropertyControls(element: OvalShapeElement) {
                 element.height = it
             }
         )
+
+        AlignmentPropertyControl(
+            selectedAlignment = element.alignment,
+            onAlignmentSelected = {
+                element.alignment = it
+            }
+        )
     }
 }

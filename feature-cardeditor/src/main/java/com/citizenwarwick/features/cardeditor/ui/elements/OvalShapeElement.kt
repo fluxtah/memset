@@ -18,7 +18,6 @@ package com.citizenwarwick.features.cardeditor.ui.elements
 import androidx.compose.Composable
 import androidx.compose.ambient
 import androidx.compose.unaryPlus
-import androidx.ui.core.Alignment
 import androidx.ui.core.ContextAmbient
 import androidx.ui.core.Density
 import androidx.ui.core.Dp
@@ -29,7 +28,6 @@ import androidx.ui.foundation.Clickable
 import androidx.ui.foundation.shape.DrawShape
 import androidx.ui.foundation.shape.GenericShape
 import androidx.ui.graphics.Color
-import androidx.ui.layout.Align
 import androidx.ui.layout.Container
 import androidx.ui.layout.Size
 import androidx.ui.material.surface.Surface
@@ -39,15 +37,13 @@ import com.citizenwarwick.features.cardeditor.ui.SelectionBorder
 
 @Composable
 fun OvalShapeElement(model: CardEditorModel, element: OvalShapeElement) {
-    Align(alignment = Alignment.Center) {
-        Clickable(onClick = { model.state.selectedElement = element }) {
-            if (model.state.selectedElement == element) {
-                SelectionBorder {
-                    Oval(element.width.dp, element.height.dp, element.color)
-                }
-            } else {
+    Clickable(onClick = { model.state.selectedElement = element }) {
+        if (model.state.selectedElement == element) {
+            SelectionBorder {
                 Oval(element.width.dp, element.height.dp, element.color)
             }
+        } else {
+            Oval(element.width.dp, element.height.dp, element.color)
         }
     }
 }

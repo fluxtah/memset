@@ -16,6 +16,7 @@
 package com.citizenwarwick.features.cardeditor.ui.elements
 
 import androidx.compose.Composable
+import androidx.ui.layout.Align
 import com.citizenwarwick.features.cardeditor.model.CardEditorModel
 import com.citizenwarwick.features.cardeditor.model.MemoryCardElement
 import com.citizenwarwick.features.cardeditor.model.OvalShapeElement
@@ -23,14 +24,16 @@ import com.citizenwarwick.features.cardeditor.model.TextElement
 
 @Composable
 fun EditorElement(model: CardEditorModel, element: MemoryCardElement) {
-    when (element) {
-        is TextElement -> TextElement(
-            model,
-            element
-        )
-        is OvalShapeElement -> OvalShapeElement(
-            model,
-            element
-        )
+    Align(alignment = element.alignment) {
+        when (element) {
+            is TextElement -> TextElement(
+                model,
+                element
+            )
+            is OvalShapeElement -> OvalShapeElement(
+                model,
+                element
+            )
+        }
     }
 }

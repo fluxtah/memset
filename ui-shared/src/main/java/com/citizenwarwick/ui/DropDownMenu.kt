@@ -91,10 +91,15 @@ private fun <T> DropDownContent(
 
 @Composable
 private fun DropDownBoxLabel(isOpen: Boolean, label: String = "") {
+    // TODO remove this duplication when vector bug is fixed, we have to
+    //   recompose the container when swapping the vector because of a drawing problem
+    //   in dev03 that draws the vector over a previous version of itself instead
+    //  of completely changing it
     if (isOpen) {
         Container {
             Surface(
-                color = Color.LightGray,
+                color = Color.White,
+                border = Border(Color.LightGray, 1.dp),
                 shape = RoundedCornerShape(4.dp)
             ) {
                 FlexRow(crossAxisAlignment = CrossAxisAlignment.Center) {
@@ -112,7 +117,9 @@ private fun DropDownBoxLabel(isOpen: Boolean, label: String = "") {
     } else {
         Container {
             Surface(
-                color = Color.LightGray,
+                color = Color.White,
+                elevation = 2.dp,
+                border = Border(Color.LightGray, 1.dp),
                 shape = RoundedCornerShape(4.dp)
             ) {
                 FlexRow(crossAxisAlignment = CrossAxisAlignment.Center) {

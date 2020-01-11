@@ -33,7 +33,7 @@ fun TextElementPropertyControls(element: TextElement) {
                 element.textSize = it
             }
         )
-        TextAlignmentPropertyControl(
+        AlignmentPropertyControl(
             selectedAlignment = element.alignment,
             onAlignmentSelected = {
                 element.alignment = it

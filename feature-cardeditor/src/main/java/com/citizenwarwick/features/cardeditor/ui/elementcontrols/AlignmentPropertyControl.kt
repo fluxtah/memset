@@ -24,7 +24,7 @@ import com.citizenwarwick.features.cardeditor.R
 import com.citizenwarwick.ui.IconButton
 
 @Composable
-fun TextAlignmentPropertyControl(
+fun AlignmentPropertyControl(
     selectedAlignment: Alignment,
     onAlignmentSelected: (Alignment) -> Unit
 ) {

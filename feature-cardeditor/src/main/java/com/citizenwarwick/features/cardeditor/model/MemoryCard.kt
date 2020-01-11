@@ -24,7 +24,7 @@ import java.util.UUID
 data class MemoryCard(
     val front: CardSurface,
     val back: CardSurface,
-    val facingFront: Boolean = true
+    var facingFront: Boolean = true
 ) {
     val upSide: CardSurface
         get() = if (facingFront) front else back
@@ -45,26 +45,28 @@ fun generateElementUUID() = UUID.randomUUID().toString()
 interface MemoryCardElement {
     val guid: String
     var name: String
+    var alignment: Alignment
 }
 
 @Model
 data class TextElement(
     override val guid: String = generateElementUUID(),
     override var name: String,
+    override var alignment: Alignment = Alignment.Center,
     var text: String,
-    var alignment: Alignment,
     var textSize: Float = 8f,
     var spacingTop: Float = 0f,
     var spacingLeft: Float = 0f,
     var spacingRight: Float = 0f,
     var spacingBottom: Float = 0f,
-    var color: Color = Color.Blue
+    var color: Color = Color.Black
 ) : MemoryCardElement
 
 @Model
 data class OvalShapeElement(
     override val guid: String = generateElementUUID(),
     override var name: String,
+    override var alignment: Alignment = Alignment.Center,
     var width: Float = 64f,
     var height: Float = 64f,
     var color: Color = Color.Blue

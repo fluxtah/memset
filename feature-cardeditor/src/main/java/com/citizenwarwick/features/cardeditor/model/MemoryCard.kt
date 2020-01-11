@@ -16,10 +16,9 @@
 package com.citizenwarwick.features.cardeditor.model
 
 import androidx.compose.Model
-import androidx.compose.frames.ModelMap
-import androidx.compose.frames.modelMapOf
 import androidx.ui.core.Alignment
 import androidx.ui.graphics.Color
+import java.util.UUID
 
 @Model
 data class MemoryCard(
@@ -37,12 +36,20 @@ data class CardSurface(
     var color: Color = Color.White
 )
 
+/**
+ * Generates a uuid so elements can be identified
+ * even if they have the same properties (other than this uid!)
+ */
+fun generateElementUUID() = UUID.randomUUID().toString()
+
 interface MemoryCardElement {
+    val guid: String
     var name: String
 }
 
 @Model
 data class TextElement(
+    override val guid: String = generateElementUUID(),
     override var name: String,
     var text: String,
     var alignment: Alignment,
@@ -56,6 +63,7 @@ data class TextElement(
 
 @Model
 data class OvalShapeElement(
+    override val guid: String = generateElementUUID(),
     override var name: String,
     var width: Float = 64f,
     var height: Float = 64f,

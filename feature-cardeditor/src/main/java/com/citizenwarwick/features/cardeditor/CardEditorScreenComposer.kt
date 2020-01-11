@@ -45,7 +45,6 @@ import androidx.ui.material.surface.Card
 import androidx.ui.material.surface.Surface
 import androidx.ui.res.vectorResource
 import com.citizenwarwick.features.cardeditor.config.EditorConfiguration
-import com.citizenwarwick.features.cardeditor.config.EditorConfiguration.SURFACE_PROPERTY_COLOR
 import com.citizenwarwick.features.cardeditor.config.EditorFunctionConfig
 import com.citizenwarwick.features.cardeditor.model.CardEditorModel
 import com.citizenwarwick.features.cardeditor.model.LoadingState

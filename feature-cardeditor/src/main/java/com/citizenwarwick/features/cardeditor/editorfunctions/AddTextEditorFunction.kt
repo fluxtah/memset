@@ -26,8 +26,6 @@ class AddTextEditorFunction : EditorFunction {
         frontElements: MutableList<MemoryCardElement>,
         backElements: MutableList<MemoryCardElement>
     ) {
-        // TODO would be nice to strongly type this though still reap the benefit
-        //  of using ModelMap
         frontElements.add(
             TextElement(
                 name = "Text",

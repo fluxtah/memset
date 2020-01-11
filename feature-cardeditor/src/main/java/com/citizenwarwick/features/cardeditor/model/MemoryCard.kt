@@ -18,6 +18,8 @@ package com.citizenwarwick.features.cardeditor.model
 import androidx.compose.Model
 import androidx.compose.frames.ModelMap
 import androidx.compose.frames.modelMapOf
+import androidx.ui.core.Alignment
+import androidx.ui.graphics.Color
 
 @Model
 data class MemoryCard(
@@ -31,9 +33,31 @@ data class MemoryCard(
 
 @Model
 data class CardSurface(
-    val properties: ModelMap<String, String> = modelMapOf(),
-    val elements: List<MemoryCardElement>
+    val elements: List<MemoryCardElement>,
+    var color: Color = Color.White
 )
 
+interface MemoryCardElement {
+    var name: String
+}
+
 @Model
-data class MemoryCardElement(val type: String, val properties: ModelMap<String, String> = modelMapOf())
+data class TextElement(
+    override var name: String,
+    var text: String,
+    var alignment: Alignment,
+    var textSize: Float = 8f,
+    var spacingTop: Float = 0f,
+    var spacingLeft: Float = 0f,
+    var spacingRight: Float = 0f,
+    var spacingBottom: Float = 0f,
+    var color: Color = Color.Blue
+) : MemoryCardElement
+
+@Model
+data class OvalShapeElement(
+    override var name: String,
+    var width: Float = 64f,
+    var height: Float = 64f,
+    var color: Color = Color.Blue
+) : MemoryCardElement

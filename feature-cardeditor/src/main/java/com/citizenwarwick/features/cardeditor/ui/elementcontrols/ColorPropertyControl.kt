@@ -16,14 +16,12 @@
 package com.citizenwarwick.features.cardeditor.ui.elementcontrols
 
 import androidx.compose.Composable
-import androidx.compose.frames.ModelMap
 import androidx.ui.core.Dp
 import androidx.ui.core.Modifier
 import androidx.ui.core.Text
 import androidx.ui.core.dp
 import androidx.ui.engine.geometry.Shape
 import androidx.ui.foundation.Clickable
-import androidx.ui.foundation.shape.RectangleShape
 import androidx.ui.foundation.shape.border.Border
 import androidx.ui.foundation.shape.corner.RoundedCornerShape
 import androidx.ui.graphics.Color
@@ -36,25 +34,18 @@ import androidx.ui.graphics.Color.Companion.Red
 import androidx.ui.graphics.Color.Companion.White
 import androidx.ui.graphics.Color.Companion.Yellow
 import androidx.ui.graphics.lerp
-import androidx.ui.graphics.toArgb
-import androidx.ui.layout.Column
 import androidx.ui.layout.Container
 import androidx.ui.layout.CrossAxisAlignment
 import androidx.ui.layout.FlexRow
-import androidx.ui.layout.Row
 import androidx.ui.layout.Spacing
 import androidx.ui.material.surface.Surface
-import androidx.ui.tooling.preview.Preview
 
 @Composable
 fun ColorPropertyControl(
     label: String,
-    properties: ModelMap<String, String>,
-    propertyKey: String,
-    defaultColor: Color = White
+    selectedColor: Color = White,
+    onColorSelected: (Color) -> Unit
 ) {
-    val selectedColor = properties[propertyKey]?.toInt()?.let { Color(it) } ?: defaultColor
-
     FlexRow(crossAxisAlignment = CrossAxisAlignment.Center) {
         expanded(1f) {
             Text(text = label)
@@ -62,7 +53,7 @@ fun ColorPropertyControl(
         listOf(Black, Red, Yellow, Blue, Green, Cyan, Gray, White).forEach {
             inflexible {
                 ColorOptionButton(color = it, selected = selectedColor == it) {
-                    properties[propertyKey] = it.toArgb().toString()
+                    onColorSelected(it)
                 }
             }
         }

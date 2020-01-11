@@ -16,17 +16,17 @@
 package com.citizenwarwick.features.cardeditor.ui.elementcontrols
 
 import androidx.compose.Composable
-import com.citizenwarwick.features.cardeditor.config.EditorConfiguration
 import com.citizenwarwick.features.cardeditor.model.CardEditorModel
+import com.citizenwarwick.features.cardeditor.model.OvalShapeElement
+import com.citizenwarwick.features.cardeditor.model.TextElement
 
 @Composable
 fun ElementControls(model: CardEditorModel) {
-    val selectedElement = model.state.selectedElement
-    when (selectedElement?.type) {
-        EditorConfiguration.ELEMENT_TYPE_TEXT -> {
+    when (val selectedElement = model.state.selectedElement) {
+        is TextElement -> {
             TextElementPropertyControls(selectedElement)
         }
-        EditorConfiguration.ELEMENT_TYPE_SHAPE_OVAL -> {
+        is OvalShapeElement -> {
             OvalElementPropertyControls(selectedElement)
         }
         null -> {

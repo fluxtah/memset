@@ -16,10 +16,9 @@
 package com.citizenwarwick.features.cardeditor.editorfunctions
 
 import androidx.ui.core.Alignment
-import com.citizenwarwick.features.cardeditor.config.EditorConfiguration.ELEMENT_PROPERTY_TEXT_ALIGNMENT
-import com.citizenwarwick.features.cardeditor.config.EditorConfiguration.ELEMENT_TYPE_TEXT
 import com.citizenwarwick.features.cardeditor.model.CardEditorState
 import com.citizenwarwick.features.cardeditor.model.MemoryCardElement
+import com.citizenwarwick.features.cardeditor.model.TextElement
 
 class AddTextEditorFunction : EditorFunction {
     override fun apply(
@@ -29,8 +28,12 @@ class AddTextEditorFunction : EditorFunction {
     ) {
         // TODO would be nice to strongly type this though still reap the benefit
         //  of using ModelMap
-        frontElements.add(MemoryCardElement(ELEMENT_TYPE_TEXT).apply {
-            properties[ELEMENT_PROPERTY_TEXT_ALIGNMENT] = Alignment.Center.name
-        })
+        frontElements.add(
+            TextElement(
+                name = "Text",
+                text = "Text",
+                alignment = Alignment.Center
+            )
+        )
     }
 }

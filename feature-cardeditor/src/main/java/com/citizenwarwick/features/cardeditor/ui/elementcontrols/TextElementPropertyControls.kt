@@ -16,72 +16,67 @@
 package com.citizenwarwick.features.cardeditor.ui.elementcontrols
 
 import androidx.compose.Composable
-import androidx.compose.frames.modelListOf
-import androidx.ui.graphics.Color
 import androidx.ui.layout.Column
 import com.citizenwarwick.features.cardeditor.config.EditorConfiguration
-import com.citizenwarwick.features.cardeditor.model.MemoryCardElement
+import com.citizenwarwick.features.cardeditor.model.TextElement
 
 @Composable
-fun TextElementPropertyControls(element: MemoryCardElement) {
+fun TextElementPropertyControls(element: TextElement) {
     Column {
-        val textSize = element.properties[EditorConfiguration.ELEMENT_PROPERTY_TEXT_SIZE]?.toFloat()
-            ?: EditorConfiguration.ELEMENT_TYPE_TEXT_DEFAULT_SIZE_EM
-        val spacingTop = element.properties[EditorConfiguration.ELEMENT_PROPERTY_TEXT_SPACING_TOP]?.toFloat()
-            ?: 0f
-        val spacingRight = element.properties[EditorConfiguration.ELEMENT_PROPERTY_TEXT_SPACING_RIGHT]?.toFloat()
-            ?: 0f
-        val spacingBottom = element.properties[EditorConfiguration.ELEMENT_PROPERTY_TEXT_SPACING_BOTTOM]?.toFloat()
-            ?: 0f
-        val spacingLeft = element.properties[EditorConfiguration.ELEMENT_PROPERTY_TEXT_SPACING_LEFT]?.toFloat()
-            ?: 0f
         val spacingValueRange = -64f..64f
 
         SliderPropertyControl(
             label = "Text Size",
-            initialValue = textSize,
+            initialValue = element.textSize,
             valueRange = EditorConfiguration.ELEMENT_TYPE_TEXT_DEFAULT_MIN_SIZE_EM..EditorConfiguration.ELEMENT_TYPE_TEXT_DEFAULT_MAX_SIZE_EM,
             onValueChanged = {
-                element.properties[EditorConfiguration.ELEMENT_PROPERTY_TEXT_SIZE] = it.toString()
+                element.textSize = it
             }
         )
-        TextAlignmentPropertyControl(element.properties)
+        TextAlignmentPropertyControl(
+            selectedAlignment = element.alignment,
+            onAlignmentSelected = {
+                element.alignment = it
+            }
+        )
+
         ColorPropertyControl(
-            "Text Color",
-            element.properties,
-            EditorConfiguration.ELEMENT_PROPERTY_TEXT_COLOR,
-            defaultColor = Color.Black
+            label = "Text Color",
+            selectedColor = element.color,
+            onColorSelected = {
+                element.color = it
+            }
         )
         SliderPropertyControl(
             label = "Spacing Top",
-            initialValue = spacingTop,
+            initialValue = element.spacingTop,
             valueRange = spacingValueRange,
             onValueChanged = {
-                element.properties[EditorConfiguration.ELEMENT_PROPERTY_TEXT_SPACING_TOP] = it.toString()
+                element.spacingTop = it
             }
         )
         SliderPropertyControl(
             label = "Spacing Right",
-            initialValue = spacingRight,
+            initialValue = element.spacingRight,
             valueRange = spacingValueRange,
             onValueChanged = {
-                element.properties[EditorConfiguration.ELEMENT_PROPERTY_TEXT_SPACING_RIGHT] = it.toString()
+                element.spacingRight = it
             }
         )
         SliderPropertyControl(
             label = "Spacing Bottom",
-            initialValue = spacingBottom,
+            initialValue = element.spacingBottom,
             valueRange = spacingValueRange,
             onValueChanged = {
-                element.properties[EditorConfiguration.ELEMENT_PROPERTY_TEXT_SPACING_BOTTOM] = it.toString()
+                element.spacingBottom = it
             }
         )
         SliderPropertyControl(
             label = "Spacing Left",
-            initialValue = spacingLeft,
+            initialValue = element.spacingLeft,
             valueRange = spacingValueRange,
             onValueChanged = {
-                element.properties[EditorConfiguration.ELEMENT_PROPERTY_TEXT_SPACING_LEFT] = it.toString()
+                element.spacingLeft = it
             }
         )
     }

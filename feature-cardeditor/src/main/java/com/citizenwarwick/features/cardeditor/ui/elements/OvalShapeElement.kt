@@ -33,27 +33,20 @@ import androidx.ui.layout.Align
 import androidx.ui.layout.Container
 import androidx.ui.layout.Size
 import androidx.ui.material.surface.Surface
-import com.citizenwarwick.features.cardeditor.config.EditorConfiguration
 import com.citizenwarwick.features.cardeditor.model.CardEditorModel
-import com.citizenwarwick.features.cardeditor.model.MemoryCardElement
+import com.citizenwarwick.features.cardeditor.model.OvalShapeElement
 import com.citizenwarwick.features.cardeditor.ui.SelectionBorder
 
 @Composable
-fun OvalShapeElement(model: CardEditorModel, element: MemoryCardElement) {
-    val ovalWidth = element.properties[EditorConfiguration.ELEMENT_PROPERTY_OVAL_WIDTH]?.toFloat()?.dp ?: 64.dp
-    val ovalHeight = element.properties[EditorConfiguration.ELEMENT_PROPERTY_OVAL_HEIGHT]?.toFloat()?.dp ?: 64.dp
-    val color = element.properties[EditorConfiguration.ELEMENT_PROPERTY_OVAL_COLOR]?.let {
-        Color(it.toInt())
-    } ?: Color.Red
-
+fun OvalShapeElement(model: CardEditorModel, element: OvalShapeElement) {
     Align(alignment = Alignment.Center) {
         Clickable(onClick = { model.state.selectedElement = element }) {
             if (model.state.selectedElement == element) {
                 SelectionBorder {
-                    Oval(ovalWidth, ovalHeight, color)
+                    Oval(element.width.dp, element.height.dp, element.color)
                 }
             } else {
-                Oval(ovalWidth, ovalHeight, color)
+                Oval(element.width.dp, element.height.dp, element.color)
             }
         }
     }

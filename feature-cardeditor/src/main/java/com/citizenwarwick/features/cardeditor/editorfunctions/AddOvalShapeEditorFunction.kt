@@ -15,9 +15,9 @@
  */
 package com.citizenwarwick.features.cardeditor.editorfunctions
 
-import com.citizenwarwick.features.cardeditor.config.EditorConfiguration.ELEMENT_TYPE_SHAPE_OVAL
 import com.citizenwarwick.features.cardeditor.model.CardEditorState
 import com.citizenwarwick.features.cardeditor.model.MemoryCardElement
+import com.citizenwarwick.features.cardeditor.model.OvalShapeElement
 
 class AddOvalShapeEditorFunction : EditorFunction {
     override fun apply(
@@ -25,6 +25,6 @@ class AddOvalShapeEditorFunction : EditorFunction {
         frontElements: MutableList<MemoryCardElement>,
         backElements: MutableList<MemoryCardElement>
     ) {
-        frontElements.add(MemoryCardElement(ELEMENT_TYPE_SHAPE_OVAL))
+        frontElements.add(OvalShapeElement(name = "Oval Shape"))
     }
 }

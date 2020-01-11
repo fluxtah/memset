@@ -87,9 +87,6 @@ class CardEditorScreenComposer(
 
     @Composable
     private fun EditorSurface() {
-        val selectedColor =
-            model.state.card.upSide.properties[SURFACE_PROPERTY_COLOR]?.toInt()?.let { Color(it) } ?: Color.White
-
         Clickable(onClick = {
             val editElement = model.state.editElement
             model.state.editElement = null
@@ -101,7 +98,7 @@ class CardEditorScreenComposer(
                 shape = RoundedCornerShape(4.dp),
                 elevation = 4.dp,
                 modifier = AspectRatio(1.7f) wraps ExpandedWidth,
-                color = selectedColor
+                color = model.state.card.upSide.color
             ) {
                 Container {
                     Stack {
@@ -160,7 +157,7 @@ class CardEditorScreenComposer(
     private fun LayersDropDown() {
         DropDownMenu(
             selectedItem = model.state.selectedElement,
-            selectedItemLabelText = { it.type },
+            selectedItemLabelText = { it.name },
             items = ModelList<MemoryCardElement>().apply { addAll(model.state.card.upSide.elements) }
         ) { item ->
             LayersDropDownItem(item)
@@ -176,7 +173,7 @@ class CardEditorScreenComposer(
                         Ripple(bounded = true) {
                             Clickable(onClick = { model.state.selectedElement = item }) {
                                 Container(expanded = true) {
-                                    Text(modifier = Spacing(4.dp), text = item.type)
+                                    Text(modifier = Spacing(4.dp), text = item.name)
                                 }
                             }
                         }

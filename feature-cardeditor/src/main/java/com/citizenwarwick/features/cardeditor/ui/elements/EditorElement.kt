@@ -17,17 +17,18 @@ package com.citizenwarwick.features.cardeditor.ui.elements
 
 import androidx.compose.Composable
 import com.citizenwarwick.features.cardeditor.model.CardEditorModel
-import com.citizenwarwick.features.cardeditor.config.EditorConfiguration
 import com.citizenwarwick.features.cardeditor.model.MemoryCardElement
+import com.citizenwarwick.features.cardeditor.model.OvalShapeElement
+import com.citizenwarwick.features.cardeditor.model.TextElement
 
 @Composable
 fun EditorElement(model: CardEditorModel, element: MemoryCardElement) {
-    when (element.type) {
-        EditorConfiguration.ELEMENT_TYPE_TEXT -> TextElement(
+    when (element) {
+        is TextElement -> TextElement(
             model,
             element
         )
-        EditorConfiguration.ELEMENT_TYPE_SHAPE_OVAL -> OvalShapeElement(
+        is OvalShapeElement -> OvalShapeElement(
             model,
             element
         )

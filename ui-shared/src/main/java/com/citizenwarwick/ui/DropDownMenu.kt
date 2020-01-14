@@ -17,7 +17,6 @@ package com.citizenwarwick.ui
 
 import androidx.compose.Composable
 import androidx.compose.frames.ModelList
-import androidx.compose.state
 import androidx.compose.unaryPlus
 import androidx.ui.core.DropDownAlignment
 import androidx.ui.core.DropdownPopup
@@ -45,11 +44,12 @@ fun <T> DropDownMenu(
     items: ModelList<T>,
     selectedItem: T? = null,
     selectedItemLabelText: (T) -> String = { it.toString() },
+    isOpen: Boolean,
+    onDropDownPressed: (isOpen: Boolean) -> Unit,
     itemTemplate: @Composable() (data: T) -> Unit
 ) {
     Container {
-        var isOpen by +state { false }
-        Clickable(onClick = { isOpen = !isOpen }) {
+        Clickable(onClick = { onDropDownPressed(!isOpen) }) {
             DropDownBoxLabel(
                 isOpen = isOpen,
                 label = if (selectedItem != null && items.contains(selectedItem))

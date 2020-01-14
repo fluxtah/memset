@@ -61,10 +61,10 @@ private fun Text(
 ) {
     val textStyle = TextStyle(
         background = Color.Transparent,
-        fontSize = TextUnit.Em(element.textSize),
+        fontWeight = element.fontWeight,
+        fontSize = TextUnit.Em(element.fontSize),
         color = element.color
     )
-
 
     val spacing =
         Spacing(element.spacingLeft.dp, element.spacingTop.dp, element.spacingRight.dp, element.spacingBottom.dp)

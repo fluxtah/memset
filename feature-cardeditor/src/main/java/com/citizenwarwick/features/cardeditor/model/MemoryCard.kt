@@ -16,14 +16,17 @@
 package com.citizenwarwick.features.cardeditor.model
 
 import androidx.compose.Model
+import androidx.compose.frames.ModelList
+import androidx.compose.frames.modelListOf
 import androidx.ui.core.Alignment
 import androidx.ui.graphics.Color
+import androidx.ui.text.font.FontWeight
 import java.util.UUID
 
 @Model
 data class MemoryCard(
-    val front: CardSurface,
-    val back: CardSurface,
+    val front: CardSurface = CardSurface(),
+    val back: CardSurface = CardSurface(),
     var facingFront: Boolean = true
 ) {
     val upSide: CardSurface
@@ -32,7 +35,7 @@ data class MemoryCard(
 
 @Model
 data class CardSurface(
-    val elements: List<MemoryCardElement>,
+    val elements: ModelList<MemoryCardElement> = modelListOf(),
     var color: Color = Color.White
 )
 
@@ -54,12 +57,13 @@ data class TextElement(
     override var name: String,
     override var alignment: Alignment = Alignment.Center,
     var text: String,
-    var textSize: Float = 8f,
+    var fontSize: Float = 8f,
     var spacingTop: Float = 0f,
     var spacingLeft: Float = 0f,
     var spacingRight: Float = 0f,
     var spacingBottom: Float = 0f,
-    var color: Color = Color.Black
+    var color: Color = Color.Black,
+    var fontWeight: FontWeight = FontWeight.Normal
 ) : MemoryCardElement
 
 @Model
@@ -69,5 +73,9 @@ data class OvalShapeElement(
     override var alignment: Alignment = Alignment.Center,
     var width: Float = 64f,
     var height: Float = 64f,
-    var color: Color = Color.Blue
+    var color: Color = Color.Blue,
+    var spacingTop: Float = 0f,
+    var spacingRight: Float = 0f,
+    var spacingBottom: Float = 0f,
+    var spacingLeft: Float = 0f
 ) : MemoryCardElement

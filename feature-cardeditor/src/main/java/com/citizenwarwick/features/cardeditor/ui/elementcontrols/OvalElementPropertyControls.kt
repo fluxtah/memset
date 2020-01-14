@@ -21,8 +21,10 @@ import com.citizenwarwick.features.cardeditor.model.OvalShapeElement
 
 @Composable
 fun OvalElementPropertyControls(element: OvalShapeElement) {
+    val spacingValueRange = -64f..128f
     val ovalWidth = element.width
     val ovalHeight = element.height
+
     Column {
         ColorPropertyControl(
             "Color",
@@ -54,6 +56,39 @@ fun OvalElementPropertyControls(element: OvalShapeElement) {
             selectedAlignment = element.alignment,
             onAlignmentSelected = {
                 element.alignment = it
+            }
+        )
+
+        SliderPropertyControl(
+            label = "Spacing Top",
+            initialValue = element.spacingTop,
+            valueRange = spacingValueRange,
+            onValueChanged = {
+                element.spacingTop = it
+            }
+        )
+        SliderPropertyControl(
+            label = "Spacing Right",
+            initialValue = element.spacingRight,
+            valueRange = spacingValueRange,
+            onValueChanged = {
+                element.spacingRight = it
+            }
+        )
+        SliderPropertyControl(
+            label = "Spacing Bottom",
+            initialValue = element.spacingBottom,
+            valueRange = spacingValueRange,
+            onValueChanged = {
+                element.spacingBottom = it
+            }
+        )
+        SliderPropertyControl(
+            label = "Spacing Left",
+            initialValue = element.spacingLeft,
+            valueRange = spacingValueRange,
+            onValueChanged = {
+                element.spacingLeft = it
             }
         )
     }

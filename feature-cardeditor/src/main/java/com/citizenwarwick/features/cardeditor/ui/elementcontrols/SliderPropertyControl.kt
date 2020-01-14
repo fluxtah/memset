@@ -23,6 +23,7 @@ import androidx.ui.layout.FlexRow
 import androidx.ui.material.Slider
 import androidx.ui.material.SliderPosition
 import androidx.ui.toStringAsFixed
+import kotlin.math.roundToInt
 
 @Composable
 fun SliderPropertyControl(
@@ -31,17 +32,16 @@ fun SliderPropertyControl(
     valueRange: ClosedFloatingPointRange<Float>,
     onValueChanged: (value: Float) -> Unit
 ) {
-
     FlexRow(crossAxisAlignment = CrossAxisAlignment.Center) {
         expanded(1f) {
             Text(text = label)
         }
         expanded(2f) {
             Slider(
-                position = SliderPosition(initialValue, valueRange),
+                position = SliderPosition(initial = initialValue, valueRange = valueRange),
                 modifier = ExpandedWidth,
                 onValueChange = {
-                    onValueChanged(it)
+                    onValueChanged(it.roundToInt().toFloat())
                 })
         }
         inflexible {

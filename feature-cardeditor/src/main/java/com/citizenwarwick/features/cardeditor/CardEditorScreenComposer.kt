@@ -70,15 +70,17 @@ class CardEditorScreenComposer(
 
     @Composable
     private fun CardEditorContent() {
-        Container(alignment = Alignment.TopCenter, padding = EdgeInsets(16.dp)) {
-            Column {
-                EditorToolbar()
-                EditorSurface()
-                Divider(height = 8.dp, color = Color.Transparent)
-                LayersDropDown()
-                Divider(height = 8.dp, color = Color.Transparent)
-                VerticalScroller {
-                    ElementControls(model)
+        Clickable(onClick = { model.state.layersDropDownOpen = false }) {
+            Container(alignment = Alignment.TopCenter, padding = EdgeInsets(16.dp)) {
+                Column {
+                    EditorToolbar()
+                    EditorSurface()
+                    Divider(height = 8.dp, color = Color.Transparent)
+                    LayersDropDown()
+                    Divider(height = 8.dp, color = Color.Transparent)
+                    VerticalScroller {
+                        ElementControls(model)
+                    }
                 }
             }
         }
@@ -86,13 +88,13 @@ class CardEditorScreenComposer(
 
     @Composable
     private fun EditorSurface() {
-        Clickable(onClick = {
-            val editElement = model.state.editElement
+        val onSurfaceClicked = {
             model.state.editElement = null
-            if (editElement == null) {
-                model.state.selectedElement = null
-            }
-        }) {
+            model.state.selectedElement = null
+            model.state.layersDropDownOpen = false
+        }
+
+        Clickable(onClick = onSurfaceClicked) {
             Card(
                 shape = RoundedCornerShape(4.dp),
                 elevation = 4.dp,
@@ -118,9 +120,9 @@ class CardEditorScreenComposer(
     @Composable
     private fun EditorToolbar() {
         Row(modifier = ExpandedWidth, arrangement = Arrangement.End) {
-            for (editorFunction in EditorConfiguration.editorFunctions) {
-                EditorToolbarButton(editorFunction, onClick = {
-                    model.applyEditorFunction(editorFunction)
+            for (functionConfiguration in EditorConfiguration.editorFunctionConfiguration) {
+                EditorToolbarButton(functionConfiguration, onClick = {
+                    functionConfiguration.function.invoke(model.state)()
                 })
             }
         }
@@ -157,7 +159,9 @@ class CardEditorScreenComposer(
         DropDownMenu(
             selectedItem = model.state.selectedElement,
             selectedItemLabelText = { it.name },
-            items = ModelList<MemoryCardElement>().apply { addAll(model.state.card.upSide.elements) }
+            items = ModelList<MemoryCardElement>().apply { addAll(model.state.card.upSide.elements) },
+            isOpen = model.state.layersDropDownOpen,
+            onDropDownPressed = { model.state.layersDropDownOpen = it }
         ) { item ->
             LayersDropDownItem(item)
         }

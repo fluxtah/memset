@@ -21,7 +21,9 @@ class MainActivity : AppCompatActivity() {
                 hosts("memset.com", "www.memset.com")
 
                 "/" composeWith { HomeScreenComposer() }
-                "/cardeditor" composeWith { CardEditorScreenComposer(model(CardEditorViewModel::class)) }
+                "/cardeditor" composeWith {
+                    CardEditorScreenComposer(model(CardEditorViewModel::class))
+                }
                 ".*" composeTo { Text("404 Not Found") }
 
             }.startComposing(intent)

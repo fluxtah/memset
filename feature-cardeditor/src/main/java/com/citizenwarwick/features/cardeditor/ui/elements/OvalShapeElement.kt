@@ -21,6 +21,7 @@ import androidx.compose.unaryPlus
 import androidx.ui.core.ContextAmbient
 import androidx.ui.core.Density
 import androidx.ui.core.Dp
+import androidx.ui.core.Modifier
 import androidx.ui.core.dp
 import androidx.ui.core.withDensity
 import androidx.ui.engine.geometry.Rect
@@ -30,6 +31,7 @@ import androidx.ui.foundation.shape.GenericShape
 import androidx.ui.graphics.Color
 import androidx.ui.layout.Container
 import androidx.ui.layout.Size
+import androidx.ui.layout.Spacing
 import androidx.ui.material.surface.Surface
 import com.citizenwarwick.features.cardeditor.model.CardEditorModel
 import com.citizenwarwick.features.cardeditor.model.OvalShapeElement
@@ -37,19 +39,33 @@ import com.citizenwarwick.features.cardeditor.ui.SelectionBorder
 
 @Composable
 fun OvalShapeElement(model: CardEditorModel, element: OvalShapeElement) {
+    val spacing =
+        Spacing(element.spacingLeft.dp, element.spacingTop.dp, element.spacingRight.dp, element.spacingBottom.dp)
+
     Clickable(onClick = { model.state.selectedElement = element }) {
         if (model.state.selectedElement == element) {
             SelectionBorder {
-                Oval(element.width.dp, element.height.dp, element.color)
+                Oval(
+                    modifier = spacing,
+                    ovalWidth = element.width.dp,
+                    ovalHeight = element.height.dp,
+                    color = element.color
+                )
             }
         } else {
-            Oval(element.width.dp, element.height.dp, element.color)
+            Oval(
+                modifier = spacing,
+                ovalWidth = element.width.dp,
+                ovalHeight = element.height.dp,
+                color = element.color
+            )
         }
     }
 }
 
 @Composable
 private fun Oval(
+    modifier: Modifier,
     ovalWidth: Dp,
     ovalHeight: Dp,
     color: Color
@@ -57,7 +73,8 @@ private fun Oval(
     val density = Density(+ambient(ContextAmbient))
     val widthPx = +withDensity(density) { ovalWidth.toPx().value }
     val heightPx = +withDensity(density) { ovalHeight.toPx().value }
-    Container(width = ovalWidth, height = ovalHeight, expanded = true) {
+
+    Container(modifier = modifier, width = ovalWidth, height = ovalHeight, expanded = true) {
         Surface(color = Color.Transparent, modifier = Size(ovalWidth, ovalHeight)) {
             DrawShape(shape = newOvalShape(widthPx, heightPx), color = color)
         }

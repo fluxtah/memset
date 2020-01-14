@@ -15,7 +15,10 @@
  */
 package com.citizenwarwick.features.cardeditor.editorfunctions
 
-abstract class EditorFunction : () -> Unit {
-    final override operator fun invoke() = execute()
-    abstract fun execute()
+import com.citizenwarwick.features.cardeditor.model.CardEditorState
+
+class RotateCardEditorFunction(val state: CardEditorState) : EditorFunction() {
+    override fun execute() {
+        state.card.facingFront = !state.card.facingFront
+    }
 }

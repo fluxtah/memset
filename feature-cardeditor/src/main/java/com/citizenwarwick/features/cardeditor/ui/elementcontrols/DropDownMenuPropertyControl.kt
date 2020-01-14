@@ -28,6 +28,8 @@ fun <T> DropDownMenuPropertyControl(
     items: ModelList<T>,
     selectedItem: T? = null,
     selectedItemLabelText: (T) -> String = { it.toString() },
+    isOpen: Boolean,
+    onDropDownPressed: (isOpen: Boolean) -> Unit,
     itemTemplate: @Composable() (data: T) -> Unit
 ) {
     FlexRow(crossAxisAlignment = CrossAxisAlignment.Center) {
@@ -35,7 +37,14 @@ fun <T> DropDownMenuPropertyControl(
             Text(text = label)
         }
         expanded(2f) {
-            DropDownMenu(items, selectedItem, selectedItemLabelText, itemTemplate)
+            DropDownMenu(
+                items,
+                selectedItem,
+                selectedItemLabelText,
+                isOpen,
+                onDropDownPressed,
+                itemTemplate
+            )
         }
     }
 }

@@ -26,42 +26,35 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-class CardEditorViewModel : ViewModel(),
-    CardEditorModel {
-    /**
-     * CardEditorState gets bound to composed UI down the line and we want
-     * to keep it (and its members) immutable to the compose ui tree though
-     * still able to edit it here (only one source of truth, only one thing allowed
-     * to modify this data and that is this view model)
-     */
+class CardEditorViewModel : ViewModel(), CardEditorModel {
     override val state: CardEditorState =
         CardEditorState(
             loadingState = LoadingState.Loaded,
             card = MemoryCard()
         )
 
-    override fun removeElement(element: MemoryCardElement) {
-        getUpSideElements().remove(element)
+    override fun removeElement(item: MemoryCardElement) {
+        getUpSideElements().remove(item)
     }
 
-    override fun moveElementUp(element: MemoryCardElement) {
+    override fun moveElementUp(item: MemoryCardElement) {
         val elements = getUpSideElements()
-        val index = elements.indexOf(element)
+        val index = elements.indexOf(item)
         if (index > 0) {
             val prevIndex = index - 1
             val prevElement = elements[prevIndex]
-            elements[prevIndex] = element
+            elements[prevIndex] = item
             elements[index] = prevElement
         }
     }
 
-    override fun moveElementDown(element: MemoryCardElement) {
+    override fun moveElementDown(item: MemoryCardElement) {
         val elements = getUpSideElements()
-        val index = elements.indexOf(element)
+        val index = elements.indexOf(item)
         if (index < elements.size.dec()) {
             val nextIndex = index + 1
             val nextElement = elements[nextIndex]
-            elements[nextIndex] = element
+            elements[nextIndex] = item
             elements[index] = nextElement
         }
     }

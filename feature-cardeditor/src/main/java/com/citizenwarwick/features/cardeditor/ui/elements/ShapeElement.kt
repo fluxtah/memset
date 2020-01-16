@@ -24,6 +24,7 @@ import androidx.ui.core.Dp
 import androidx.ui.core.Modifier
 import androidx.ui.core.dp
 import androidx.ui.core.withDensity
+import androidx.ui.engine.geometry.Offset
 import androidx.ui.engine.geometry.Rect
 import androidx.ui.foundation.Clickable
 import androidx.ui.foundation.shape.DrawShape
@@ -73,6 +74,15 @@ private fun Shape(modifier: Modifier, element: ShapeElement) {
                 color = element.color
             )
         }
+        // UNDONE waiting for polygon path support
+//        ShapeType.Triangle -> {
+//            TriangleShape(
+//                modifier = modifier,
+//                ovalWidth = element.width.dp,
+//                ovalHeight = element.height.dp,
+//                color = element.color
+//            )
+//        }
     }
 }
 
@@ -111,6 +121,32 @@ private fun RectangleShape(
         Surface(color = Color.Transparent, modifier = Size(ovalWidth, ovalHeight)) {
             DrawShape(shape = GenericShape {
                 addRect(Rect(0f, 0f, widthPx, heightPx))
+            }, color = color)
+        }
+    }
+}
+
+@Composable
+private fun TriangleShape(
+    modifier: Modifier,
+    ovalWidth: Dp,
+    ovalHeight: Dp,
+    color: Color
+) {
+    val density = Density(+ambient(ContextAmbient))
+    val widthPx = +withDensity(density) { ovalWidth.toPx().value }
+    val heightPx = +withDensity(density) { ovalHeight.toPx().value }
+
+    Container(modifier = modifier, width = ovalWidth, height = ovalHeight, expanded = true) {
+        Surface(color = Color.Transparent, modifier = Size(ovalWidth, ovalHeight)) {
+            DrawShape(shape = GenericShape {
+                addPolygon(
+                    listOf(
+                        Offset(0f, heightPx),
+                        Offset(widthPx / 2, 0f),
+                        Offset(widthPx, heightPx)
+                    ), true
+                )
             }, color = color)
         }
     }

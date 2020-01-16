@@ -89,7 +89,5 @@ data class ShapeElement(
 
 enum class ShapeType {
     Oval,
-    Rectangle,
-    Triangle,
-    Arc
+    Rectangle
 }

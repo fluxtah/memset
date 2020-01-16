@@ -13,39 +13,40 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.citizenwarwick.features.cardeditor.ui.elementcontrols
+package com.citizenwarwick.features.cardeditor.ui.elementcontrols.properties
 
 import androidx.compose.Composable
+import androidx.compose.frames.ModelList
 import androidx.ui.core.Text
+import androidx.ui.core.dp
 import androidx.ui.layout.CrossAxisAlignment
-import androidx.ui.layout.ExpandedWidth
 import androidx.ui.layout.FlexRow
-import androidx.ui.material.Slider
-import androidx.ui.material.SliderPosition
-import androidx.ui.toStringAsFixed
-import kotlin.math.roundToInt
+import androidx.ui.layout.Spacing
+import com.citizenwarwick.ui.DropDownMenu
 
 @Composable
-fun SliderPropertyControl(
+fun <T> DropDownMenuPropertyControl(
     label: String,
-    initialValue: Float,
-    valueRange: ClosedFloatingPointRange<Float>,
-    onValueChanged: (value: Float) -> Unit
+    items: ModelList<T>,
+    selectedItem: T? = null,
+    selectedItemLabelText: (T) -> String = { it.toString() },
+    isOpen: Boolean,
+    onDropDownPressed: (isOpen: Boolean) -> Unit,
+    itemTemplate: @Composable() (data: T) -> Unit
 ) {
-    FlexRow(crossAxisAlignment = CrossAxisAlignment.Center) {
+    FlexRow(modifier = Spacing(top = 4.dp, bottom = 4.dp), crossAxisAlignment = CrossAxisAlignment.Center) {
         expanded(1f) {
             Text(text = label)
         }
         expanded(2f) {
-            Slider(
-                position = SliderPosition(initial = initialValue, valueRange = valueRange),
-                modifier = ExpandedWidth,
-                onValueChange = {
-                    onValueChanged(it.roundToInt().toFloat())
-                })
-        }
-        inflexible {
-            Text(text = initialValue.toStringAsFixed(1))
+            DropDownMenu(
+                items,
+                selectedItem,
+                selectedItemLabelText,
+                isOpen,
+                onDropDownPressed,
+                itemTemplate
+            )
         }
     }
 }

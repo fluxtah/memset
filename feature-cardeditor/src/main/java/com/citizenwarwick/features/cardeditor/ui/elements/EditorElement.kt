@@ -19,7 +19,7 @@ import androidx.compose.Composable
 import androidx.ui.layout.Align
 import com.citizenwarwick.features.cardeditor.model.CardEditorModel
 import com.citizenwarwick.features.cardeditor.model.MemoryCardElement
-import com.citizenwarwick.features.cardeditor.model.OvalShapeElement
+import com.citizenwarwick.features.cardeditor.model.ShapeElement
 import com.citizenwarwick.features.cardeditor.model.TextElement
 
 @Composable
@@ -30,7 +30,7 @@ fun EditorElement(model: CardEditorModel, element: MemoryCardElement) {
                 model,
                 element
             )
-            is OvalShapeElement -> OvalShapeElement(
+            is ShapeElement -> ShapeElement(
                 model,
                 element
             )

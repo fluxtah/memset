@@ -49,6 +49,10 @@ interface MemoryCardElement {
     val guid: String
     var name: String
     var alignment: Alignment
+    var spacingTop: Float
+    var spacingLeft: Float
+    var spacingRight: Float
+    var spacingBottom: Float
 }
 
 @Model
@@ -56,26 +60,36 @@ data class TextElement(
     override val guid: String = generateElementUUID(),
     override var name: String,
     override var alignment: Alignment = Alignment.Center,
+    override var spacingTop: Float = 0f,
+    override var spacingLeft: Float = 0f,
+    override var spacingRight: Float = 0f,
+    override var spacingBottom: Float = 0f,
+
+    var color: Color = Color.Black,
     var text: String,
     var fontSize: Float = 8f,
-    var spacingTop: Float = 0f,
-    var spacingLeft: Float = 0f,
-    var spacingRight: Float = 0f,
-    var spacingBottom: Float = 0f,
-    var color: Color = Color.Black,
     var fontWeight: FontWeight = FontWeight.Normal
 ) : MemoryCardElement
 
 @Model
-data class OvalShapeElement(
+data class ShapeElement(
     override val guid: String = generateElementUUID(),
     override var name: String,
     override var alignment: Alignment = Alignment.Center,
+    override var spacingTop: Float = 0f,
+    override var spacingLeft: Float = 0f,
+    override var spacingRight: Float = 0f,
+    override var spacingBottom: Float = 0f,
+
     var width: Float = 64f,
     var height: Float = 64f,
     var color: Color = Color.Blue,
-    var spacingTop: Float = 0f,
-    var spacingRight: Float = 0f,
-    var spacingBottom: Float = 0f,
-    var spacingLeft: Float = 0f
+    var shapeType: ShapeType = ShapeType.Oval
 ) : MemoryCardElement
+
+enum class ShapeType {
+    Oval,
+    Rectangle,
+    Triangle,
+    Arc
+}

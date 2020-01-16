@@ -18,10 +18,10 @@ package com.citizenwarwick.features.cardeditor.config
 import androidx.annotation.DrawableRes
 import androidx.compose.Model
 import com.citizenwarwick.features.cardeditor.editorfunctions.EditorFunction
-import com.citizenwarwick.features.cardeditor.model.CardEditorState
+import com.citizenwarwick.features.cardeditor.model.MemoryCardEditorState
 
 @Model
 data class EditorFunctionConfig(
     val name: String, @DrawableRes val icon: Int,
-    val function: (state: CardEditorState) -> EditorFunction
+    val function: (state: MemoryCardEditorState) -> EditorFunction
 )

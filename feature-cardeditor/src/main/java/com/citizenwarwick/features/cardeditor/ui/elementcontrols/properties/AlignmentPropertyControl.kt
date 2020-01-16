@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.citizenwarwick.features.cardeditor.ui.elementcontrols
+package com.citizenwarwick.features.cardeditor.ui.elementcontrols.properties
 
 import androidx.compose.Composable
 import androidx.ui.core.Alignment
@@ -30,7 +30,7 @@ fun AlignmentPropertyControl(
 ) {
     FlexRow(crossAxisAlignment = CrossAxisAlignment.Center) {
         expanded(1f) {
-            Text(text = "Text Alignment")
+            Text(text = "Alignment")
         }
         inflexible {
             IconButton(

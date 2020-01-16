@@ -15,9 +15,9 @@
  */
 package com.citizenwarwick.features.cardeditor.editorfunctions
 
-import com.citizenwarwick.features.cardeditor.model.CardEditorState
+import com.citizenwarwick.features.cardeditor.model.MemoryCardEditorState
 
-class DeleteElementEditorFunction(val state: CardEditorState) : EditorFunction() {
+class DeleteElementEditorFunction(val state: MemoryCardEditorState) : EditorFunction() {
     override fun execute() {
         state.selectedElement?.let { element ->
             if (state.card.upSide.elements.remove(element)) {

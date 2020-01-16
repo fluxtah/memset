@@ -16,12 +16,16 @@
 package com.citizenwarwick.features.cardeditor
 
 import MemsetMainTemplate
+import android.util.Log
 import androidx.compose.Composable
 import androidx.compose.frames.ModelList
 import androidx.compose.unaryPlus
 import androidx.ui.core.Alignment
+import androidx.ui.core.IntPx
+import androidx.ui.core.Layout
 import androidx.ui.core.Text
 import androidx.ui.core.dp
+import androidx.ui.core.ipx
 import androidx.ui.foundation.Clickable
 import androidx.ui.foundation.VerticalScroller
 import androidx.ui.foundation.shape.corner.RoundedCornerShape
@@ -95,23 +99,47 @@ class CardEditorScreenComposer(
         }
 
         Clickable(onClick = onSurfaceClicked) {
-            Card(
-                shape = RoundedCornerShape(4.dp),
-                elevation = 4.dp,
-                modifier = AspectRatio(1.7f) wraps ExpandedWidth,
-                color = model.state.card.upSide.color
-            ) {
-                Container {
-                    Stack {
-                        for (element in model.state.card.upSide.elements) {
-                            aligned(Alignment.Center) {
-                                EditorElement(
-                                    model,
-                                    element
-                                )
+            MeasureObserver(onMeasure = { x, y ->
+                Log.d("QUX", "x: $x, y:$y")
+            }) {
+                Card(
+                    shape = RoundedCornerShape(4.dp),
+                    elevation = 4.dp,
+                    modifier = AspectRatio(1.7f) wraps ExpandedWidth,
+                    color = model.state.card.upSide.color
+                ) {
+                    Container {
+                        Stack {
+                            for (element in model.state.card.upSide.elements) {
+                                aligned(Alignment.Center) {
+                                    EditorElement(
+                                        model,
+                                        element
+                                    )
+                                }
                             }
                         }
                     }
+                }
+            }
+        }
+    }
+
+    @Composable
+    private fun MeasureObserver(onMeasure: (IntPx, IntPx) -> Unit, children: @Composable() () -> Unit) {
+        Layout(children) { measurables, constraints ->
+            if (measurables.size > 1) {
+                throw IllegalStateException("MeasureObserver can have only one direct measurable child!")
+            }
+            val measurable = measurables.firstOrNull()
+            if (measurable == null) {
+                onMeasure(constraints.minWidth, constraints.minHeight)
+                layout(constraints.minWidth, constraints.minHeight) {}
+            } else {
+                val placeable = measurable.measure(constraints)
+                onMeasure(placeable.width, placeable.height)
+                layout(placeable.width, placeable.height) {
+                    placeable.place(0.ipx, 0.ipx)
                 }
             }
         }

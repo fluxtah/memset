@@ -15,9 +15,9 @@
  */
 package com.citizenwarwick.features.cardeditor.editorfunctions
 
-import com.citizenwarwick.features.cardeditor.model.CardEditorState
+import com.citizenwarwick.features.cardeditor.model.MemoryCardEditorState
 
-class RotateCardEditorFunction(val state: CardEditorState) : EditorFunction() {
+class RotateCardEditorFunction(val state: MemoryCardEditorState) : EditorFunction() {
     override fun execute() {
         state.card.facingFront = !state.card.facingFront
     }

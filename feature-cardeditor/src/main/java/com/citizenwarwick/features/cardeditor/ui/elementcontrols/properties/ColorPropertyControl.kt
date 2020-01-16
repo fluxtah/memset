@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.citizenwarwick.features.cardeditor.ui.elementcontrols
+package com.citizenwarwick.features.cardeditor.ui.elementcontrols.properties
 
 import androidx.compose.Composable
 import androidx.ui.core.Dp
@@ -52,7 +52,10 @@ fun ColorPropertyControl(
         }
         listOf(Black, Red, Yellow, Blue, Green, Cyan, Gray, White).forEach {
             inflexible {
-                ColorOptionButton(color = it, selected = selectedColor == it) {
+                ColorOptionButton(
+                    color = it,
+                    selected = selectedColor == it
+                ) {
                     onColorSelected(it)
                 }
             }

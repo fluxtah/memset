@@ -18,6 +18,7 @@ package com.citizenwarwick.features.cardeditor.ui.elementcontrols
 import androidx.compose.Composable
 import androidx.ui.layout.Column
 import com.citizenwarwick.features.cardeditor.model.CardEditorModel
+import com.citizenwarwick.features.cardeditor.ui.elementcontrols.properties.ColorPropertyControl
 
 @Composable
 fun SurfacePropertyControls(model: CardEditorModel) {

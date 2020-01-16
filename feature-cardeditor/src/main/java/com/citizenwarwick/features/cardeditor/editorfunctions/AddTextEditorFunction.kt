@@ -16,10 +16,10 @@
 package com.citizenwarwick.features.cardeditor.editorfunctions
 
 import androidx.ui.core.Alignment
-import com.citizenwarwick.features.cardeditor.model.CardEditorState
+import com.citizenwarwick.features.cardeditor.model.MemoryCardEditorState
 import com.citizenwarwick.features.cardeditor.model.TextElement
 
-class AddTextEditorFunction(val state: CardEditorState) : EditorFunction() {
+class AddTextEditorFunction(val state: MemoryCardEditorState) : EditorFunction() {
     override fun execute() {
         state.card.upSide.elements.add(
             TextElement(

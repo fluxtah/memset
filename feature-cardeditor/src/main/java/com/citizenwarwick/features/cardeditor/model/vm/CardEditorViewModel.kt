@@ -17,7 +17,7 @@ package com.citizenwarwick.features.cardeditor.model.vm
 
 import androidx.lifecycle.ViewModel
 import com.citizenwarwick.features.cardeditor.model.CardEditorModel
-import com.citizenwarwick.features.cardeditor.model.CardEditorState
+import com.citizenwarwick.features.cardeditor.model.MemoryCardEditorState
 import com.citizenwarwick.features.cardeditor.model.LoadingState
 import com.citizenwarwick.features.cardeditor.model.MemoryCard
 import com.citizenwarwick.features.cardeditor.model.MemoryCardElement
@@ -27,8 +27,8 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class CardEditorViewModel : ViewModel(), CardEditorModel {
-    override val state: CardEditorState =
-        CardEditorState(
+    override val state: MemoryCardEditorState =
+        MemoryCardEditorState(
             loadingState = LoadingState.Loaded,
             card = MemoryCard()
         )

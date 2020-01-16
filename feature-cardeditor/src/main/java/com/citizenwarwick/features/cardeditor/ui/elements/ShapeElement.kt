@@ -34,27 +34,40 @@ import androidx.ui.layout.Size
 import androidx.ui.layout.Spacing
 import androidx.ui.material.surface.Surface
 import com.citizenwarwick.features.cardeditor.model.CardEditorModel
-import com.citizenwarwick.features.cardeditor.model.OvalShapeElement
+import com.citizenwarwick.features.cardeditor.model.ShapeElement
+import com.citizenwarwick.features.cardeditor.model.ShapeType
 import com.citizenwarwick.features.cardeditor.ui.SelectionBorder
 
 @Composable
-fun OvalShapeElement(model: CardEditorModel, element: OvalShapeElement) {
+fun ShapeElement(model: CardEditorModel, element: ShapeElement) {
     val spacing =
         Spacing(element.spacingLeft.dp, element.spacingTop.dp, element.spacingRight.dp, element.spacingBottom.dp)
 
     Clickable(onClick = { model.state.selectedElement = element }) {
         if (model.state.selectedElement == element) {
             SelectionBorder {
-                Oval(
-                    modifier = spacing,
-                    ovalWidth = element.width.dp,
-                    ovalHeight = element.height.dp,
-                    color = element.color
-                )
+                Shape(modifier = spacing, element = element)
             }
         } else {
-            Oval(
-                modifier = spacing,
+            Shape(modifier = spacing, element = element)
+        }
+    }
+}
+
+@Composable
+private fun Shape(modifier: Modifier, element: ShapeElement) {
+    when (element.shapeType) {
+        ShapeType.Oval -> {
+            OvalShape(
+                modifier = modifier,
+                ovalWidth = element.width.dp,
+                ovalHeight = element.height.dp,
+                color = element.color
+            )
+        }
+        ShapeType.Rectangle -> {
+            RectangleShape(
+                modifier = modifier,
                 ovalWidth = element.width.dp,
                 ovalHeight = element.height.dp,
                 color = element.color
@@ -64,7 +77,7 @@ fun OvalShapeElement(model: CardEditorModel, element: OvalShapeElement) {
 }
 
 @Composable
-private fun Oval(
+private fun OvalShape(
     modifier: Modifier,
     ovalWidth: Dp,
     ovalHeight: Dp,
@@ -76,11 +89,29 @@ private fun Oval(
 
     Container(modifier = modifier, width = ovalWidth, height = ovalHeight, expanded = true) {
         Surface(color = Color.Transparent, modifier = Size(ovalWidth, ovalHeight)) {
-            DrawShape(shape = newOvalShape(widthPx, heightPx), color = color)
+            DrawShape(shape = GenericShape {
+                addOval(Rect(0f, 0f, widthPx, heightPx))
+            }, color = color)
         }
     }
 }
 
-fun newOvalShape(widthPx: Float, heightPx: Float) = GenericShape {
-    addOval(Rect(0f, 0f, widthPx, heightPx))
+@Composable
+private fun RectangleShape(
+    modifier: Modifier,
+    ovalWidth: Dp,
+    ovalHeight: Dp,
+    color: Color
+) {
+    val density = Density(+ambient(ContextAmbient))
+    val widthPx = +withDensity(density) { ovalWidth.toPx().value }
+    val heightPx = +withDensity(density) { ovalHeight.toPx().value }
+
+    Container(modifier = modifier, width = ovalWidth, height = ovalHeight, expanded = true) {
+        Surface(color = Color.Transparent, modifier = Size(ovalWidth, ovalHeight)) {
+            DrawShape(shape = GenericShape {
+                addRect(Rect(0f, 0f, widthPx, heightPx))
+            }, color = color)
+        }
+    }
 }

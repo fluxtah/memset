@@ -16,7 +16,7 @@
 package com.citizenwarwick.features.cardeditor.model
 
 interface CardEditorModel {
-    val state: CardEditorState
+    val state: MemoryCardEditorState
     fun removeElement(item: MemoryCardElement)
     fun moveElementUp(item: MemoryCardElement)
     fun moveElementDown(item: MemoryCardElement)

@@ -13,13 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.citizenwarwick.features.cardeditor.editorfunctions
+package com.citizenwarwick.features.cardeditor.model
 
-import com.citizenwarwick.features.cardeditor.model.CardEditorState
-import com.citizenwarwick.features.cardeditor.model.OvalShapeElement
+import androidx.compose.Model
 
-class AddOvalShapeEditorFunction(val state: CardEditorState) : EditorFunction() {
-    override fun execute() {
-        state.card.upSide.elements.add(OvalShapeElement(name = "Oval Shape"))
-    }
-}
+@Model
+data class MemoryCardEditorState(
+    var loadingState: LoadingState,
+    var card: MemoryCard,
+    var selectedElement: MemoryCardElement? = null,
+    var editElement: MemoryCardElement? = null,
+    var layersDropDownOpen: Boolean = false
+)

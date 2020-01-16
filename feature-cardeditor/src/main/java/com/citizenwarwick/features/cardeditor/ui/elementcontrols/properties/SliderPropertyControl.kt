@@ -13,38 +13,39 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.citizenwarwick.features.cardeditor.ui.elementcontrols
+package com.citizenwarwick.features.cardeditor.ui.elementcontrols.properties
 
 import androidx.compose.Composable
-import androidx.compose.frames.ModelList
 import androidx.ui.core.Text
 import androidx.ui.layout.CrossAxisAlignment
+import androidx.ui.layout.ExpandedWidth
 import androidx.ui.layout.FlexRow
-import com.citizenwarwick.ui.DropDownMenu
+import androidx.ui.material.Slider
+import androidx.ui.material.SliderPosition
+import androidx.ui.toStringAsFixed
+import kotlin.math.roundToInt
 
 @Composable
-fun <T> DropDownMenuPropertyControl(
+fun SliderPropertyControl(
     label: String,
-    items: ModelList<T>,
-    selectedItem: T? = null,
-    selectedItemLabelText: (T) -> String = { it.toString() },
-    isOpen: Boolean,
-    onDropDownPressed: (isOpen: Boolean) -> Unit,
-    itemTemplate: @Composable() (data: T) -> Unit
+    initialValue: Float,
+    valueRange: ClosedFloatingPointRange<Float>,
+    onValueChanged: (value: Float) -> Unit
 ) {
     FlexRow(crossAxisAlignment = CrossAxisAlignment.Center) {
         expanded(1f) {
             Text(text = label)
         }
         expanded(2f) {
-            DropDownMenu(
-                items,
-                selectedItem,
-                selectedItemLabelText,
-                isOpen,
-                onDropDownPressed,
-                itemTemplate
-            )
+            Slider(
+                position = SliderPosition(initial = initialValue, valueRange = valueRange),
+                modifier = ExpandedWidth,
+                onValueChange = {
+                    onValueChanged(it.roundToInt().toFloat())
+                })
+        }
+        inflexible {
+            Text(text = initialValue.toStringAsFixed(1))
         }
     }
 }

@@ -16,7 +16,7 @@
 package com.citizenwarwick.features.cardeditor.ui.elementcontrols
 
 import androidx.compose.Composable
-import androidx.compose.frames.modelListOf
+import androidx.compose.frames.ModelList
 import androidx.compose.state
 import androidx.compose.unaryPlus
 import androidx.ui.core.Text
@@ -29,9 +29,8 @@ import androidx.ui.layout.Padding
 import androidx.ui.layout.Spacing
 import androidx.ui.material.ripple.Ripple
 import androidx.ui.material.surface.Surface
-import androidx.ui.text.font.FontWeight
-import com.citizenwarwick.features.cardeditor.config.EditorConfiguration
-import com.citizenwarwick.features.cardeditor.model.TextElement
+import com.citizenwarwick.features.cardeditor.model.ShapeElement
+import com.citizenwarwick.features.cardeditor.model.ShapeType
 import com.citizenwarwick.features.cardeditor.ui.elementcontrols.properties.AlignmentPropertyControl
 import com.citizenwarwick.features.cardeditor.ui.elementcontrols.properties.ColorPropertyControl
 import com.citizenwarwick.features.cardeditor.ui.elementcontrols.properties.DropDownMenuPropertyControl
@@ -39,18 +38,41 @@ import com.citizenwarwick.features.cardeditor.ui.elementcontrols.properties.Slid
 import com.citizenwarwick.features.cardeditor.ui.elementcontrols.properties.SpacingPropertyControls
 
 @Composable
-fun TextElementPropertyControls(element: TextElement) {
-    Column {
-        val spacingValueRange = -64f..128f
+fun ShapeElementPropertyControls(element: ShapeElement) {
+    val spacingValueRange = -64f..128f
+    val shapeWidth = element.width
+    val shapeHeight = element.height
 
-        SliderPropertyControl(
-            label = "Text Size",
-            initialValue = element.fontSize,
-            valueRange = EditorConfiguration.ELEMENT_TYPE_TEXT_DEFAULT_MIN_SIZE_EM..EditorConfiguration.ELEMENT_TYPE_TEXT_DEFAULT_MAX_SIZE_EM,
-            onValueChanged = {
-                element.fontSize = it
+    Column {
+
+        ShapeTypeDropDownPropertyControl(element)
+
+        ColorPropertyControl(
+            "Color",
+            selectedColor = element.color,
+            onColorSelected = {
+                element.color = it
             }
         )
+
+        SliderPropertyControl(
+            label = "Width",
+            initialValue = shapeWidth,
+            valueRange = 8f..512f,
+            onValueChanged = {
+                element.width = it
+            }
+        )
+
+        SliderPropertyControl(
+            label = "Height",
+            initialValue = shapeHeight,
+            valueRange = 8f..512f,
+            onValueChanged = {
+                element.height = it
+            }
+        )
+
         AlignmentPropertyControl(
             selectedAlignment = element.alignment,
             onAlignmentSelected = {
@@ -58,42 +80,29 @@ fun TextElementPropertyControls(element: TextElement) {
             }
         )
 
-        ColorPropertyControl(
-            label = "Text Color",
-            selectedColor = element.color,
-            onColorSelected = {
-                element.color = it
-            }
-        )
-
-        FontWeightDropDownPropertyControl(element)
-
         SpacingPropertyControls(element, spacingValueRange)
     }
 }
 
 @Composable
-private fun FontWeightDropDownPropertyControl(element: TextElement) {
-    val fontWeights = modelListOf(
-        "Normal" to FontWeight.Normal,
-        "Bold" to FontWeight.Bold
-    )
+private fun ShapeTypeDropDownPropertyControl(element: ShapeElement) {
+    val shapeTypes = ModelList<ShapeType>().apply { addAll(ShapeType.values()) }
 
-    var isFontWeightDropDownOpen by +state { false }
+    var isShapeTypeDropDownOpen by +state { false }
 
     DropDownMenuPropertyControl(
-        label = "Font Weight",
-        items = fontWeights,
-        isOpen = isFontWeightDropDownOpen,
-        selectedItem = fontWeights.find { it.second == element.fontWeight },
-        selectedItemLabelText = { it.first },
-        onDropDownPressed = { isFontWeightDropDownOpen = it }) {
-        Surface(color = if (element.fontWeight == it.second) Color.LightGray else Color.Transparent) {
+        label = "Shape",
+        items = shapeTypes,
+        isOpen = isShapeTypeDropDownOpen,
+        selectedItem = shapeTypes.find { it == element.shapeType },
+        selectedItemLabelText = { it.name },
+        onDropDownPressed = { isShapeTypeDropDownOpen = it }) {
+        Surface(color = if (element.shapeType == it) Color.LightGray else Color.Transparent) {
             Padding(padding = 2.dp) {
                 Ripple(bounded = true) {
-                    Clickable(onClick = { element.fontWeight = it.second }) {
+                    Clickable(onClick = { element.shapeType = it }) {
                         Container(expanded = true) {
-                            Text(modifier = Spacing(4.dp), text = it.first)
+                            Text(modifier = Spacing(4.dp), text = it.name)
                         }
                     }
                 }

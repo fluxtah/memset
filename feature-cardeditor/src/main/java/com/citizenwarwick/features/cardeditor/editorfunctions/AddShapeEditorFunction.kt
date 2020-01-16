@@ -16,7 +16,7 @@
 package com.citizenwarwick.features.cardeditor.editorfunctions
 
 import com.citizenwarwick.features.cardeditor.model.MemoryCardEditorState
-import com.citizenwarwick.features.cardeditor.model.ShapeElement
+import com.citizenwarwick.memset.core.model.ShapeElement
 
 class AddShapeEditorFunction(val state: MemoryCardEditorState) : EditorFunction() {
     override fun execute() {

@@ -31,7 +31,7 @@ import androidx.ui.material.ripple.Ripple
 import androidx.ui.material.surface.Surface
 import androidx.ui.text.font.FontWeight
 import com.citizenwarwick.features.cardeditor.config.EditorConfiguration
-import com.citizenwarwick.features.cardeditor.model.TextElement
+import com.citizenwarwick.memset.core.model.TextElement
 import com.citizenwarwick.features.cardeditor.ui.elementcontrols.properties.AlignmentPropertyControl
 import com.citizenwarwick.features.cardeditor.ui.elementcontrols.properties.ColorPropertyControl
 import com.citizenwarwick.features.cardeditor.ui.elementcontrols.properties.DropDownMenuPropertyControl

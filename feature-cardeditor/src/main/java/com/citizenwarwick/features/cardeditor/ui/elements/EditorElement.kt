@@ -18,9 +18,9 @@ package com.citizenwarwick.features.cardeditor.ui.elements
 import androidx.compose.Composable
 import androidx.ui.layout.Align
 import com.citizenwarwick.features.cardeditor.model.CardEditorModel
-import com.citizenwarwick.features.cardeditor.model.MemoryCardElement
-import com.citizenwarwick.features.cardeditor.model.ShapeElement
-import com.citizenwarwick.features.cardeditor.model.TextElement
+import com.citizenwarwick.memset.core.model.MemoryCardElement
+import com.citizenwarwick.memset.core.model.ShapeElement
+import com.citizenwarwick.memset.core.model.TextElement
 
 @Composable
 fun EditorElement(model: CardEditorModel, element: MemoryCardElement) {

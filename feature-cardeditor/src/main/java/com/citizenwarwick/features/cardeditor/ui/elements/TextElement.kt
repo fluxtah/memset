@@ -26,9 +26,10 @@ import androidx.ui.foundation.Clickable
 import androidx.ui.graphics.Color
 import androidx.ui.layout.Spacing
 import androidx.ui.text.TextStyle
+import androidx.ui.text.font.FontFamily
 import com.citizenwarwick.features.cardeditor.model.CardEditorModel
-import com.citizenwarwick.features.cardeditor.model.TextElement
 import com.citizenwarwick.features.cardeditor.ui.SelectionBorder
+import com.citizenwarwick.memset.core.model.TextElement
 
 @Composable
 fun TextElement(model: CardEditorModel, element: TextElement) {
@@ -62,6 +63,7 @@ private fun Text(
     val textStyle = TextStyle(
         background = Color.Transparent,
         fontWeight = element.fontWeight,
+        fontFamily = FontFamily.Cursive,
         fontSize = TextUnit.Em(element.fontSize),
         color = element.color
     )

@@ -16,6 +16,8 @@
 package com.citizenwarwick.features.cardeditor.model
 
 import androidx.compose.Model
+import com.citizenwarwick.memset.core.model.MemoryCard
+import com.citizenwarwick.memset.core.model.MemoryCardElement
 
 @Model
 data class MemoryCardEditorState(

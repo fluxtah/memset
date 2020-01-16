@@ -15,6 +15,8 @@
  */
 package com.citizenwarwick.features.cardeditor.model
 
+import com.citizenwarwick.memset.core.model.MemoryCardElement
+
 interface CardEditorModel {
     val state: MemoryCardEditorState
     fun removeElement(item: MemoryCardElement)

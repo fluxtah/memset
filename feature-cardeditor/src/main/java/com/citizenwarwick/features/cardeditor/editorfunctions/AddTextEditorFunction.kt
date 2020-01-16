@@ -17,7 +17,7 @@ package com.citizenwarwick.features.cardeditor.editorfunctions
 
 import androidx.ui.core.Alignment
 import com.citizenwarwick.features.cardeditor.model.MemoryCardEditorState
-import com.citizenwarwick.features.cardeditor.model.TextElement
+import com.citizenwarwick.memset.core.model.TextElement
 
 class AddTextEditorFunction(val state: MemoryCardEditorState) : EditorFunction() {
     override fun execute() {

@@ -29,8 +29,8 @@ import androidx.ui.layout.Padding
 import androidx.ui.layout.Spacing
 import androidx.ui.material.ripple.Ripple
 import androidx.ui.material.surface.Surface
-import com.citizenwarwick.features.cardeditor.model.ShapeElement
-import com.citizenwarwick.features.cardeditor.model.ShapeType
+import com.citizenwarwick.memset.core.model.ShapeElement
+import com.citizenwarwick.memset.core.model.ShapeType
 import com.citizenwarwick.features.cardeditor.ui.elementcontrols.properties.AlignmentPropertyControl
 import com.citizenwarwick.features.cardeditor.ui.elementcontrols.properties.ColorPropertyControl
 import com.citizenwarwick.features.cardeditor.ui.elementcontrols.properties.DropDownMenuPropertyControl
@@ -86,7 +86,8 @@ fun ShapeElementPropertyControls(element: ShapeElement) {
 
 @Composable
 private fun ShapeTypeDropDownPropertyControl(element: ShapeElement) {
-    val shapeTypes = ModelList<ShapeType>().apply { addAll(ShapeType.values()) }
+    val shapeTypes = ModelList<ShapeType>().apply { addAll(
+        ShapeType.values()) }
 
     var isShapeTypeDropDownOpen by +state { false }
 

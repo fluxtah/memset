@@ -19,8 +19,8 @@ import androidx.lifecycle.ViewModel
 import com.citizenwarwick.features.cardeditor.model.CardEditorModel
 import com.citizenwarwick.features.cardeditor.model.MemoryCardEditorState
 import com.citizenwarwick.features.cardeditor.model.LoadingState
-import com.citizenwarwick.features.cardeditor.model.MemoryCard
-import com.citizenwarwick.features.cardeditor.model.MemoryCardElement
+import com.citizenwarwick.memset.core.model.MemoryCard
+import com.citizenwarwick.memset.core.model.MemoryCardElement
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay

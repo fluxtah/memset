@@ -16,7 +16,7 @@
 package com.citizenwarwick.features.cardeditor.ui.elementcontrols.properties
 
 import androidx.compose.Composable
-import com.citizenwarwick.features.cardeditor.model.MemoryCardElement
+import com.citizenwarwick.memset.core.model.MemoryCardElement
 
 @Composable
 fun SpacingPropertyControls(

@@ -17,8 +17,8 @@ package com.citizenwarwick.features.cardeditor.ui.elementcontrols
 
 import androidx.compose.Composable
 import com.citizenwarwick.features.cardeditor.model.CardEditorModel
-import com.citizenwarwick.features.cardeditor.model.ShapeElement
-import com.citizenwarwick.features.cardeditor.model.TextElement
+import com.citizenwarwick.memset.core.model.ShapeElement
+import com.citizenwarwick.memset.core.model.TextElement
 
 @Composable
 fun ElementControls(model: CardEditorModel) {

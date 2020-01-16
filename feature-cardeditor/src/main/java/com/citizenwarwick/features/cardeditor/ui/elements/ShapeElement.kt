@@ -35,8 +35,8 @@ import androidx.ui.layout.Size
 import androidx.ui.layout.Spacing
 import androidx.ui.material.surface.Surface
 import com.citizenwarwick.features.cardeditor.model.CardEditorModel
-import com.citizenwarwick.features.cardeditor.model.ShapeElement
-import com.citizenwarwick.features.cardeditor.model.ShapeType
+import com.citizenwarwick.memset.core.model.ShapeElement
+import com.citizenwarwick.memset.core.model.ShapeType
 import com.citizenwarwick.features.cardeditor.ui.SelectionBorder
 
 @Composable

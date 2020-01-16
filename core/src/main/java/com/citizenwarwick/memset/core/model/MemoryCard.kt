@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.citizenwarwick.features.cardeditor.model
+package com.citizenwarwick.memset.core.model
 
 import androidx.compose.Model
 import androidx.compose.frames.ModelList

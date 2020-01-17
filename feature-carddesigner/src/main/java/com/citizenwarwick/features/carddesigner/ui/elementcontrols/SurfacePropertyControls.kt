@@ -13,21 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package com.citizenwarwick.features.carddesigner.ui.elementcontrols
+
 import androidx.compose.Composable
-import androidx.ui.layout.FlexColumn
-import androidx.ui.material.MaterialTheme
+import androidx.ui.layout.Column
+import com.citizenwarwick.features.carddesigner.model.CardEditorModel
+import com.citizenwarwick.features.carddesigner.ui.elementcontrols.properties.ColorPropertyControl
 
 @Composable
-fun MemsetMainTemplate(content: @Composable() () -> Unit) {
-    MaterialTheme {
-        FlexColumn {
-            expanded(1f) {
-                content()
+fun SurfacePropertyControls(model: CardEditorModel) {
+    Column {
+        ColorPropertyControl(
+            label = "Color",
+            selectedColor = model.state.card.upSide.color,
+            onColorSelected = {
+                model.state.card.upSide.color = it
             }
-// TODO Maybe something for later...
-//            inflexible {
-//                MemsetBottomNavigation()
-//            }
-        }
+        )
     }
 }

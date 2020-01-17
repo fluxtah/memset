@@ -16,7 +16,6 @@
 package com.citizenwarwick.memset.core.model
 
 import androidx.compose.Model
-import androidx.compose.frames.ModelList
 import androidx.compose.frames.modelListOf
 import androidx.ui.core.Alignment
 import androidx.ui.graphics.Color
@@ -27,6 +26,8 @@ import java.util.UUID
 data class MemoryCard(
     val front: CardSurface = CardSurface(),
     val back: CardSurface = CardSurface(),
+    var designerSurfaceWidth: Float = 0f,
+    var designerSurfaceHeight: Float = 0f,
     var facingFront: Boolean = true
 ) {
     val upSide: CardSurface
@@ -35,9 +36,29 @@ data class MemoryCard(
 
 @Model
 data class CardSurface(
-    val elements: ModelList<MemoryCardElement> = modelListOf(),
+    val elements: MutableList<MemoryCardElement> = modelListOf(),
     var color: Color = Color.White
-)
+) {
+    fun moveElementUp(item: MemoryCardElement) {
+        val index = elements.indexOf(item)
+        if (index > 0) {
+            val prevIndex = index - 1
+            val prevElement = elements[prevIndex]
+            elements[prevIndex] = item
+            elements[index] = prevElement
+        }
+    }
+
+    fun moveElementDown(item: MemoryCardElement) {
+        val index = elements.indexOf(item)
+        if (index < elements.size.dec()) {
+            val nextIndex = index + 1
+            val nextElement = elements[nextIndex]
+            elements[nextIndex] = item
+            elements[index] = nextElement
+        }
+    }
+}
 
 /**
  * Generates a uuid so elements can be identified
@@ -46,7 +67,10 @@ data class CardSurface(
 fun generateElementUUID() = UUID.randomUUID().toString()
 
 interface MemoryCardElement {
-    val guid: String
+    /**
+     * For editor use
+     */
+    val editorGuid: String
     var name: String
     var alignment: Alignment
     var spacingTop: Float
@@ -57,24 +81,23 @@ interface MemoryCardElement {
 
 @Model
 data class TextElement(
-    override val guid: String = generateElementUUID(),
-    override var name: String,
+    override val editorGuid: String = generateElementUUID(),
+    override var name: String = "",
     override var alignment: Alignment = Alignment.Center,
     override var spacingTop: Float = 0f,
     override var spacingLeft: Float = 0f,
     override var spacingRight: Float = 0f,
     override var spacingBottom: Float = 0f,
-
     var color: Color = Color.Black,
-    var text: String,
+    var text: String = "",
     var fontSize: Float = 8f,
     var fontWeight: FontWeight = FontWeight.Normal
 ) : MemoryCardElement
 
 @Model
 data class ShapeElement(
-    override val guid: String = generateElementUUID(),
-    override var name: String,
+    override val editorGuid: String = generateElementUUID(),
+    override var name: String = "",
     override var alignment: Alignment = Alignment.Center,
     override var spacingTop: Float = 0f,
     override var spacingLeft: Float = 0f,

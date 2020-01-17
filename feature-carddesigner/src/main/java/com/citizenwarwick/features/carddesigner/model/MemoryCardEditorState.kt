@@ -13,21 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import androidx.compose.Composable
-import androidx.ui.layout.FlexColumn
-import androidx.ui.material.MaterialTheme
+package com.citizenwarwick.features.carddesigner.model
 
-@Composable
-fun MemsetMainTemplate(content: @Composable() () -> Unit) {
-    MaterialTheme {
-        FlexColumn {
-            expanded(1f) {
-                content()
-            }
-// TODO Maybe something for later...
-//            inflexible {
-//                MemsetBottomNavigation()
-//            }
-        }
-    }
-}
+import androidx.compose.Model
+import com.citizenwarwick.memset.core.model.MemoryCard
+import com.citizenwarwick.memset.core.model.MemoryCardElement
+
+@Model
+data class MemoryCardEditorState(
+    var loadingState: LoadingState,
+    var card: MemoryCard,
+    var selectedElement: MemoryCardElement? = null,
+    var editElement: MemoryCardElement? = null,
+    var layersDropDownOpen: Boolean = false
+)

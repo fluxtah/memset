@@ -13,21 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import androidx.compose.Composable
-import androidx.ui.layout.FlexColumn
-import androidx.ui.material.MaterialTheme
+package com.citizenwarwick.features.carddesigner.editorfunctions
 
-@Composable
-fun MemsetMainTemplate(content: @Composable() () -> Unit) {
-    MaterialTheme {
-        FlexColumn {
-            expanded(1f) {
-                content()
-            }
-// TODO Maybe something for later...
-//            inflexible {
-//                MemsetBottomNavigation()
-//            }
-        }
+import com.citizenwarwick.features.carddesigner.model.MemoryCardEditorState
+
+class ClearAllEditorFunction(val state: MemoryCardEditorState) : EditorFunction() {
+    override fun execute() {
+        state.selectedElement = null
+        state.card.upSide.elements.clear()
     }
 }

@@ -1,5 +1,5 @@
 include ':ui-shared'
-include ':feature-cardeditor'
+include ':feature-carddesigner'
 include ':feature-home'
 include ':router'
 include ':app'

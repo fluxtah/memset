@@ -13,21 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import androidx.compose.Composable
-import androidx.ui.layout.FlexColumn
-import androidx.ui.material.MaterialTheme
+package com.citizenwarwick.features.carddesigner.model
 
-@Composable
-fun MemsetMainTemplate(content: @Composable() () -> Unit) {
-    MaterialTheme {
-        FlexColumn {
-            expanded(1f) {
-                content()
-            }
-// TODO Maybe something for later...
-//            inflexible {
-//                MemsetBottomNavigation()
-//            }
-        }
-    }
+interface CardEditorModel {
+    val state: MemoryCardEditorState
+    fun saveCard()
 }

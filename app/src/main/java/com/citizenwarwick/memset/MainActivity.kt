@@ -6,8 +6,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProviders
 import androidx.ui.core.Text
 import androidx.ui.core.setContent
-import com.citizenwarwick.features.cardeditor.CardEditorScreenComposer
-import com.citizenwarwick.features.cardeditor.model.vm.CardEditorViewModel
+import com.citizenwarwick.features.carddesigner.CardDesignerScreenComposer
+import com.citizenwarwick.features.carddesigner.model.vm.CardEditorViewModel
 import com.citizenwarwick.memset.features.home.HomeScreenComposer
 import com.citizenwarwick.memset.router.Router
 import kotlin.reflect.KClass
@@ -22,7 +22,7 @@ class MainActivity : AppCompatActivity() {
 
                 "/" composeWith { HomeScreenComposer() }
                 "/cardeditor" composeWith {
-                    CardEditorScreenComposer(model(CardEditorViewModel::class))
+                    CardDesignerScreenComposer(model(CardEditorViewModel::class))
                 }
                 ".*" composeTo { Text("404 Not Found") }
 

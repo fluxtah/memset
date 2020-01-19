@@ -8,6 +8,7 @@ import androidx.ui.core.Text
 import androidx.ui.core.setContent
 import com.citizenwarwick.features.carddesigner.CardDesignerScreenComposer
 import com.citizenwarwick.features.carddesigner.model.vm.CardEditorViewModel
+import com.citizenwarwick.memset.core.di.bootstrap
 import com.citizenwarwick.memset.features.home.HomeScreenComposer
 import com.citizenwarwick.memset.router.Router
 import kotlin.reflect.KClass
@@ -15,6 +16,9 @@ import kotlin.reflect.KClass
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        bootstrap(this)
+
         setContent {
             Router("https://memset.com/cardeditor") {
                 schemes("https", "http")

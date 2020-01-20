@@ -13,9 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.citizenwarwick.features.carddesigner.model
+package com.citizenwarwick.memset.core.model
 
-interface CardEditorModel {
-    val state: MemoryCardEditorState
-    fun saveCard()
+sealed class LoadingState {
+    object Loading : LoadingState()
+    object Loaded : LoadingState()
+    object Error : LoadingState()
 }

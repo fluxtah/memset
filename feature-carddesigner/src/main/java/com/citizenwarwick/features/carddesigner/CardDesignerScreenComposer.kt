@@ -16,26 +16,15 @@
 package com.citizenwarwick.features.carddesigner
 
 import MemsetMainTemplate
-import android.util.Log
 import androidx.compose.Composable
-import androidx.compose.ambient
 import androidx.compose.frames.ModelList
 import androidx.compose.unaryPlus
-import androidx.ui.core.Alignment
-import androidx.ui.core.ContextAmbient
-import androidx.ui.core.Density
-import androidx.ui.core.IntPx
-import androidx.ui.core.Layout
 import androidx.ui.core.Text
 import androidx.ui.core.dp
-import androidx.ui.core.ipx
-import androidx.ui.core.withDensity
 import androidx.ui.foundation.Clickable
 import androidx.ui.foundation.VerticalScroller
-import androidx.ui.foundation.shape.corner.RoundedCornerShape
 import androidx.ui.graphics.Color
 import androidx.ui.layout.Arrangement
-import androidx.ui.layout.AspectRatio
 import androidx.ui.layout.Column
 import androidx.ui.layout.Container
 import androidx.ui.layout.CrossAxisAlignment
@@ -45,26 +34,26 @@ import androidx.ui.layout.FlexRow
 import androidx.ui.layout.Padding
 import androidx.ui.layout.Row
 import androidx.ui.layout.Spacing
-import androidx.ui.layout.Stack
 import androidx.ui.material.Divider
 import androidx.ui.material.TopAppBar
 import androidx.ui.material.ripple.Ripple
-import androidx.ui.material.surface.Card
 import androidx.ui.material.surface.Surface
 import androidx.ui.res.vectorResource
 import com.citizenwarwick.features.carddesigner.config.EditorConfiguration
 import com.citizenwarwick.features.carddesigner.config.EditorFunctionConfig
-import com.citizenwarwick.features.carddesigner.model.CardEditorModel
-import com.citizenwarwick.features.carddesigner.model.LoadingState
+import com.citizenwarwick.features.carddesigner.model.CardDesignerModel
+import com.citizenwarwick.ui.card.MemoryCard
 import com.citizenwarwick.features.carddesigner.ui.elementcontrols.ElementControls
-import com.citizenwarwick.features.carddesigner.ui.elements.EditorElement
+import com.citizenwarwick.memset.core.Destination
+import com.citizenwarwick.memset.core.goto
+import com.citizenwarwick.memset.core.model.LoadingState
 import com.citizenwarwick.memset.core.model.MemoryCardElement
 import com.citizenwarwick.memset.router.Composer
-import com.citizenwarwick.ui.DropDownMenu
-import com.citizenwarwick.ui.IconButton
+import com.citizenwarwick.ui.widgets.DropDownMenu
+import com.citizenwarwick.ui.widgets.IconButton
 
 class CardDesignerScreenComposer(
-    private val model: CardEditorModel
+    private val model: CardDesignerModel
 ) : Composer() {
     override fun compose() {
         MemsetMainTemplate {
@@ -106,9 +95,12 @@ class CardDesignerScreenComposer(
         ) {
             when (it) {
                 "Save" -> {
-                    IconButton(vectorResourceId = R.drawable.ic_save_light, onClick = {
-                        model.saveCard()
-                    })
+                    IconButton(
+                        vectorResourceId = R.drawable.ic_save_light,
+                        onClick = {
+                            model.saveCard()
+                            goto(Destination.HomeScreen)
+                        })
                 }
             }
         }
@@ -122,59 +114,13 @@ class CardDesignerScreenComposer(
             model.state.layersDropDownOpen = false
         }
 
-        val density = Density(+ambient(ContextAmbient))
-        val card = model.state.card
-        Clickable(onClick = onSurfaceClicked) {
-            MeasureObserver(onMeasure = { x, y ->
-                val zeroSize = card.designerSurfaceWidth == 0f && card.designerSurfaceHeight == 0f
-                if (zeroSize) {
-                    Log.d("memsetlog", "Got size x: $x, y:$y")
-                    card.designerSurfaceWidth = +withDensity(density) { x.value.toDp().value }
-                    card.designerSurfaceHeight = +withDensity(density) { y.value.toDp().value }
-                }
-
-            }) {
-                Card(
-                    shape = RoundedCornerShape(4.dp),
-                    elevation = 4.dp,
-                    modifier = AspectRatio(1.7f) wraps ExpandedWidth,
-                    color = model.state.card.upSide.color
-                ) {
-                    Container {
-                        Stack {
-                            for (element in model.state.card.upSide.elements) {
-                                aligned(Alignment.Center) {
-                                    EditorElement(
-                                        model,
-                                        element
-                                    )
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    @Composable
-    private fun MeasureObserver(onMeasure: (IntPx, IntPx) -> Unit, children: @Composable() () -> Unit) {
-        Layout(children) { measurables, constraints ->
-            if (measurables.size > 1) {
-                throw IllegalStateException("MeasureObserver can have only one direct measurable child!")
-            }
-            val measurable = measurables.firstOrNull()
-            if (measurable == null) {
-                onMeasure(constraints.minWidth, constraints.minHeight)
-                layout(constraints.minWidth, constraints.minHeight) {}
-            } else {
-                val placeable = measurable.measure(constraints)
-                onMeasure(placeable.width, placeable.height)
-                layout(placeable.width, placeable.height) {
-                    placeable.place(0.ipx, 0.ipx)
-                }
-            }
-        }
+        MemoryCard(
+            card = model.state.card,
+            onSurfaceClicked = onSurfaceClicked,
+            onElementClick = { element -> model.state.selectedElement = element },
+            onElementDoubleTap = { element -> model.state.editElement = element },
+            isSelected = { model.state.selectedElement == it },
+            isEditing = { model.state.editElement == it })
     }
 
     @Composable
@@ -191,7 +137,10 @@ class CardDesignerScreenComposer(
     @Composable
     private fun EditorToolbarButton(editorFunction: EditorFunctionConfig, onClick: () -> Unit) {
         val vector = +vectorResource(editorFunction.icon)
-        IconButton(vectorResourceId = editorFunction.icon, onClick = onClick)
+        IconButton(
+            vectorResourceId = editorFunction.icon,
+            onClick = onClick
+        )
     }
 
     @Composable
@@ -238,17 +187,26 @@ class CardDesignerScreenComposer(
                     inflexible {
                         val vector = +vectorResource(R.drawable.ic_move_up)
                         val onClick = { model.state.card.upSide.moveElementUp(item) }
-                        IconButton(iconVector = vector, onClick = onClick)
+                        IconButton(
+                            iconVector = vector,
+                            onClick = onClick
+                        )
                     }
                     inflexible {
                         val vector = +vectorResource(R.drawable.ic_move_down)
                         val onClick = { model.state.card.upSide.moveElementDown(item) }
-                        IconButton(iconVector = vector, onClick = onClick)
+                        IconButton(
+                            iconVector = vector,
+                            onClick = onClick
+                        )
                     }
                     inflexible {
                         val vector = +vectorResource(R.drawable.ic_editor_tool_delete)
                         val onClick: () -> Unit = { model.state.card.upSide.elements.remove(item) }
-                        IconButton(iconVector = vector, onClick = onClick)
+                        IconButton(
+                            iconVector = vector,
+                            onClick = onClick
+                        )
                     }
                 }
             }

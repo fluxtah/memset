@@ -10,18 +10,18 @@ import androidx.room.Query
 
 @Entity
 data class MemoryCardEntity(
-    @PrimaryKey val uid: Int,
+    @PrimaryKey val uid: Long? = null,
     @ColumnInfo(name = "card_json") val cardJson: String?
 )
 
 @Dao
 interface MemoryCardEntityDao {
-    @Query("SELECT * FROM memorycardentity")
-    fun getAll(): List<MemoryCardEntity>
+    @Query("SELECT * FROM memorycardentity order by uid desc")
+    suspend fun getAll(): List<MemoryCardEntity>
 
     @Insert
-    fun insertAll(vararg cards: MemoryCardEntity)
+    suspend fun insertAll(vararg cards: MemoryCardEntity)
 
     @Delete
-    fun delete(card: MemoryCardEntity)
+    suspend fun delete(card: MemoryCardEntity)
 }

@@ -22,7 +22,7 @@ import androidx.ui.core.dp
 import androidx.ui.layout.CrossAxisAlignment
 import androidx.ui.layout.FlexRow
 import androidx.ui.layout.Spacing
-import com.citizenwarwick.ui.DropDownMenu
+import com.citizenwarwick.ui.widgets.DropDownMenu
 
 @Composable
 fun <T> DropDownMenuPropertyControl(

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.citizenwarwick.features.carddesigner.ui.elements
+package com.citizenwarwick.ui.card.elements
 
 import androidx.compose.Composable
 import androidx.compose.ambient
@@ -26,7 +26,6 @@ import androidx.ui.core.dp
 import androidx.ui.core.withDensity
 import androidx.ui.engine.geometry.Offset
 import androidx.ui.engine.geometry.Rect
-import androidx.ui.foundation.Clickable
 import androidx.ui.foundation.shape.DrawShape
 import androidx.ui.foundation.shape.GenericShape
 import androidx.ui.graphics.Color
@@ -34,24 +33,21 @@ import androidx.ui.layout.Container
 import androidx.ui.layout.Size
 import androidx.ui.layout.Spacing
 import androidx.ui.material.surface.Surface
-import com.citizenwarwick.features.carddesigner.model.CardEditorModel
 import com.citizenwarwick.memset.core.model.ShapeElement
 import com.citizenwarwick.memset.core.model.ShapeType
-import com.citizenwarwick.features.carddesigner.ui.SelectionBorder
+import com.citizenwarwick.ui.card.SelectionBorder
 
 @Composable
-fun ShapeElement(model: CardEditorModel, element: ShapeElement) {
+fun ShapeElement(element: ShapeElement, isSelected: Boolean = false) {
     val spacing =
         Spacing(element.spacingLeft.dp, element.spacingTop.dp, element.spacingRight.dp, element.spacingBottom.dp)
 
-    Clickable(onClick = { model.state.selectedElement = element }) {
-        if (model.state.selectedElement == element) {
-            SelectionBorder {
-                Shape(modifier = spacing, element = element)
-            }
-        } else {
+    if (isSelected) {
+        SelectionBorder {
             Shape(modifier = spacing, element = element)
         }
+    } else {
+        Shape(modifier = spacing, element = element)
     }
 }
 

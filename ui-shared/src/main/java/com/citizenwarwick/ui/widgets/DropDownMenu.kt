@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.citizenwarwick.ui
+package com.citizenwarwick.ui.widgets
 
 import androidx.compose.Composable
 import androidx.compose.frames.ModelList
@@ -38,6 +38,7 @@ import androidx.ui.layout.Spacing
 import androidx.ui.material.surface.Card
 import androidx.ui.material.surface.Surface
 import androidx.ui.res.vectorResource
+import com.citizenwarwick.ui.R
 
 @Composable
 fun <T> DropDownMenu(

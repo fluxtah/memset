@@ -7,9 +7,10 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.ui.core.Text
 import androidx.ui.core.setContent
 import com.citizenwarwick.features.carddesigner.CardDesignerScreenComposer
-import com.citizenwarwick.features.carddesigner.model.vm.CardEditorViewModel
+import com.citizenwarwick.features.carddesigner.model.vm.CardDesignerViewModel
 import com.citizenwarwick.memset.core.di.bootstrap
 import com.citizenwarwick.memset.features.home.HomeScreenComposer
+import com.citizenwarwick.memset.features.home.model.vm.HomeScreenViewModel
 import com.citizenwarwick.memset.router.Router
 import kotlin.reflect.KClass
 
@@ -20,13 +21,13 @@ class MainActivity : AppCompatActivity() {
         bootstrap(this)
 
         setContent {
-            Router("https://memset.com/cardeditor") {
+            Router("https://memset.com/") {
                 schemes("https", "http")
                 hosts("memset.com", "www.memset.com")
 
-                "/" composeWith { HomeScreenComposer() }
-                "/cardeditor" composeWith {
-                    CardDesignerScreenComposer(model(CardEditorViewModel::class))
+                "/" composeWith { HomeScreenComposer(model(HomeScreenViewModel::class)) }
+                "/designer" composeWith {
+                    CardDesignerScreenComposer(model(CardDesignerViewModel::class))
                 }
                 ".*" composeTo { Text("404 Not Found") }
 

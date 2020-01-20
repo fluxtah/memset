@@ -16,8 +16,9 @@
 package com.citizenwarwick.features.carddesigner.model.vm
 
 import androidx.lifecycle.ViewModel
-import com.citizenwarwick.features.carddesigner.model.CardEditorModel
-import com.citizenwarwick.features.carddesigner.model.LoadingState
+import androidx.lifecycle.viewModelScope
+import com.citizenwarwick.features.carddesigner.model.CardDesignerModel
+import com.citizenwarwick.memset.core.model.LoadingState
 import com.citizenwarwick.features.carddesigner.model.MemoryCardEditorState
 import com.citizenwarwick.memset.core.MemoryCardRepository
 import com.citizenwarwick.memset.core.di.get
@@ -27,9 +28,9 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-class CardEditorViewModel(
+class CardDesignerViewModel(
     private val repository: MemoryCardRepository = get()
-) : ViewModel(), CardEditorModel {
+) : ViewModel(), CardDesignerModel {
     override val state: MemoryCardEditorState =
         MemoryCardEditorState(
             loadingState = LoadingState.Loaded,
@@ -37,7 +38,9 @@ class CardEditorViewModel(
         )
 
     override fun saveCard() {
-        repository.saveCard(state.card)
+        viewModelScope.launch {
+            repository.saveCard(state.card)
+        }
     }
 
     init {

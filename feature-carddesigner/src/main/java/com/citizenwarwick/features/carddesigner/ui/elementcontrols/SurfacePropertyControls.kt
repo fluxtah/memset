@@ -17,11 +17,11 @@ package com.citizenwarwick.features.carddesigner.ui.elementcontrols
 
 import androidx.compose.Composable
 import androidx.ui.layout.Column
-import com.citizenwarwick.features.carddesigner.model.CardEditorModel
+import com.citizenwarwick.features.carddesigner.model.CardDesignerModel
 import com.citizenwarwick.features.carddesigner.ui.elementcontrols.properties.ColorPropertyControl
 
 @Composable
-fun SurfacePropertyControls(model: CardEditorModel) {
+fun SurfacePropertyControls(model: CardDesignerModel) {
     Column {
         ColorPropertyControl(
             label = "Color",

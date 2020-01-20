@@ -13,27 +13,39 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.citizenwarwick.features.carddesigner.ui.elements
+package com.citizenwarwick.ui.card.elements
 
 import androidx.compose.Composable
+import androidx.ui.core.gesture.DoubleTapGestureDetector
+import androidx.ui.foundation.Clickable
 import androidx.ui.layout.Align
-import com.citizenwarwick.features.carddesigner.model.CardEditorModel
 import com.citizenwarwick.memset.core.model.MemoryCardElement
 import com.citizenwarwick.memset.core.model.ShapeElement
 import com.citizenwarwick.memset.core.model.TextElement
 
 @Composable
-fun EditorElement(model: CardEditorModel, element: MemoryCardElement) {
+fun MemoryCardElement(
+    element: MemoryCardElement,
+    onClick: (MemoryCardElement) -> Unit = {},
+    onDoubleTap: (MemoryCardElement) -> Unit = {},
+    isSelected: Boolean = false,
+    isEditing: Boolean = false
+) {
     Align(alignment = element.alignment) {
-        when (element) {
-            is TextElement -> TextElement(
-                model,
-                element
-            )
-            is ShapeElement -> ShapeElement(
-                model,
-                element
-            )
+        Clickable(onClick = { onClick(element) }) {
+            DoubleTapGestureDetector(onDoubleTap = { onDoubleTap(element) }) {
+                when (element) {
+                    is TextElement -> TextElement(
+                        element,
+                        isSelected,
+                        isEditing
+                    )
+                    is ShapeElement -> ShapeElement(
+                        element,
+                        isSelected
+                    )
+                }
+            }
         }
     }
 }

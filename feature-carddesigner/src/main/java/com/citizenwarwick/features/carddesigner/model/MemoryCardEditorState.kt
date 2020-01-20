@@ -16,6 +16,7 @@
 package com.citizenwarwick.features.carddesigner.model
 
 import androidx.compose.Model
+import com.citizenwarwick.memset.core.model.LoadingState
 import com.citizenwarwick.memset.core.model.MemoryCard
 import com.citizenwarwick.memset.core.model.MemoryCardElement
 

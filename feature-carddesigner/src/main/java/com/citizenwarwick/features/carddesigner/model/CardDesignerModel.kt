@@ -15,8 +15,7 @@
  */
 package com.citizenwarwick.features.carddesigner.model
 
-sealed class LoadingState {
-    object Loading : LoadingState()
-    object Loaded : LoadingState()
-    object Error : LoadingState()
+interface CardDesignerModel {
+    val state: MemoryCardEditorState
+    fun saveCard()
 }

@@ -5,7 +5,7 @@ import com.citizenwarwick.memset.router.goto
 sealed class Destination(val uri: String) {
     object HomeScreen : Destination("/")
     object QuxScreen : Destination("/qux")
-    object CardEditorScreen : Destination("/cardeditor")
+    object CardDesigner : Destination("/designer")
 }
 
 fun goto(destination: Destination) {

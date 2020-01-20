@@ -21,7 +21,7 @@ import androidx.ui.core.Text
 import androidx.ui.layout.CrossAxisAlignment
 import androidx.ui.layout.FlexRow
 import com.citizenwarwick.features.carddesigner.R
-import com.citizenwarwick.ui.IconButton
+import com.citizenwarwick.ui.widgets.IconButton
 
 @Composable
 fun AlignmentPropertyControl(
@@ -144,7 +144,8 @@ fun AlignmentPropertyControl(
                             Alignment.TopLeft
                         else ->
                             Alignment.TopCenter
-                    })
+                    }
+                )
             }
         }
     }

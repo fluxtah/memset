@@ -16,12 +16,12 @@
 package com.citizenwarwick.features.carddesigner.ui.elementcontrols
 
 import androidx.compose.Composable
-import com.citizenwarwick.features.carddesigner.model.CardEditorModel
+import com.citizenwarwick.features.carddesigner.model.CardDesignerModel
 import com.citizenwarwick.memset.core.model.ShapeElement
 import com.citizenwarwick.memset.core.model.TextElement
 
 @Composable
-fun ElementControls(model: CardEditorModel) {
+fun ElementControls(model: CardDesignerModel) {
     when (val selectedElement = model.state.selectedElement) {
         is TextElement -> {
             TextElementPropertyControls(selectedElement)

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.citizenwarwick.features.carddesigner.ui
+package com.citizenwarwick.ui.card
 
 import androidx.compose.Composable
 import androidx.ui.core.dp

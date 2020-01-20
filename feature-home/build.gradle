@@ -44,12 +44,14 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.core:core-ktx:1.1.0'
+    implementation "androidx.ui:ui-foundation:$androidx_ui_version"
     implementation "androidx.ui:ui-framework:$androidx_ui_version"
     implementation "androidx.ui:ui-layout:$androidx_ui_version"
     implementation "androidx.ui:ui-material:$androidx_ui_version"
     implementation "androidx.ui:ui-tooling:$androidx_ui_version"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinx_coroutines_version"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlinx_coroutines_version"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$ktx_viewmodel_version"
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'

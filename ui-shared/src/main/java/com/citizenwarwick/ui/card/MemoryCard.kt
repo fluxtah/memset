@@ -50,6 +50,12 @@ fun MemoryCard(
             ) {
                 Container {
                     Stack {
+                        if (card.upSide.elements.isEmpty()) {
+                            // TODO avoids an exception when a model changes upside.elements to zero length
+                            //  java.lang.IllegalStateException: Expected a group start
+                            //        at androidx.compose.SlotTableKt.getAsGroupStart(SlotTable.kt:641)
+                            expanded { }
+                        }
                         for (element in card.upSide.elements) {
                             aligned(Alignment.Center) {
                                 MemoryCardElement(

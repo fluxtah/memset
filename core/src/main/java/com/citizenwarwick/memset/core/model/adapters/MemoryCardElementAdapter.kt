@@ -53,7 +53,7 @@ class MemoryCardElementAdapter {
 
 private fun MemoryCardElement.mapProperties(): Map<String, String> {
     return mutableMapOf<String, String>().also { map ->
-        map["editorGuid"] = editorGuid
+        map["editorGuid"] = uuid
         map["name"] = name
         map["alignment"] = alignment.name
         map["spacingTop"] = spacingTop.toString()

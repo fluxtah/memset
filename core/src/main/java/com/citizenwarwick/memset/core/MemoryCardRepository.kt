@@ -1,5 +1,7 @@
 package com.citizenwarwick.memset.core
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Transformations
 import com.citizenwarwick.memset.core.di.get
 import com.citizenwarwick.memset.core.model.MemoryCard
 import com.citizenwarwick.memset.data.MemsetDatabase
@@ -14,14 +16,20 @@ class MemoryCardRepository(
         val jsonAdapter = moshi.adapter(MemoryCard::class.java)
         val json = jsonAdapter.toJson(card)
 
-        db.memoryCardDao().insertAll(MemoryCardEntity(cardJson = json))
+        db.memoryCardDao().insertAll(MemoryCardEntity(uuid = card.uuid, cardJson = json))
 
     }
 
-    suspend fun getCards(): List<MemoryCard> {
+    fun getCards(): LiveData<List<MemoryCard>> {
         val jsonAdapter = moshi.adapter(MemoryCard::class.java)
-        return db.memoryCardDao().getAll().map {
-            jsonAdapter.fromJson(it.cardJson!!)!!
+        return Transformations.map(
+            db.memoryCardDao().getAll()
+        ) {
+            it.map { jsonAdapter.fromJson(it.cardJson!!)!! }
         }
+    }
+
+    suspend fun deleteCard(card: MemoryCard) {
+        db.memoryCardDao().deleteByUid(card.uuid)
     }
 }

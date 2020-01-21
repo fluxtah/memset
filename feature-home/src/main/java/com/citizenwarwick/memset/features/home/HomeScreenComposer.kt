@@ -17,12 +17,13 @@ package com.citizenwarwick.memset.features.home
 
 import MemsetMainTemplate
 import androidx.compose.Composable
+import androidx.compose.frames.modelListOf
 import androidx.compose.state
 import androidx.compose.unaryPlus
 import androidx.ui.core.Alignment
-import androidx.ui.core.DropdownPopup
 import androidx.ui.core.Text
 import androidx.ui.core.dp
+import androidx.ui.foundation.Clickable
 import androidx.ui.foundation.VerticalScroller
 import androidx.ui.graphics.Color
 import androidx.ui.layout.Column
@@ -31,7 +32,7 @@ import androidx.ui.layout.Spacing
 import androidx.ui.layout.Stack
 import androidx.ui.material.Divider
 import androidx.ui.material.FloatingActionButton
-import androidx.ui.material.surface.Card
+import androidx.ui.material.ripple.Ripple
 import com.citizenwarwick.memset.core.Destination
 import com.citizenwarwick.memset.core.goto
 import com.citizenwarwick.memset.core.model.LoadingState
@@ -39,6 +40,7 @@ import com.citizenwarwick.memset.core.model.MemoryCard
 import com.citizenwarwick.memset.features.home.model.HomeScreenModel
 import com.citizenwarwick.memset.router.Composer
 import com.citizenwarwick.ui.card.MemoryCard
+import com.citizenwarwick.ui.widgets.DropDownPopupMenu
 import com.citizenwarwick.ui.widgets.IconButton
 
 class HomeScreenComposer(private val model: HomeScreenModel) : Composer() {
@@ -65,33 +67,7 @@ class HomeScreenComposer(private val model: HomeScreenModel) : Composer() {
                 VerticalScroller {
                     Column(modifier = Spacing(8.dp)) {
                         for (card in cards) {
-                            Stack {
-                                expanded {
-                                    MemoryCard(
-                                        card = card,
-                                        onSurfaceClicked = { card.facingFront = !card.facingFront },
-                                        onElementClick = { card.facingFront = !card.facingFront })
-                                }
-                                aligned(Alignment.TopRight) {
-                                    Container {
-                                        var isOpen by +state { false }
-
-                                        IconButton(
-                                            vectorResourceId = R.drawable.ic_more,
-                                            onClick = { isOpen = !isOpen })
-
-                                        if (isOpen) {
-                                            DropdownPopup {
-                                                Card {
-                                                    Column {
-                                                        Text("Delete")
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
+                            CardContainer(card)
                             Divider(height = 8.dp, color = Color.Transparent)
                         }
                     }
@@ -102,6 +78,50 @@ class HomeScreenComposer(private val model: HomeScreenModel) : Composer() {
                     IconButton(
                         vectorResourceId = R.drawable.ic_add_inverted,
                         onClick = { goto(Destination.CardDesigner) })
+                }
+            }
+        }
+    }
+
+    @Composable
+    private fun CardContainer(card: MemoryCard) {
+        Stack {
+            expanded {
+                MemoryCard(
+                    card = card,
+                    onSurfaceClicked = { card.facingFront = !card.facingFront },
+                    onElementClick = { card.facingFront = !card.facingFront })
+            }
+            aligned(Alignment.TopRight) {
+                CardDropDownMenu(card)
+            }
+        }
+    }
+
+    @Composable
+    private fun CardDropDownMenu(card: MemoryCard) {
+        Container {
+            var isOpen by +state { false }
+
+            IconButton(
+                vectorResourceId = R.drawable.ic_more,
+                onClick = { isOpen = !isOpen })
+
+            val items = modelListOf<Pair<String, () -> Unit>>(
+                "Delete" to { model.deleteCard(card) }
+            )
+            if (isOpen) {
+                DropDownPopupMenu(
+                    modifier = Spacing(right = 16.dp, bottom = 16.dp),
+                    items = items
+                ) { item ->
+                    Ripple(bounded = true) {
+                        Clickable(onClick = { item.second() }) {
+                            Container {
+                                Text(modifier = Spacing(12.dp), text = item.first)
+                            }
+                        }
+                    }
                 }
             }
         }

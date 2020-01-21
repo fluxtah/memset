@@ -21,6 +21,7 @@ import androidx.lifecycle.viewModelScope
 import com.citizenwarwick.memset.core.MemoryCardRepository
 import com.citizenwarwick.memset.core.di.get
 import com.citizenwarwick.memset.core.model.LoadingState
+import com.citizenwarwick.memset.core.model.MemoryCard
 import com.citizenwarwick.memset.features.home.model.HomeScreenModel
 import com.citizenwarwick.memset.features.home.model.HomeScreenState
 import kotlinx.coroutines.Dispatchers
@@ -30,21 +31,26 @@ class HomeScreenViewModel(
     private val repository: MemoryCardRepository = get()
 ) : ViewModel(), HomeScreenModel {
     override val state: HomeScreenState = HomeScreenState()
+    private val cardsData = repository.getCards()
+    private val cardsDataObserver = fun(it: List<MemoryCard>) {
+        state.cards = modelListOf(*it.toTypedArray())
+        state.loadingState = LoadingState.Loaded
+    }
 
-    override fun loadCards() {
-        //
-        // TODO getCards should be called in UI scope though coroutines
-        //    are not working correctly in compose dev03
-        //
+    override fun deleteCard(card: MemoryCard) {
         viewModelScope.launch(Dispatchers.Main) {
-            val cards = repository.getCards()
-            state.cards = modelListOf(*cards.toTypedArray())
+            repository.deleteCard(card)
+            // reload
             state.loadingState = LoadingState.Loaded
         }
     }
 
     init {
-        loadCards()
+        cardsData.observeForever(cardsDataObserver)
+    }
+
+    override fun onCleared() {
+        cardsData.removeObserver(cardsDataObserver)
     }
 }
 

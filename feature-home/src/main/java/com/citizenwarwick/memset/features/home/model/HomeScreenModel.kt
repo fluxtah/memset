@@ -1,7 +1,9 @@
 package com.citizenwarwick.memset.features.home.model
 
+import com.citizenwarwick.memset.core.model.MemoryCard
+
 interface HomeScreenModel {
     val state: HomeScreenState
 
-    fun loadCards()
+    fun deleteCard(card: MemoryCard)
 }

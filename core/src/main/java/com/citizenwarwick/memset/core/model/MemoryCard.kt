@@ -24,6 +24,7 @@ import java.util.UUID
 
 @Model
 data class MemoryCard(
+    var uuid: String = generateElementUUID(),
     val front: CardSurface = CardSurface(),
     val back: CardSurface = CardSurface(),
     var designerSurfaceWidth: Float = 0f,
@@ -70,7 +71,7 @@ interface MemoryCardElement {
     /**
      * For editor use
      */
-    val editorGuid: String
+    val uuid: String
     var name: String
     var alignment: Alignment
     var spacingTop: Float
@@ -81,7 +82,7 @@ interface MemoryCardElement {
 
 @Model
 data class TextElement(
-    override val editorGuid: String = generateElementUUID(),
+    override val uuid: String = generateElementUUID(),
     override var name: String = "",
     override var alignment: Alignment = Alignment.Center,
     override var spacingTop: Float = 0f,
@@ -96,7 +97,7 @@ data class TextElement(
 
 @Model
 data class ShapeElement(
-    override val editorGuid: String = generateElementUUID(),
+    override val uuid: String = generateElementUUID(),
     override var name: String = "",
     override var alignment: Alignment = Alignment.Center,
     override var spacingTop: Float = 0f,

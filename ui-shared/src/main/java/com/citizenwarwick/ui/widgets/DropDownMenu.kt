@@ -20,6 +20,7 @@ import androidx.compose.frames.ModelList
 import androidx.compose.unaryPlus
 import androidx.ui.core.DropDownAlignment
 import androidx.ui.core.DropdownPopup
+import androidx.ui.core.Modifier
 import androidx.ui.core.Text
 import androidx.ui.core.dp
 import androidx.ui.foundation.Clickable
@@ -60,17 +61,26 @@ fun <T> DropDownMenu(
         }
 
         if (isOpen) {
-            DropdownPopup(dropDownAlignment = DropDownAlignment.Left) {
-                Container {
-                    Card(
-                        shape = RoundedCornerShape(4.dp),
-                        border = Border(color = Color.LightGray, width = 1.dp),
-                        modifier = ExpandedWidth,
-                        elevation = 4.dp
-                    ) {
-                        DropDownContent(items, itemTemplate)
-                    }
-                }
+            DropDownPopupMenu(modifier = ExpandedWidth, items = items, itemTemplate = itemTemplate)
+        }
+    }
+}
+
+@Composable
+fun <T> DropDownPopupMenu(
+    modifier: Modifier = Modifier.None,
+    items: ModelList<T>,
+    itemTemplate: @Composable() (data: T) -> Unit
+) {
+    DropdownPopup(dropDownAlignment = DropDownAlignment.Left) {
+        Container {
+            Card(
+                shape = RoundedCornerShape(4.dp),
+                border = Border(color = Color.LightGray, width = 1.dp),
+                modifier = modifier,
+                elevation = 4.dp
+            ) {
+                DropDownContent(items, itemTemplate)
             }
         }
     }

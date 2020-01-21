@@ -77,6 +77,9 @@ class Router {
 
     @Composable
     fun startComposing(intent: Intent? = null) {
+        //
+        // TODO all of this needs careful consideration, test all this for correctness
+        //
         val intentUri = intent?.data
 
         when {
@@ -100,6 +103,5 @@ class Router {
 private var currentUri: Uri = Uri.EMPTY
 private var gotoDelegate: (uri: String) -> Unit = {}
 
-fun goto(uri: String) {
-    gotoDelegate(uri)
-}
+fun goto(uri: String) = gotoDelegate(uri)
+fun isCurrentUri(uri: String): Boolean = currentUri.toString() == uri

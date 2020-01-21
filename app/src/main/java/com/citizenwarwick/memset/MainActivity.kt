@@ -8,7 +8,10 @@ import androidx.ui.core.Text
 import androidx.ui.core.setContent
 import com.citizenwarwick.features.carddesigner.CardDesignerScreenComposer
 import com.citizenwarwick.features.carddesigner.model.vm.CardDesignerViewModel
+import com.citizenwarwick.memset.core.Destination
 import com.citizenwarwick.memset.core.di.bootstrap
+import com.citizenwarwick.memset.core.goto
+import com.citizenwarwick.memset.core.isCurrentDestination
 import com.citizenwarwick.memset.features.home.HomeScreenComposer
 import com.citizenwarwick.memset.features.home.model.vm.HomeScreenViewModel
 import com.citizenwarwick.memset.router.Router
@@ -32,6 +35,14 @@ class MainActivity : AppCompatActivity() {
                 ".*" composeTo { Text("404 Not Found") }
 
             }.startComposing(intent)
+        }
+    }
+
+    override fun onBackPressed() {
+        if (isCurrentDestination(Destination.CardDesigner)) {
+            goto(Destination.HomeScreen)
+        } else {
+            super.onBackPressed()
         }
     }
 

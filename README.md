@@ -15,4 +15,4 @@ The following summary provides a brief explanation of what each module is respon
 * :router (API Module) - A URI based routing API that allows URI mapping to `@Composable` functions effectively defining the applications navigation
 * :ui-shared (API Module) - To share common UI components (Composables) across other modules such as navigation ui
 
-TBC ..
+<img align="left" src="https://github.com/fluxtah/memset/blob/master/gfx/screenshot-01.png" alt="Card Designer" />

@@ -8,6 +8,7 @@ By splitting your app into modules it promotes reuse and eases parallel work str
 
 The following summary provides a brief explanation of what each module is responsible for and the role it plays in the application.
 
+* :app (Main Module) - Contains a single activity `MainActivity` which is the main entry point into the Memset app
 * :core (API Module) - Provides common shared code everywhere including navigation constants, the app data model and DI configuration
 * :data (API) - Provides a Room database implementation for storing cards locally
 * :carddesigner (Feature Module) - Provides the card designer feature for creating and modifying cards

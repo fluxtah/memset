@@ -37,6 +37,7 @@ class CardDesignerViewModel(
     override fun saveCard() {
         viewModelScope.launch {
             repository.saveCard(state.card)
+            state.card = MemoryCard()
         }
     }
 }

@@ -18,14 +18,11 @@ package com.citizenwarwick.features.carddesigner.model.vm
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.citizenwarwick.features.carddesigner.model.CardDesignerModel
-import com.citizenwarwick.memset.core.model.LoadingState
 import com.citizenwarwick.features.carddesigner.model.MemoryCardEditorState
 import com.citizenwarwick.memset.core.MemoryCardRepository
 import com.citizenwarwick.memset.core.di.get
+import com.citizenwarwick.memset.core.model.LoadingState
 import com.citizenwarwick.memset.core.model.MemoryCard
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class CardDesignerViewModel(
@@ -41,18 +38,6 @@ class CardDesignerViewModel(
         viewModelScope.launch {
             repository.saveCard(state.card)
         }
-    }
-
-    init {
-        state.loadingState = LoadingState.Loading
-
-        GlobalScope.launch(Dispatchers.IO) {
-            delay(2000)
-            GlobalScope.launch(Dispatchers.Main) {
-                state.loadingState = LoadingState.Loaded
-            }
-        }
-
     }
 }
 

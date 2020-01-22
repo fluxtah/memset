@@ -8,12 +8,17 @@ By splitting your app into modules it promotes reuse and eases parallel work str
 
 The following summary provides a brief explanation of what each module is responsible for and the role it plays in the application.
 
-* [:app](../master/app/README.md) (Main Module) - Contains a single activity `MainActivity` which is the main entry point into the Memset app
-* :core (API Module) - Provides common shared code everywhere including navigation constants, the app data model and DI configuration
-* :data (API) - Provides a Room database implementation for storing cards locally
-* :carddesigner (Feature Module) - Provides the card designer feature for creating and modifying cards
-* :home (Feature Module) - Provides a landing experience (WIP will probably be a list of cards and a FAB to add cards)
-* :router (API Module) - A URI based routing API that allows URI mapping to `@Composable` functions effectively defining the applications navigation
-* :ui-shared (API Module) - To share common UI components (Composables) across other modules such as navigation ui
+### Main Module
+* [:app](../master/app/README.md) Contains a single activity `MainActivity` which is the main entry point into the Memset app
+
+### Feature Modules
+* :carddesigner Provides the card designer feature for creating and modifying cards
+* :home Provides a landing experience (WIP will probably be a list of cards and a FAB to add cards)
+
+### API & Support Modules
+* :core Provides common shared code everywhere including navigation constants, the app data model and DI configuration
+* :data Provides a Room database implementation for storing cards locally
+* :ui-shared To share common UI components (Composables) across other modules such as navigation ui
+* :router A URI based routing API that allows URI mapping to `@Composable` functions effectively defining the applications navigation
 
 <img align="center" src="https://github.com/fluxtah/memset/blob/master/gfx/screenshot-02.png" alt="Card Designer" />

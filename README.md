@@ -12,13 +12,13 @@ The following summary provides a brief explanation of what each module is respon
 * [:app](../master/app/README.md) Contains a single activity `MainActivity` which is the main entry point into the Memset app
 
 ### Feature Modules
-* *:carddesigner* Provides the card designer feature for creating and modifying cards
-* *:home* Provides a landing experience (WIP will probably be a list of cards and a FAB to add cards)
+* **:carddesigner** Provides the card designer feature for creating and modifying cards
+* **:home** Provides a landing experience (WIP will probably be a list of cards and a FAB to add cards)
 
 ### API & Support Modules
-* *:core* Provides common shared code everywhere including navigation constants, the app data model and DI configuration
-* *:data* Provides a Room database implementation for storing cards locally
-* *:ui-shared* To share common UI components (Composables) across other modules such as navigation ui
-* *:router* A URI based routing API that allows URI mapping to `@Composable` functions effectively defining the applications navigation
+* **:core** Provides common shared code everywhere including navigation constants, the app data model and DI configuration
+* **:data** Provides a Room database implementation for storing cards locally
+* **:ui-shared** To share common UI components (Composables) across other modules such as navigation ui
+* **:router** A URI based routing API that allows URI mapping to `@Composable` functions effectively defining the applications navigation
 
 <img align="center" src="https://github.com/fluxtah/memset/blob/master/gfx/screenshot-02.png" alt="Card Designer" />

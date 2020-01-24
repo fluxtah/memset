@@ -28,7 +28,9 @@ class MainActivity : AppCompatActivity() {
                 schemes("https", "http")
                 hosts("memset.com", "www.memset.com")
 
-                "/" composeWith { HomeScreenComposer(model(HomeScreenViewModel::class)) }
+                "/" composeWith {
+                    HomeScreenComposer(model(HomeScreenViewModel::class))
+                }
                 "/designer" composeWith {
                     CardDesignerScreenComposer(model(CardDesignerViewModel::class))
                 }

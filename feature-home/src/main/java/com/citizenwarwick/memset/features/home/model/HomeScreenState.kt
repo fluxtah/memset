@@ -8,6 +8,6 @@ import com.citizenwarwick.memset.core.model.MemoryCard
 
 @Model
 data class HomeScreenState(
-    var loadingState: LoadingState = LoadingState.Loading,
+    var loadingState: LoadingState = LoadingState.Loaded,
     var cards: ModelList<MemoryCard> = modelListOf()
 )

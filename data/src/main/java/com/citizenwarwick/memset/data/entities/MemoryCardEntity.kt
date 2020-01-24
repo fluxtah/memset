@@ -8,6 +8,7 @@ import androidx.room.Entity
 import androidx.room.Insert
 import androidx.room.PrimaryKey
 import androidx.room.Query
+import kotlinx.coroutines.flow.Flow
 
 @Entity(tableName = "cards")
 data class MemoryCardEntity(
@@ -20,6 +21,9 @@ data class MemoryCardEntity(
 interface MemoryCardEntityDao {
     @Query("SELECT * FROM cards order by id desc")
     fun getAll(): LiveData<List<MemoryCardEntity>>
+
+    @Query("SELECT * FROM cards order by id desc")
+    fun getAllAsFlowable(): Flow<List<MemoryCardEntity>>
 
     @Insert
     suspend fun insertAll(vararg cards: MemoryCardEntity)

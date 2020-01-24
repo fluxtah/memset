@@ -47,6 +47,13 @@ class HomeScreenViewModel(
 
     init {
         cardsData.observeForever(cardsDataObserver)
+
+        // TODO bring this back when its fixed
+//        runBlocking {
+//            repository.getCardsAsFlowable().collect {
+//                state.cards = modelListOf(*it.toTypedArray())
+//            }
+//        }
     }
 
     override fun onCleared() {

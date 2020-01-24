@@ -7,6 +7,7 @@ import com.citizenwarwick.memset.core.model.MemoryCard
 import com.citizenwarwick.memset.data.MemsetDatabase
 import com.citizenwarwick.memset.data.entities.MemoryCardEntity
 import com.squareup.moshi.Moshi
+import kotlinx.coroutines.flow.Flow
 
 class MemoryCardRepository(
     private val db: MemsetDatabase = get(),
@@ -24,9 +25,13 @@ class MemoryCardRepository(
         val jsonAdapter = moshi.adapter(MemoryCard::class.java)
         return Transformations.map(
             db.memoryCardDao().getAll()
-        ) {
-            it.map { jsonAdapter.fromJson(it.cardJson!!)!! }
+        ) { entityList ->
+            entityList.map { entity -> jsonAdapter.fromJson(entity.cardJson!!)!! }
         }
+    }
+
+    fun getCardsAsFlowable(): Flow<List<MemoryCard>> {
+        TODO()
     }
 
     suspend fun deleteCard(card: MemoryCard) {

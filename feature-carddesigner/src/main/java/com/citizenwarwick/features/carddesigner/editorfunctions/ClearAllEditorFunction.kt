@@ -15,9 +15,9 @@
  */
 package com.citizenwarwick.features.carddesigner.editorfunctions
 
-import com.citizenwarwick.features.carddesigner.model.MemoryCardEditorState
+import com.citizenwarwick.features.carddesigner.CardDesignerState
 
-class ClearAllEditorFunction(val state: MemoryCardEditorState) : EditorFunction() {
+class ClearAllEditorFunction(val state: CardDesignerState) : EditorFunction() {
     override fun execute() {
         state.selectedElement = null
         state.card.upSide.elements.clear()

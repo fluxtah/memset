@@ -15,10 +15,10 @@
  */
 package com.citizenwarwick.features.carddesigner.editorfunctions
 
-import com.citizenwarwick.features.carddesigner.model.MemoryCardEditorState
+import com.citizenwarwick.features.carddesigner.CardDesignerState
 import com.citizenwarwick.memset.core.model.ShapeElement
 
-class AddShapeEditorFunction(val state: MemoryCardEditorState) : EditorFunction() {
+class AddShapeEditorFunction(val state: CardDesignerState) : EditorFunction() {
     override fun execute() {
         state.card.upSide.elements.add(ShapeElement(name = "Shape"))
     }

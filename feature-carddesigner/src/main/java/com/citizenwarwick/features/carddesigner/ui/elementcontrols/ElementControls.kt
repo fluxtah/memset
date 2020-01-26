@@ -16,21 +16,18 @@
 package com.citizenwarwick.features.carddesigner.ui.elementcontrols
 
 import androidx.compose.Composable
-import com.citizenwarwick.features.carddesigner.model.CardDesignerModel
+import com.citizenwarwick.memset.core.model.MemoryCardElement
 import com.citizenwarwick.memset.core.model.ShapeElement
 import com.citizenwarwick.memset.core.model.TextElement
 
 @Composable
-fun ElementControls(model: CardDesignerModel) {
-    when (val selectedElement = model.state.selectedElement) {
+fun ElementControls(element: MemoryCardElement) {
+    when (element) {
         is TextElement -> {
-            TextElementPropertyControls(selectedElement)
+            TextElementPropertyControls(element)
         }
         is ShapeElement -> {
-            ShapeElementPropertyControls(selectedElement)
-        }
-        null -> {
-            SurfacePropertyControls(model)
+            ShapeElementPropertyControls(element)
         }
     }
 }

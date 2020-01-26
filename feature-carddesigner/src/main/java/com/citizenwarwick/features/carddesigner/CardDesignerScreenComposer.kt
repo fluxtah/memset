@@ -18,6 +18,7 @@ package com.citizenwarwick.features.carddesigner
 import MemsetMainTemplate
 import androidx.compose.Composable
 import androidx.compose.frames.ModelList
+import androidx.compose.state
 import androidx.compose.unaryPlus
 import androidx.ui.core.Text
 import androidx.ui.core.dp
@@ -41,24 +42,30 @@ import androidx.ui.material.surface.Surface
 import androidx.ui.res.vectorResource
 import com.citizenwarwick.features.carddesigner.config.EditorConfiguration
 import com.citizenwarwick.features.carddesigner.config.EditorFunctionConfig
-import com.citizenwarwick.features.carddesigner.model.CardDesignerModel
-import com.citizenwarwick.ui.card.MemoryCard
 import com.citizenwarwick.features.carddesigner.ui.elementcontrols.ElementControls
+import com.citizenwarwick.features.carddesigner.ui.elementcontrols.SurfacePropertyControls
 import com.citizenwarwick.memset.core.Destination
+import com.citizenwarwick.memset.core.MemoryCardRepository
+import com.citizenwarwick.memset.core.di.get
 import com.citizenwarwick.memset.core.goto
 import com.citizenwarwick.memset.core.model.LoadingState
 import com.citizenwarwick.memset.core.model.MemoryCardElement
 import com.citizenwarwick.memset.router.Composer
+import com.citizenwarwick.ui.card.MemoryCard
 import com.citizenwarwick.ui.widgets.DropDownMenu
 import com.citizenwarwick.ui.widgets.IconButton
+import kotlinx.coroutines.runBlocking
 
 class CardDesignerScreenComposer(
-    private val model: CardDesignerModel
+    private val repository: MemoryCardRepository = get()
 ) : Composer() {
+    @Composable
     override fun compose() {
+        val state by +state { CardDesignerState() }
+
         MemsetMainTemplate {
-            when (model.state.loadingState) {
-                LoadingState.Loaded -> CardEditorContent()
+            when (state.loadingState) {
+                LoadingState.Loaded -> CardEditorContent(state)
                 LoadingState.Loading -> CardEditorLoading()
                 LoadingState.Error -> CardEditorLoadingError()
             }
@@ -66,21 +73,28 @@ class CardDesignerScreenComposer(
     }
 
     @Composable
-    private fun CardEditorContent() {
-        Clickable(onClick = { model.state.layersDropDownOpen = false }) {
+    private fun CardEditorContent(state: CardDesignerState) {
+        Clickable(onClick = { state.layersDropDownOpen = false }) {
             FlexColumn {
                 inflexible {
-                    TopBar()
+                    TopBar(state)
                     Column(modifier = Spacing(8.dp)) {
-                        EditorToolbar()
-                        EditorSurface()
+                        EditorToolbar(state)
+                        EditorSurface(state)
                         Divider(height = 8.dp, color = Color.Transparent)
-                        LayersDropDown()
+                        LayersDropDown(state)
                     }
                 }
                 expanded(1f) {
                     VerticalScroller(modifier = Spacing(8.dp)) {
-                        ElementControls(model)
+                        when (val element = state.selectedElement) {
+                            null -> {
+                                SurfacePropertyControls(state.card.upSide)
+                            }
+                            else -> {
+                                ElementControls(element)
+                            }
+                        }
                     }
                 }
             }
@@ -88,7 +102,7 @@ class CardDesignerScreenComposer(
     }
 
     @Composable
-    private fun TopBar() {
+    private fun TopBar(state: CardDesignerState) {
         TopAppBar(
             title = { Text("Card Designer") },
             actionData = listOf("Save")
@@ -98,7 +112,9 @@ class CardDesignerScreenComposer(
                     IconButton(
                         vectorResourceId = R.drawable.ic_save_light,
                         onClick = {
-                            model.saveCard()
+                            runBlocking {
+                                repository.saveCard(state.card)
+                            }
                             goto(Destination.HomeScreen)
                         })
                 }
@@ -107,28 +123,28 @@ class CardDesignerScreenComposer(
     }
 
     @Composable
-    private fun EditorSurface() {
+    private fun EditorSurface(state: CardDesignerState) {
         val onSurfaceClicked = {
-            model.state.editElement = null
-            model.state.selectedElement = null
-            model.state.layersDropDownOpen = false
+            state.editElement = null
+            state.selectedElement = null
+            state.layersDropDownOpen = false
         }
 
         MemoryCard(
-            card = model.state.card,
+            card = state.card,
             onSurfaceClicked = onSurfaceClicked,
-            onElementClick = { element -> model.state.selectedElement = element },
-            onElementDoubleTap = { element -> model.state.editElement = element },
-            isSelected = { model.state.selectedElement == it },
-            isEditing = { model.state.editElement == it })
+            onElementClick = { element -> state.selectedElement = element },
+            onElementDoubleTap = { element -> state.editElement = element },
+            isSelected = { state.selectedElement == it },
+            isEditing = { state.editElement == it })
     }
 
     @Composable
-    private fun EditorToolbar() {
+    private fun EditorToolbar(state: CardDesignerState) {
         Row(modifier = ExpandedWidth, arrangement = Arrangement.End) {
             for (functionConfiguration in EditorConfiguration.editorFunctionConfiguration) {
                 EditorToolbarButton(functionConfiguration, onClick = {
-                    functionConfiguration.function.invoke(model.state)()
+                    functionConfiguration.function.invoke(state)()
                 })
             }
         }
@@ -158,26 +174,26 @@ class CardDesignerScreenComposer(
     }
 
     @Composable
-    private fun LayersDropDown() {
+    private fun LayersDropDown(state: CardDesignerState) {
         DropDownMenu(
-            selectedItem = model.state.selectedElement,
+            selectedItem = state.selectedElement,
             selectedItemLabelText = { it.name },
-            items = ModelList<MemoryCardElement>().apply { addAll(model.state.card.upSide.elements) },
-            isOpen = model.state.layersDropDownOpen,
-            onDropDownPressed = { model.state.layersDropDownOpen = it }
+            items = ModelList<MemoryCardElement>().apply { addAll(state.card.upSide.elements) },
+            isOpen = state.layersDropDownOpen,
+            onDropDownPressed = { state.layersDropDownOpen = it }
         ) { item ->
-            LayersDropDownItem(item)
+            LayersDropDownItem(state, item)
         }
     }
 
     @Composable
-    private fun LayersDropDownItem(item: MemoryCardElement) {
-        Surface(color = if (model.state.selectedElement == item) Color.LightGray else Color.Transparent) {
+    private fun LayersDropDownItem(state: CardDesignerState, item: MemoryCardElement) {
+        Surface(color = if (state.selectedElement == item) Color.LightGray else Color.Transparent) {
             Padding(padding = 2.dp) {
                 FlexRow(crossAxisAlignment = CrossAxisAlignment.Center) {
                     expanded(1f) {
                         Ripple(bounded = true) {
-                            Clickable(onClick = { model.state.selectedElement = item }) {
+                            Clickable(onClick = { state.selectedElement = item }) {
                                 Container(expanded = true) {
                                     Text(modifier = Spacing(4.dp), text = item.name)
                                 }
@@ -186,7 +202,7 @@ class CardDesignerScreenComposer(
                     }
                     inflexible {
                         val vector = +vectorResource(R.drawable.ic_move_up)
-                        val onClick = { model.state.card.upSide.moveElementUp(item) }
+                        val onClick = { state.card.upSide.moveElementUp(item) }
                         IconButton(
                             iconVector = vector,
                             onClick = onClick
@@ -194,7 +210,7 @@ class CardDesignerScreenComposer(
                     }
                     inflexible {
                         val vector = +vectorResource(R.drawable.ic_move_down)
-                        val onClick = { model.state.card.upSide.moveElementDown(item) }
+                        val onClick = { state.card.upSide.moveElementDown(item) }
                         IconButton(
                             iconVector = vector,
                             onClick = onClick
@@ -202,7 +218,7 @@ class CardDesignerScreenComposer(
                     }
                     inflexible {
                         val vector = +vectorResource(R.drawable.ic_editor_tool_delete)
-                        val onClick: () -> Unit = { model.state.card.upSide.elements.remove(item) }
+                        val onClick: () -> Unit = { state.card.upSide.elements.remove(item) }
                         IconButton(
                             iconVector = vector,
                             onClick = onClick

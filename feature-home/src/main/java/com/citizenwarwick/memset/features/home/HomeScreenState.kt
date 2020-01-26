@@ -1,4 +1,4 @@
-package com.citizenwarwick.memset.features.home.model
+package com.citizenwarwick.memset.features.home
 
 import androidx.compose.Model
 import androidx.compose.frames.ModelList

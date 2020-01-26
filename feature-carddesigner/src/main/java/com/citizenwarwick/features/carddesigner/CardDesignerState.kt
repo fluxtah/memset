@@ -13,9 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.citizenwarwick.features.carddesigner.model
+package com.citizenwarwick.features.carddesigner
 
-interface CardDesignerModel {
-    val state: MemoryCardEditorState
-    fun saveCard()
-}
+import androidx.compose.Model
+import com.citizenwarwick.memset.core.model.LoadingState
+import com.citizenwarwick.memset.core.model.MemoryCard
+import com.citizenwarwick.memset.core.model.MemoryCardElement
+
+@Model
+data class CardDesignerState(
+    var loadingState: LoadingState = LoadingState.Loaded,
+    var card: MemoryCard = MemoryCard(),
+    var selectedElement: MemoryCardElement? = null,
+    var editElement: MemoryCardElement? = null,
+    var layersDropDownOpen: Boolean = false
+)

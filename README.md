@@ -13,7 +13,7 @@ The following summary provides a brief explanation of what each module is respon
 
 ### Feature Modules
 * **:carddesigner** Provides the card designer feature for creating and modifying cards
-* **:home** Provides a landing experience (WIP will probably be a list of cards and a FAB to add cards)
+* **:home** A list of cards previously created
 
 ### API & Support Modules
 * **:core** Provides common shared code everywhere including navigation constants, the app data model and DI configuration

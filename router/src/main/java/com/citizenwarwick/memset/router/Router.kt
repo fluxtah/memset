@@ -38,7 +38,7 @@ class Router {
     }
 
     private data class CommandGroup(
-        val paths: MutableList<Pair<Regex, () -> Composer>> = mutableListOf(),
+        val paths: MutableList<Pair<Regex, @Composable() () -> Unit>> = mutableListOf(),
         val schemes: MutableList<Regex> = mutableListOf(),
         val hosts: MutableList<Regex> = mutableListOf()
     )
@@ -54,7 +54,7 @@ class Router {
         mappings(Mapper(group.schemes, group.hosts, group.paths))
     }
 
-    private fun findMapping(uri: Uri): () -> Composer {
+    private fun findMapping(uri: Uri): @Composable() () -> Unit {
         val group = if (uri.scheme != null && uri.host != null) {
             commandGroups
                 .firstOrNull { group ->
@@ -96,7 +96,7 @@ class Router {
             currentUriState = Uri.parse(it)
             currentUri = currentUriState
         }
-        findMapping(currentUriState)().compose()
+        findMapping(currentUriState).invoke()
     }
 }
 

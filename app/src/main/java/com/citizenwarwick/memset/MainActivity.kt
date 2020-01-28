@@ -4,12 +4,12 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.ui.core.Text
 import androidx.ui.core.setContent
-import com.citizenwarwick.features.carddesigner.CardDesignerScreenComposer
+import com.citizenwarwick.features.carddesigner.CardDesignerScreen
 import com.citizenwarwick.memset.core.Destination
 import com.citizenwarwick.memset.core.di.bootstrap
 import com.citizenwarwick.memset.core.goto
 import com.citizenwarwick.memset.core.isCurrentDestination
-import com.citizenwarwick.memset.features.home.HomeScreenComposer
+import com.citizenwarwick.memset.features.home.HomeScreen
 import com.citizenwarwick.memset.router.Router
 
 class MainActivity : AppCompatActivity() {
@@ -23,8 +23,8 @@ class MainActivity : AppCompatActivity() {
                 schemes("https", "http")
                 hosts("memset.com", "www.memset.com")
 
-                "/" composeWith { HomeScreenComposer() }
-                "/designer" composeWith { CardDesignerScreenComposer() }
+                "/" composeTo { HomeScreen() }
+                "/designer" composeTo { CardDesignerScreen() }
                 ".*" composeTo { Text("404 Not Found") }
 
             }.startComposing(intent)

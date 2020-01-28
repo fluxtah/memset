@@ -33,10 +33,9 @@ fun CardList(cards: List<MemoryCard>, cardActions: CardActions) {
     }
 }
 
-interface CardActions {
-    fun deleteCard(card: MemoryCard)
-
-}
+class CardActions(
+    var deleteCard: (card: MemoryCard) -> Unit = {}
+)
 
 @Composable
 fun CardContainer(card: MemoryCard, cardActions: CardActions) {

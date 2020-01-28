@@ -18,7 +18,7 @@ package com.citizenwarwick.memset.features.home
 import MemsetMainTemplate
 import androidx.compose.Composable
 import androidx.compose.frames.modelListOf
-import androidx.compose.state
+import androidx.compose.memo
 import androidx.compose.unaryPlus
 import androidx.ui.core.Alignment
 import androidx.ui.core.Text
@@ -32,55 +32,65 @@ import com.citizenwarwick.memset.core.di.get
 import com.citizenwarwick.memset.core.goto
 import com.citizenwarwick.memset.core.model.LoadingState
 import com.citizenwarwick.memset.core.model.MemoryCard
-import com.citizenwarwick.memset.router.Composer
+import com.citizenwarwick.memset.core.observe
 import com.citizenwarwick.ui.card.CardActions
 import com.citizenwarwick.ui.card.CardList
 import com.citizenwarwick.ui.widgets.IconButton
 import kotlinx.coroutines.runBlocking
 
-class HomeScreenComposer(private val repository: MemoryCardRepository = get()) : Composer() {
-    override fun compose() {
-        MemsetMainTemplate {
+@Composable
+fun HomeScreen(repository: MemoryCardRepository = get()) {
+
+    //
+    // We want to remember this state across re-composition, so we memo it.
+    //
+    val state = +memo { HomeScreenState() }
+
+    observe(repository.getCards()) {
+        state.loadingState = LoadingState.Loaded
+        state.cards = modelListOf(*it.toTypedArray())
+    }
+
+    val cardActions = CardActions(
+        deleteCard = { card ->
             // TODO temporary solution until Compose matures with better ways to do
             //   async work other than relying on ViewModel
-            val state by +state { HomeScreenState() }
-            repository.getCards().observeForever {
-                state.cards = modelListOf(*it.toTypedArray())
-                state.loadingState = LoadingState.Loaded
+            runBlocking {
+                repository.deleteCard(card)
             }
+        })
 
-            when (state.loadingState) {
-                LoadingState.Loaded -> {
-                    CardListContainer(state.cards)
-                }
-                LoadingState.Loading -> {
-                    Text("Loading...")
-                }
-                LoadingState.Error -> {
-                    Text("Error")
-                }
+    HomeScreenContent(state, cardActions)
+}
+
+@Composable
+fun HomeScreenContent(state: HomeScreenState, cardActions: CardActions) {
+    MemsetMainTemplate {
+        when (state.loadingState) {
+            LoadingState.Loaded -> {
+                CardListContainer(state.cards, cardActions)
+            }
+            LoadingState.Loading -> {
+                Text("Loading...")
+            }
+            LoadingState.Error -> {
+                Text("Error")
             }
         }
     }
+}
 
-    @Composable
-    private fun CardListContainer(cards: List<MemoryCard>) {
-        Stack {
-            expanded {
-                CardList(cards, object : CardActions {
-                    override fun deleteCard(card: MemoryCard) {
-                        runBlocking {
-                            repository.deleteCard(card)
-                        }
-                    }
-                })
-            }
-            aligned(Alignment.BottomRight) {
-                FloatingActionButton(modifier = Spacing(16.dp), elevation = 6.dp) {
-                    IconButton(
-                        vectorResourceId = R.drawable.ic_add_inverted,
-                        onClick = { goto(Destination.CardDesigner) })
-                }
+@Composable
+private fun CardListContainer(cards: List<MemoryCard>, cardActions: CardActions) {
+    Stack {
+        expanded {
+            CardList(cards, cardActions)
+        }
+        aligned(Alignment.BottomRight) {
+            FloatingActionButton(modifier = Spacing(16.dp), elevation = 6.dp) {
+                IconButton(
+                    vectorResourceId = R.drawable.ic_add_inverted,
+                    onClick = { goto(Destination.CardDesigner) })
             }
         }
     }

@@ -20,24 +20,15 @@ import androidx.compose.Composable
 class Mapper(
     private val schemes: MutableList<Regex>,
     private val hosts: MutableList<Regex>,
-    private val paths: MutableList<Pair<Regex, () -> Composer>>
+    private val paths: MutableList<Pair<Regex, @Composable() () -> Unit>>
 ) {
-    infix fun String.composeWith(composer: () -> Composer) {
-        paths.add(toRegex() to composer)
-    }
-
     infix fun String.composeTo(content: @Composable() () -> Unit) {
-        paths.add(toRegex() to {
-            object : Composer() {
-                @Composable
-                override fun compose() = content()
-            }
-        })
+        paths.add(toRegex() to content)
     }
 
-    infix fun Array<String>.composeWith(composer: () -> Composer) {
+    infix fun Array<String>.composeTo(content: @Composable() () -> Unit) {
         this.forEach {
-            paths.add(it.toRegex() to composer)
+            paths.add(it.toRegex() to content)
         }
     }
 

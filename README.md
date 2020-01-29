@@ -23,9 +23,7 @@ The following summary provides a brief explanation of what each module is respon
 
 <img align="center" src="https://github.com/fluxtah/memset/blob/master/gfx/screenshot-02.png" alt="Card Designer" />
 
-The application has a single entry point in [`MainActivity`](https://github.com/fluxtah/memset/blob/master/app/src/main/java/com/citizenwarwick/memset/MainActivity.kt) where UI is served using Jetpack Compose `setContent { }` extension function and Memsets own solution to routing, the `Router`.
-
-# App Navigatino
+## App Navigation in Memset
 Memset uses a custom URI driven solution to navigation and encapsulates that solution into the `:router` module.
 
 `Router` is an API that allows us produce composables in a componentised manner by mapping URI's to an `@Composable` function block.
@@ -76,7 +74,7 @@ FloatingActionButton(modifier = Spacing(16.dp), elevation = 6.dp) {
 }
 ```
 
-Check out `MainActivity` in the `:app` module for a real working example of this routing pattern.
+Check out [`MainActivity`](https://github.com/fluxtah/memset/blob/master/app/src/main/java/com/citizenwarwick/memset/MainActivity.kt) in the `:app` module for a real working example of this routing pattern.
 
 TBC
 

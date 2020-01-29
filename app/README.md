@@ -25,23 +25,27 @@ class MainActivity : AppCompatActivity() {
 In `MainActivity` we declare a `Router` and configure to with our mappings.
 
 ```
-setContent {
-    Router("https://memset.com/") {
-        schemes("https", "http")
-        hosts("memset.com", "www.memset.com")
+class MainActivity : AppCompatActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
-        "/" composeWith { HomeScreenComposer() }
-        "/designer" composeWith {
-            CardDesignerScreenComposer()
+        setContent {
+            Router("https://memset.com/") {
+                schemes("https", "http")
+                hosts("memset.com", "www.memset.com")
+
+                "/" composeTo { HomeScreen() }
+                "/designer" composeTo { CardDesignerScreen() }
+                ".*" composeTo { Text("404 Not Found") }
+
+            }.startComposing()
         }
-        ".*" composeTo { Text("404 Not Found") }
-
-    }.startComposing(intent)
+    }
 }
 ```
 
 Givem the example above `Router("https://memset.com")` is defined as our starting point if no other URI is available (such as parsed from the incoming `Intent`, check the `:router` module for documentation on why URI'sa and incoming Intents).
 
-The router allows us to specify which URI's are handled by your application and where those URI"s go (to which `Composer`).
+The router allows us to specify which URI's are handled by your application and where those URI"s go (to which `@Composable`).
 
 Check out `MainActivity` for a real working example of this routing pattern.

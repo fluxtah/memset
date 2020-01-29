@@ -46,6 +46,6 @@ class MainActivity : AppCompatActivity() {
 
 Givem the example above `Router("https://memset.com")` is defined as our starting point if no other URI is available (such as parsed from the incoming `Intent`, check the `:router` module for documentation on why URI'sa and incoming Intents).
 
-The router allows us to specify which URI's are handled by your application and where those URI"s go (to which `Composer`).
+The router allows us to specify which URI's are handled by your application and where those URI"s go (to which `@Composable`).
 
 Check out `MainActivity` for a real working example of this routing pattern.

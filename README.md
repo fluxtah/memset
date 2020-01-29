@@ -21,14 +21,12 @@ The following summary provides a brief explanation of what each module is respon
 * **:ui-shared** To share common UI components (Composables) across other modules such as navigation ui
 * **:router** A URI based routing API that allows URI mapping to `@Composable` functions effectively defining the applications navigation
 
-<img align="center" src="https://github.com/fluxtah/memset/blob/master/gfx/screenshot-02.png" alt="Card Designer" />
-
 ## App Navigation in Memset
 Memset uses a custom URI driven solution to navigation and encapsulates that solution into the `:router` module.
 
 `Router` is an API that allows us produce composables by mapping URI's to a `@Composable` function block.
 
-Looking at the following code example, in `MainActivity`we use Compose's `setContent` to create a `Router`. With the `Router` we can add a block of mappings specifying which URI paths map to which `@Composable` bblocks using the `composeTo` infix operator along with schemes and hosts to qualify URIs that can map to those paths.
+Looking at the following code example, in `MainActivity`we use Compose's `setContent` to create a `Router`. With the `Router` we can add a block of mappings specifying which URI paths map to which `@Composable` bblocks using the `composeTo` infix operator along with schemes and hosts to qualify URIs that can map to those paths. <img align="center" src="https://github.com/fluxtah/memset/blob/master/gfx/screenshot-02.png" alt="Card Designer" width="300" height="571" align="right"  /> 
 
 ```kotlin
 class MainActivity : AppCompatActivity() {

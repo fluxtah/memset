@@ -45,8 +45,7 @@ fun HomeScreen(repository: MemoryCardRepository = get()) {
     // We want to remember this state across re-composition, so we memo it.
     //
     val state = +memo { HomeScreenState() }
-
-    observe(repository.getCards()) {
+    observe(repository::getCards) {
         state.loadingState = LoadingState.Loaded
         state.cards = modelListOf(*it.toTypedArray())
     }

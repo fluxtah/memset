@@ -30,7 +30,7 @@ Memset uses a custom URI driven solution to navigation and encapsulates that sol
 
 Looking at the following code example, in `MainActivity`we use Compose's `setContent` to create a `Router`. With the `Router` we can add a block of mappings specifying which URI paths map to which `@Composable` bblocks using the `composeTo` infix operator along with schemes and hosts to qualify URIs that can map to those paths.
 
-```
+```kotlin
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,7 +54,7 @@ Givem the example above `Router("https://memset.com")` is defined as our startin
 
 For inter-module navigation we add some convenience up in the `:core` module (which every module that wishes to navigate should include).
 
-```
+```kotlin
 sealed class Destination(val uri: String) {
     object HomeScreen : Destination("/")
     object QuxScreen : Destination("/qux")
@@ -66,7 +66,7 @@ fun goto(destination: Destination) = goto(destination.uri)
 
 With the sealed class `Destination` and its implementations we can strongly type our navigation destinations, along with a helper functions `goto` that we can use to perform the navigation.
 
-```
+```kotlin
 FloatingActionButton(modifier = Spacing(16.dp), elevation = 6.dp) {
     IconButton(
         vectorResourceId = R.drawable.ic_add_inverted,

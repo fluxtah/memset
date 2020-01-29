@@ -25,18 +25,22 @@ class MainActivity : AppCompatActivity() {
 In `MainActivity` we declare a `Router` and configure to with our mappings.
 
 ```
-setContent {
-    Router("https://memset.com/") {
-        schemes("https", "http")
-        hosts("memset.com", "www.memset.com")
+class MainActivity : AppCompatActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
-        "/" composeWith { HomeScreenComposer() }
-        "/designer" composeWith {
-            CardDesignerScreenComposer()
+        setContent {
+            Router("https://memset.com/") {
+                schemes("https", "http")
+                hosts("memset.com", "www.memset.com")
+
+                "/" composeTo { HomeScreen() }
+                "/designer" composeTo { CardDesignerScreen() }
+                ".*" composeTo { Text("404 Not Found") }
+
+            }.startComposing()
         }
-        ".*" composeTo { Text("404 Not Found") }
-
-    }.startComposing(intent)
+    }
 }
 ```
 

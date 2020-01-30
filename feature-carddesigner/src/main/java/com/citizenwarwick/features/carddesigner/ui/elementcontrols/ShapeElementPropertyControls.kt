@@ -18,9 +18,7 @@ package com.citizenwarwick.features.carddesigner.ui.elementcontrols
 import androidx.compose.Composable
 import androidx.compose.frames.ModelList
 import androidx.compose.state
-import androidx.compose.unaryPlus
 import androidx.ui.core.Text
-import androidx.ui.core.dp
 import androidx.ui.foundation.Clickable
 import androidx.ui.graphics.Color
 import androidx.ui.layout.Column
@@ -29,13 +27,14 @@ import androidx.ui.layout.Padding
 import androidx.ui.layout.Spacing
 import androidx.ui.material.ripple.Ripple
 import androidx.ui.material.surface.Surface
-import com.citizenwarwick.memset.core.model.ShapeElement
-import com.citizenwarwick.memset.core.model.ShapeType
+import androidx.ui.unit.dp
 import com.citizenwarwick.features.carddesigner.ui.elementcontrols.properties.AlignmentPropertyControl
 import com.citizenwarwick.features.carddesigner.ui.elementcontrols.properties.ColorPropertyControl
 import com.citizenwarwick.features.carddesigner.ui.elementcontrols.properties.DropDownMenuPropertyControl
 import com.citizenwarwick.features.carddesigner.ui.elementcontrols.properties.SliderPropertyControl
 import com.citizenwarwick.features.carddesigner.ui.elementcontrols.properties.SpacingPropertyControls
+import com.citizenwarwick.memset.core.model.ShapeElement
+import com.citizenwarwick.memset.core.model.ShapeType
 
 @Composable
 fun ShapeElementPropertyControls(element: ShapeElement) {
@@ -86,10 +85,13 @@ fun ShapeElementPropertyControls(element: ShapeElement) {
 
 @Composable
 private fun ShapeTypeDropDownPropertyControl(element: ShapeElement) {
-    val shapeTypes = ModelList<ShapeType>().apply { addAll(
-        ShapeType.values()) }
+    val shapeTypes = ModelList<ShapeType>().apply {
+        addAll(
+            ShapeType.values()
+        )
+    }
 
-    var isShapeTypeDropDownOpen by +state { false }
+    var isShapeTypeDropDownOpen by state { false }
 
     DropDownMenuPropertyControl(
         label = "Shape",

@@ -15,18 +15,19 @@
  */
 package com.citizenwarwick.memset.router
 
+import android.net.Uri
 import androidx.compose.Composable
 
 class Mapper(
     private val schemes: MutableList<Regex>,
     private val hosts: MutableList<Regex>,
-    private val paths: MutableList<Pair<Regex, @Composable() () -> Unit>>
+    private val paths: MutableList<Pair<Regex, @Composable() (Uri) -> Unit>>
 ) {
-    infix fun String.composeTo(content: @Composable() () -> Unit) {
+    infix fun String.composeTo(content: @Composable() (Uri) -> Unit) {
         paths.add(toRegex() to content)
     }
 
-    infix fun Array<String>.composeTo(content: @Composable() () -> Unit) {
+    infix fun Array<String>.composeTo(content: @Composable() (Uri) -> Unit) {
         this.forEach {
             paths.add(it.toRegex() to content)
         }

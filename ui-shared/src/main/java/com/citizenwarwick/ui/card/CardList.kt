@@ -3,19 +3,18 @@ package com.citizenwarwick.ui.card
 import androidx.compose.Composable
 import androidx.compose.frames.modelListOf
 import androidx.compose.state
-import androidx.compose.unaryPlus
-import androidx.ui.core.Alignment
 import androidx.ui.core.Text
-import androidx.ui.core.dp
 import androidx.ui.foundation.Clickable
 import androidx.ui.foundation.VerticalScroller
 import androidx.ui.graphics.Color
 import androidx.ui.layout.Column
 import androidx.ui.layout.Container
-import androidx.ui.layout.Spacing
+import androidx.ui.layout.LayoutGravity
+import androidx.ui.layout.LayoutPadding
 import androidx.ui.layout.Stack
 import androidx.ui.material.Divider
 import androidx.ui.material.ripple.Ripple
+import androidx.ui.unit.dp
 import com.citizenwarwick.memset.core.model.MemoryCard
 import com.citizenwarwick.ui.R
 import com.citizenwarwick.ui.widgets.DropDownPopupMenu
@@ -24,7 +23,7 @@ import com.citizenwarwick.ui.widgets.IconButton
 @Composable
 fun CardList(cards: List<MemoryCard>, cardActions: CardActions) {
     VerticalScroller {
-        Column(modifier = Spacing(8.dp)) {
+        Column(modifier = LayoutPadding(8.dp)) {
             for (card in cards) {
                 CardContainer(card, cardActions)
                 Divider(height = 8.dp, color = Color.Transparent)
@@ -34,19 +33,19 @@ fun CardList(cards: List<MemoryCard>, cardActions: CardActions) {
 }
 
 class CardActions(
-    var deleteCard: (card: MemoryCard) -> Unit = {}
+    var deleteCard: (card: MemoryCard) -> Unit = {},
+    var editCard: (card: MemoryCard) -> Unit = {}
 )
 
 @Composable
 fun CardContainer(card: MemoryCard, cardActions: CardActions) {
     Stack {
-        expanded {
-            MemoryCard(
-                card = card,
-                onSurfaceClicked = { card.facingFront = !card.facingFront },
-                onElementClick = { card.facingFront = !card.facingFront })
-        }
-        aligned(Alignment.TopRight) {
+        MemoryCard(
+            card = card,
+            onSurfaceClicked = { card.facingFront = !card.facingFront },
+            onElementClick = { card.facingFront = !card.facingFront })
+
+        Container(LayoutGravity.TopRight) {
             CardDropDownMenu(card, cardActions)
         }
     }
@@ -55,24 +54,25 @@ fun CardContainer(card: MemoryCard, cardActions: CardActions) {
 @Composable
 private fun CardDropDownMenu(card: MemoryCard, cardActions: CardActions) {
     Container {
-        var isOpen by +state { false }
+        val isOpen = state { false }
 
         IconButton(
             vectorResourceId = R.drawable.ic_more,
-            onClick = { isOpen = !isOpen })
+            onClick = { isOpen.value = !isOpen.value })
 
-        val items = modelListOf<Pair<String, () -> Unit>>(
-            "Delete" to { cardActions.deleteCard(card) }
+        val items = modelListOf(
+            "Delete" to { cardActions.deleteCard(card) },
+            "Edit" to { cardActions.editCard(card) }
         )
-        if (isOpen) {
+        if (isOpen.value) {
             DropDownPopupMenu(
-                modifier = Spacing(right = 16.dp, bottom = 16.dp),
+                modifier = LayoutPadding(right = 16.dp, bottom = 16.dp),
                 items = items
             ) { item ->
                 Ripple(bounded = true) {
                     Clickable(onClick = { item.second() }) {
                         Container {
-                            Text(modifier = Spacing(12.dp), text = item.first)
+                            Text(modifier = LayoutPadding(12.dp), text = item.first)
                         }
                     }
                 }

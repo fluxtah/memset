@@ -17,28 +17,27 @@ package com.citizenwarwick.ui.widgets
 
 import androidx.compose.Composable
 import androidx.compose.frames.ModelList
-import androidx.compose.unaryPlus
 import androidx.ui.core.DropDownAlignment
 import androidx.ui.core.DropdownPopup
 import androidx.ui.core.Modifier
 import androidx.ui.core.Text
-import androidx.ui.core.dp
 import androidx.ui.foundation.Clickable
 import androidx.ui.foundation.VerticalScroller
-import androidx.ui.foundation.shape.border.Border
 import androidx.ui.foundation.shape.corner.RoundedCornerShape
 import androidx.ui.graphics.Color
+import androidx.ui.graphics.SolidColor
 import androidx.ui.graphics.vector.DrawVector
 import androidx.ui.layout.Column
 import androidx.ui.layout.Container
 import androidx.ui.layout.CrossAxisAlignment
-import androidx.ui.layout.ExpandedWidth
 import androidx.ui.layout.FlexRow
-import androidx.ui.layout.MaxHeight
+import androidx.ui.layout.LayoutHeight
+import androidx.ui.layout.LayoutWidth
 import androidx.ui.layout.Spacing
 import androidx.ui.material.surface.Card
 import androidx.ui.material.surface.Surface
 import androidx.ui.res.vectorResource
+import androidx.ui.unit.dp
 import com.citizenwarwick.ui.R
 
 @Composable
@@ -61,7 +60,7 @@ fun <T> DropDownMenu(
         }
 
         if (isOpen) {
-            DropDownPopupMenu(modifier = ExpandedWidth, items = items, itemTemplate = itemTemplate)
+            DropDownPopupMenu(modifier = LayoutWidth.Fill, items = items, itemTemplate = itemTemplate)
         }
     }
 }
@@ -76,7 +75,8 @@ fun <T> DropDownPopupMenu(
         Container {
             Card(
                 shape = RoundedCornerShape(4.dp),
-                border = Border(color = Color.LightGray, width = 1.dp),
+                borderWidth = 1.dp,
+                borderBrush = SolidColor(Color.LightGray),
                 modifier = modifier,
                 elevation = 4.dp
             ) {
@@ -91,7 +91,7 @@ private fun <T> DropDownContent(
     items: ModelList<T>,
     itemTemplate: @Composable() (data: T) -> Unit
 ) {
-    VerticalScroller(modifier = MaxHeight(196.dp)) {
+    VerticalScroller(modifier = LayoutHeight(196.dp)) {
         Column {
             items.forEach {
                 itemTemplate(it)
@@ -110,7 +110,8 @@ private fun DropDownBoxLabel(isOpen: Boolean, label: String = "") {
         Container {
             Surface(
                 color = Color.White,
-                border = Border(Color.LightGray, 1.dp),
+                borderWidth = 1.dp,
+                borderBrush = SolidColor(Color.LightGray),
                 shape = RoundedCornerShape(4.dp)
             ) {
                 FlexRow(crossAxisAlignment = CrossAxisAlignment.Center) {
@@ -119,7 +120,7 @@ private fun DropDownBoxLabel(isOpen: Boolean, label: String = "") {
                     }
                     inflexible {
                         Container(width = 32.dp, height = 32.dp) {
-                            DrawVector(vectorImage = +vectorResource(R.drawable.ic_arrow_drop_up))
+                            DrawVector(vectorImage = vectorResource(R.drawable.ic_arrow_drop_up))
                         }
                     }
                 }
@@ -130,7 +131,8 @@ private fun DropDownBoxLabel(isOpen: Boolean, label: String = "") {
             Surface(
                 color = Color.White,
                 elevation = 2.dp,
-                border = Border(Color.LightGray, 1.dp),
+                borderWidth = 1.dp,
+                borderBrush = SolidColor(Color.LightGray),
                 shape = RoundedCornerShape(4.dp)
             ) {
                 FlexRow(crossAxisAlignment = CrossAxisAlignment.Center) {
@@ -139,7 +141,7 @@ private fun DropDownBoxLabel(isOpen: Boolean, label: String = "") {
                     }
                     inflexible {
                         Container(width = 32.dp, height = 32.dp) {
-                            DrawVector(vectorImage = +vectorResource(R.drawable.ic_arrow_drop_down))
+                            DrawVector(vectorImage = vectorResource(R.drawable.ic_arrow_drop_down))
                         }
                     }
                 }

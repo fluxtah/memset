@@ -18,10 +18,8 @@ package com.citizenwarwick.features.carddesigner
 import MemsetMainTemplate
 import androidx.compose.Composable
 import androidx.compose.frames.ModelList
-import androidx.compose.state
-import androidx.compose.unaryPlus
+import androidx.compose.remember
 import androidx.ui.core.Text
-import androidx.ui.core.dp
 import androidx.ui.foundation.Clickable
 import androidx.ui.foundation.VerticalScroller
 import androidx.ui.graphics.Color
@@ -29,9 +27,9 @@ import androidx.ui.layout.Arrangement
 import androidx.ui.layout.Column
 import androidx.ui.layout.Container
 import androidx.ui.layout.CrossAxisAlignment
-import androidx.ui.layout.ExpandedWidth
 import androidx.ui.layout.FlexColumn
 import androidx.ui.layout.FlexRow
+import androidx.ui.layout.LayoutWidth
 import androidx.ui.layout.Padding
 import androidx.ui.layout.Row
 import androidx.ui.layout.Spacing
@@ -40,6 +38,7 @@ import androidx.ui.material.TopAppBar
 import androidx.ui.material.ripple.Ripple
 import androidx.ui.material.surface.Surface
 import androidx.ui.res.vectorResource
+import androidx.ui.unit.dp
 import com.citizenwarwick.features.carddesigner.config.EditorConfiguration
 import com.citizenwarwick.features.carddesigner.config.EditorFunctionConfig
 import com.citizenwarwick.features.carddesigner.ui.elementcontrols.ElementControls
@@ -50,14 +49,22 @@ import com.citizenwarwick.memset.core.di.get
 import com.citizenwarwick.memset.core.goto
 import com.citizenwarwick.memset.core.model.LoadingState
 import com.citizenwarwick.memset.core.model.MemoryCardElement
+import com.citizenwarwick.memset.core.observe
 import com.citizenwarwick.ui.card.MemoryCard
 import com.citizenwarwick.ui.widgets.DropDownMenu
 import com.citizenwarwick.ui.widgets.IconButton
 import kotlinx.coroutines.runBlocking
 
 @Composable
-fun CardDesignerScreen(repository: MemoryCardRepository = get()) {
-    val state by +state { CardDesignerState() }
+fun CardDesignerScreen(repository: MemoryCardRepository = get(), cardUuid: String? = null) {
+    val state = remember { CardDesignerState() }
+
+    if (cardUuid != null && cardUuid.isNotEmpty()) {
+        observe({ repository.getCard(cardUuid) }) {
+            state.card = it
+            state.loadingState = LoadingState.Loaded
+        }
+    }
 
     val onCardSaved = {
         runBlocking {
@@ -140,7 +147,7 @@ private fun EditorSurface(state: CardDesignerState) {
 
 @Composable
 private fun EditorToolbar(state: CardDesignerState) {
-    Row(modifier = ExpandedWidth, arrangement = Arrangement.End) {
+    Row(modifier = LayoutWidth.Fill, arrangement = Arrangement.End) {
         for (functionConfiguration in EditorConfiguration.editorFunctionConfiguration) {
             EditorToolbarButton(functionConfiguration, onClick = {
                 functionConfiguration.function.invoke(state)()
@@ -151,7 +158,7 @@ private fun EditorToolbar(state: CardDesignerState) {
 
 @Composable
 private fun EditorToolbarButton(editorFunction: EditorFunctionConfig, onClick: () -> Unit) {
-    val vector = +vectorResource(editorFunction.icon)
+    val vector = vectorResource(editorFunction.icon)
     IconButton(
         vectorResourceId = editorFunction.icon,
         onClick = onClick
@@ -200,7 +207,7 @@ private fun LayersDropDownItem(state: CardDesignerState, item: MemoryCardElement
                     }
                 }
                 inflexible {
-                    val vector = +vectorResource(R.drawable.ic_move_up)
+                    val vector = vectorResource(R.drawable.ic_move_up)
                     val onClick = { state.card.upSide.moveElementUp(item) }
                     IconButton(
                         iconVector = vector,
@@ -208,7 +215,7 @@ private fun LayersDropDownItem(state: CardDesignerState, item: MemoryCardElement
                     )
                 }
                 inflexible {
-                    val vector = +vectorResource(R.drawable.ic_move_down)
+                    val vector = vectorResource(R.drawable.ic_move_down)
                     val onClick = { state.card.upSide.moveElementDown(item) }
                     IconButton(
                         iconVector = vector,
@@ -216,7 +223,7 @@ private fun LayersDropDownItem(state: CardDesignerState, item: MemoryCardElement
                     )
                 }
                 inflexible {
-                    val vector = +vectorResource(R.drawable.ic_editor_tool_delete)
+                    val vector = vectorResource(R.drawable.ic_editor_tool_delete)
                     val onClick: () -> Unit = { state.card.upSide.elements.remove(item) }
                     IconButton(
                         iconVector = vector,

@@ -30,6 +30,16 @@ class MemoryCardRepository(
         }
     }
 
+    fun getCard(uuid: String): LiveData<MemoryCard> {
+        val jsonAdapter = moshi.adapter(MemoryCard::class.java)
+        return Transformations.map(
+            db.memoryCardDao().getByUuid(uuid)
+        ) { entity ->
+            jsonAdapter.fromJson(entity.cardJson!!)!!
+        }
+    }
+
+
     fun getCardsAsFlowable(): Flow<List<MemoryCard>> {
         TODO()
     }

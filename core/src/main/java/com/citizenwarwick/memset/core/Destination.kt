@@ -6,7 +6,8 @@ import com.citizenwarwick.memset.router.isCurrentUri
 sealed class Destination(val uri: String) {
     object HomeScreen : Destination("/")
     object QuxScreen : Destination("/qux")
-    object CardDesigner : Destination("/designer")
+    data class CardDesigner(val cardUid: String = "") :
+        Destination(if (cardUid.isEmpty()) "/designer" else "/designer/$cardUid")
 }
 
 fun goto(destination: Destination) = goto(destination.uri)

@@ -18,9 +18,7 @@ package com.citizenwarwick.features.carddesigner.ui.elementcontrols
 import androidx.compose.Composable
 import androidx.compose.frames.modelListOf
 import androidx.compose.state
-import androidx.compose.unaryPlus
 import androidx.ui.core.Text
-import androidx.ui.core.dp
 import androidx.ui.foundation.Clickable
 import androidx.ui.graphics.Color
 import androidx.ui.layout.Column
@@ -30,13 +28,14 @@ import androidx.ui.layout.Spacing
 import androidx.ui.material.ripple.Ripple
 import androidx.ui.material.surface.Surface
 import androidx.ui.text.font.FontWeight
+import androidx.ui.unit.dp
 import com.citizenwarwick.features.carddesigner.config.EditorConfiguration
-import com.citizenwarwick.memset.core.model.TextElement
 import com.citizenwarwick.features.carddesigner.ui.elementcontrols.properties.AlignmentPropertyControl
 import com.citizenwarwick.features.carddesigner.ui.elementcontrols.properties.ColorPropertyControl
 import com.citizenwarwick.features.carddesigner.ui.elementcontrols.properties.DropDownMenuPropertyControl
 import com.citizenwarwick.features.carddesigner.ui.elementcontrols.properties.SliderPropertyControl
 import com.citizenwarwick.features.carddesigner.ui.elementcontrols.properties.SpacingPropertyControls
+import com.citizenwarwick.memset.core.model.TextElement
 
 @Composable
 fun TextElementPropertyControls(element: TextElement) {
@@ -79,7 +78,7 @@ private fun FontWeightDropDownPropertyControl(element: TextElement) {
         "Bold" to FontWeight.Bold
     )
 
-    var isFontWeightDropDownOpen by +state { false }
+    var isFontWeightDropDownOpen by state { false }
 
     DropDownMenuPropertyControl(
         label = "Font Weight",

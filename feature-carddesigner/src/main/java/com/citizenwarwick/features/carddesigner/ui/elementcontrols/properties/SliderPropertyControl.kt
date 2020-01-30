@@ -18,11 +18,10 @@ package com.citizenwarwick.features.carddesigner.ui.elementcontrols.properties
 import androidx.compose.Composable
 import androidx.ui.core.Text
 import androidx.ui.layout.CrossAxisAlignment
-import androidx.ui.layout.ExpandedWidth
 import androidx.ui.layout.FlexRow
+import androidx.ui.layout.LayoutWidth
 import androidx.ui.material.Slider
 import androidx.ui.material.SliderPosition
-import androidx.ui.toStringAsFixed
 import kotlin.math.roundToInt
 
 @Composable
@@ -39,13 +38,13 @@ fun SliderPropertyControl(
         expanded(2f) {
             Slider(
                 position = SliderPosition(initial = initialValue, valueRange = valueRange),
-                modifier = ExpandedWidth,
+                modifier = LayoutWidth.Fill,
                 onValueChange = {
                     onValueChanged(it.roundToInt().toFloat())
                 })
         }
         inflexible {
-            Text(text = initialValue.toStringAsFixed(1))
+            Text(text = initialValue.toString())
         }
     }
 }

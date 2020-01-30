@@ -20,6 +20,10 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
+    }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -29,6 +33,9 @@ android {
 
     buildFeatures {
         compose true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion "$compose_version"
     }
 }
 
@@ -44,8 +51,14 @@ dependencies {
     implementation("com.squareup.moshi:moshi:1.9.2")
     implementation("com.squareup.moshi:moshi-kotlin:1.9.2")
 
-    implementation "androidx.ui:ui-foundation:$androidx_ui_version"
-    implementation "androidx.ui:ui-framework:$androidx_ui_version"
+    implementation "androidx.compose:compose-compiler:$compose_version"
+    implementation "androidx.compose:compose-runtime:$compose_version"
+    implementation "androidx.ui:ui-foundation:$compose_ui_version"
+    implementation "androidx.ui:ui-framework:$compose_ui_version"
+    implementation "androidx.ui:ui-layout:$compose_ui_version"
+    implementation "androidx.ui:ui-material:$compose_ui_version"
+    implementation "androidx.ui:ui-tooling:$compose_ui_version"
+
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinx_coroutines_version"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlinx_coroutines_version"
 

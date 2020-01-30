@@ -19,7 +19,6 @@ import android.content.Intent
 import android.net.Uri
 import androidx.compose.Composable
 import androidx.compose.state
-import androidx.compose.unaryPlus
 
 class Router {
     private val homeUri: Uri
@@ -38,7 +37,7 @@ class Router {
     }
 
     private data class CommandGroup(
-        val paths: MutableList<Pair<Regex, @Composable() () -> Unit>> = mutableListOf(),
+        val paths: MutableList<Pair<Regex, @Composable() (Uri) -> Unit>> = mutableListOf(),
         val schemes: MutableList<Regex> = mutableListOf(),
         val hosts: MutableList<Regex> = mutableListOf()
     )
@@ -54,7 +53,7 @@ class Router {
         mappings(Mapper(group.schemes, group.hosts, group.paths))
     }
 
-    private fun findMapping(uri: Uri): @Composable() () -> Unit {
+    private fun findMapping(uri: Uri): @Composable() (Uri) -> Unit {
         val group = if (uri.scheme != null && uri.host != null) {
             commandGroups
                 .firstOrNull { group ->
@@ -91,12 +90,14 @@ class Router {
             }
         }
 
-        var currentUriState by +state { currentUri }
+        var currentUriState by state { currentUri }
         gotoDelegate = {
             currentUriState = Uri.parse(it)
             currentUri = currentUriState
         }
-        findMapping(currentUriState).invoke()
+        currentUriState.let {
+            findMapping(it).invoke(it)
+        }
     }
 }
 

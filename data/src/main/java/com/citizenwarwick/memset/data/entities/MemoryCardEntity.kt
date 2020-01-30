@@ -22,6 +22,9 @@ interface MemoryCardEntityDao {
     @Query("SELECT * FROM cards order by id desc")
     fun getAll(): LiveData<List<MemoryCardEntity>>
 
+    @Query("SELECT * FROM cards where uuid = :uuid")
+    fun getByUuid(uuid: String): LiveData<MemoryCardEntity>
+
     @Query("SELECT * FROM cards order by id desc")
     fun getAllAsFlowable(): Flow<List<MemoryCardEntity>>
 

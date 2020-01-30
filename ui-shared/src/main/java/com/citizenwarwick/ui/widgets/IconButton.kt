@@ -17,29 +17,28 @@ package com.citizenwarwick.ui.widgets
 
 import androidx.annotation.DrawableRes
 import androidx.compose.Composable
-import androidx.compose.unaryPlus
-import androidx.ui.core.dp
 import androidx.ui.foundation.Clickable
 import androidx.ui.foundation.shape.corner.RoundedCornerShape
 import androidx.ui.graphics.Color
 import androidx.ui.graphics.vector.DrawVector
 import androidx.ui.graphics.vector.VectorAsset
 import androidx.ui.layout.Container
-import androidx.ui.layout.Spacing
+import androidx.ui.layout.LayoutPadding
 import androidx.ui.material.MaterialTheme
 import androidx.ui.material.ripple.Ripple
 import androidx.ui.material.surface.Surface
 import androidx.ui.res.vectorResource
+import androidx.ui.unit.dp
 
 @Composable
 fun IconButton(@DrawableRes vectorResourceId: Int, selected: Boolean = false, onClick: () -> Unit) {
-    val vector = +vectorResource(vectorResourceId)
+    val vector = vectorResource(vectorResourceId)
     IconButton(vector, selected, onClick)
 }
 
 @Composable
 fun IconButton(iconVector: VectorAsset, selected: Boolean = false, onClick: () -> Unit) {
-    val colors = (+MaterialTheme.colors())
+    val colors = MaterialTheme.colors()
     val selectedColor = if (selected) {
         colors.primary
     } else {
@@ -53,7 +52,7 @@ fun IconButton(iconVector: VectorAsset, selected: Boolean = false, onClick: () -
     Surface(
         color = selectedColor,
         shape = RoundedCornerShape(4.dp),
-        modifier = Spacing(2.dp)
+        modifier = LayoutPadding(2.dp)
     ) {
         Ripple(bounded = true) {
             Clickable(onClick = onClick) {

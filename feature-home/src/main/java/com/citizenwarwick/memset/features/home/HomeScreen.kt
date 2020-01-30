@@ -17,15 +17,14 @@ package com.citizenwarwick.memset.features.home
 
 import MemsetMainTemplate
 import androidx.compose.Composable
-import androidx.compose.frames.modelListOf
-import androidx.compose.memo
-import androidx.compose.unaryPlus
-import androidx.ui.core.Alignment
+import androidx.compose.remember
 import androidx.ui.core.Text
-import androidx.ui.core.dp
-import androidx.ui.layout.Spacing
+import androidx.ui.layout.Container
+import androidx.ui.layout.LayoutGravity
+import androidx.ui.layout.LayoutPadding
 import androidx.ui.layout.Stack
 import androidx.ui.material.FloatingActionButton
+import androidx.ui.unit.dp
 import com.citizenwarwick.memset.core.Destination
 import com.citizenwarwick.memset.core.MemoryCardRepository
 import com.citizenwarwick.memset.core.di.get
@@ -33,6 +32,7 @@ import com.citizenwarwick.memset.core.goto
 import com.citizenwarwick.memset.core.model.LoadingState
 import com.citizenwarwick.memset.core.model.MemoryCard
 import com.citizenwarwick.memset.core.observe
+import com.citizenwarwick.memset.core.toModelList
 import com.citizenwarwick.ui.card.CardActions
 import com.citizenwarwick.ui.card.CardList
 import com.citizenwarwick.ui.widgets.IconButton
@@ -44,10 +44,12 @@ fun HomeScreen(repository: MemoryCardRepository = get()) {
     //
     // We want to remember this state across re-composition, so we memo it.
     //
-    val state = +memo { HomeScreenState() }
+    val state = remember { HomeScreenState() }
     observe(repository::getCards) {
-        state.loadingState = LoadingState.Loaded
-        state.cards = modelListOf(*it.toTypedArray())
+        state.apply {
+            loadingState = LoadingState.Loaded
+            cards = it.toModelList()
+        }
     }
 
     val cardActions = CardActions(
@@ -57,6 +59,9 @@ fun HomeScreen(repository: MemoryCardRepository = get()) {
             runBlocking {
                 repository.deleteCard(card)
             }
+        },
+        editCard = { card ->
+            goto(Destination.CardDesigner(card.uuid))
         })
 
     HomeScreenContent(state, cardActions)
@@ -82,14 +87,12 @@ fun HomeScreenContent(state: HomeScreenState, cardActions: CardActions) {
 @Composable
 private fun CardListContainer(cards: List<MemoryCard>, cardActions: CardActions) {
     Stack {
-        expanded {
-            CardList(cards, cardActions)
-        }
-        aligned(Alignment.BottomRight) {
-            FloatingActionButton(modifier = Spacing(16.dp), elevation = 6.dp) {
+        CardList(cards, cardActions)
+        Container(modifier = LayoutGravity.BottomRight) {
+            FloatingActionButton(modifier = LayoutPadding(16.dp), elevation = 6.dp) {
                 IconButton(
                     vectorResourceId = R.drawable.ic_add_inverted,
-                    onClick = { goto(Destination.CardDesigner) })
+                    onClick = { goto(Destination.CardDesigner()) })
             }
         }
     }

@@ -11,6 +11,7 @@ import com.citizenwarwick.memset.core.goto
 import com.citizenwarwick.memset.core.isCurrentDestination
 import com.citizenwarwick.memset.features.home.HomeScreen
 import com.citizenwarwick.memset.router.Router
+import com.citizenwarwick.memset.router.pathSegment
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,6 +25,9 @@ class MainActivity : AppCompatActivity() {
                 hosts("memset.com", "www.memset.com")
 
                 "/" composeTo { HomeScreen() }
+                "/designer/.*" composeTo { uri ->
+                    CardDesignerScreen(cardUuid = uri.pathSegment(1)!!)
+                }
                 "/designer" composeTo { CardDesignerScreen() }
                 ".*" composeTo { Text("404 Not Found") }
 
@@ -32,7 +36,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        if (isCurrentDestination(Destination.CardDesigner)) {
+        if (isCurrentDestination(Destination.CardDesigner())) {
             goto(Destination.HomeScreen)
         } else {
             super.onBackPressed()

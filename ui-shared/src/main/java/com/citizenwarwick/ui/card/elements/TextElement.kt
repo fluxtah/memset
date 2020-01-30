@@ -18,11 +18,11 @@ package com.citizenwarwick.ui.card.elements
 import androidx.compose.Composable
 import androidx.ui.core.Text
 import androidx.ui.core.TextField
-import androidx.ui.core.TextUnit
-import androidx.ui.core.dp
 import androidx.ui.graphics.Color
-import androidx.ui.layout.Spacing
+import androidx.ui.layout.LayoutPadding
 import androidx.ui.text.TextStyle
+import androidx.ui.unit.TextUnit
+import androidx.ui.unit.dp
 import com.citizenwarwick.memset.core.model.TextElement
 import com.citizenwarwick.ui.card.SelectionBorder
 
@@ -57,7 +57,7 @@ private fun Text(
     )
 
     val spacing =
-        Spacing(element.spacingLeft.dp, element.spacingTop.dp, element.spacingRight.dp, element.spacingBottom.dp)
+        LayoutPadding(element.spacingLeft.dp, element.spacingTop.dp, element.spacingRight.dp, element.spacingBottom.dp)
 
     if (inEdit) {
         TextField(modifier = spacing, value = element.text, textStyle = textStyle, onValueChange = {

@@ -17,22 +17,21 @@ package com.citizenwarwick.ui.card.elements
 
 import androidx.compose.Composable
 import androidx.compose.ambient
-import androidx.compose.unaryPlus
 import androidx.ui.core.ContextAmbient
-import androidx.ui.core.Density
-import androidx.ui.core.Dp
 import androidx.ui.core.Modifier
-import androidx.ui.core.dp
-import androidx.ui.core.withDensity
-import androidx.ui.engine.geometry.Offset
-import androidx.ui.engine.geometry.Rect
 import androidx.ui.foundation.shape.DrawShape
 import androidx.ui.foundation.shape.GenericShape
+import androidx.ui.geometry.Offset
+import androidx.ui.geometry.Rect
 import androidx.ui.graphics.Color
 import androidx.ui.layout.Container
-import androidx.ui.layout.Size
-import androidx.ui.layout.Spacing
+import androidx.ui.layout.LayoutPadding
+import androidx.ui.layout.LayoutSize
 import androidx.ui.material.surface.Surface
+import androidx.ui.unit.Density
+import androidx.ui.unit.Dp
+import androidx.ui.unit.dp
+import androidx.ui.unit.withDensity
 import com.citizenwarwick.memset.core.model.ShapeElement
 import com.citizenwarwick.memset.core.model.ShapeType
 import com.citizenwarwick.ui.card.SelectionBorder
@@ -40,7 +39,7 @@ import com.citizenwarwick.ui.card.SelectionBorder
 @Composable
 fun ShapeElement(element: ShapeElement, isSelected: Boolean = false) {
     val spacing =
-        Spacing(element.spacingLeft.dp, element.spacingTop.dp, element.spacingRight.dp, element.spacingBottom.dp)
+        LayoutPadding(element.spacingLeft.dp, element.spacingTop.dp, element.spacingRight.dp, element.spacingBottom.dp)
 
     if (isSelected) {
         SelectionBorder {
@@ -89,12 +88,12 @@ private fun OvalShape(
     ovalHeight: Dp,
     color: Color
 ) {
-    val density = Density(+ambient(ContextAmbient))
-    val widthPx = +withDensity(density) { ovalWidth.toPx().value }
-    val heightPx = +withDensity(density) { ovalHeight.toPx().value }
+    val density = Density(ambient(ContextAmbient))
+    val widthPx = withDensity(density) { ovalWidth.toPx().value }
+    val heightPx = withDensity(density) { ovalHeight.toPx().value }
 
     Container(modifier = modifier, width = ovalWidth, height = ovalHeight, expanded = true) {
-        Surface(color = Color.Transparent, modifier = Size(ovalWidth, ovalHeight)) {
+        Surface(color = Color.Transparent, modifier = LayoutSize(ovalWidth, ovalHeight)) {
             DrawShape(shape = GenericShape {
                 addOval(Rect(0f, 0f, widthPx, heightPx))
             }, color = color)
@@ -109,12 +108,12 @@ private fun RectangleShape(
     ovalHeight: Dp,
     color: Color
 ) {
-    val density = Density(+ambient(ContextAmbient))
-    val widthPx = +withDensity(density) { ovalWidth.toPx().value }
-    val heightPx = +withDensity(density) { ovalHeight.toPx().value }
+    val density = Density(ambient(ContextAmbient))
+    val widthPx = withDensity(density) { ovalWidth.toPx().value }
+    val heightPx = withDensity(density) { ovalHeight.toPx().value }
 
     Container(modifier = modifier, width = ovalWidth, height = ovalHeight, expanded = true) {
-        Surface(color = Color.Transparent, modifier = Size(ovalWidth, ovalHeight)) {
+        Surface(color = Color.Transparent, modifier = LayoutSize(ovalWidth, ovalHeight)) {
             DrawShape(shape = GenericShape {
                 addRect(Rect(0f, 0f, widthPx, heightPx))
             }, color = color)
@@ -129,12 +128,12 @@ private fun TriangleShape(
     ovalHeight: Dp,
     color: Color
 ) {
-    val density = Density(+ambient(ContextAmbient))
-    val widthPx = +withDensity(density) { ovalWidth.toPx().value }
-    val heightPx = +withDensity(density) { ovalHeight.toPx().value }
+    val density = Density(ambient(ContextAmbient))
+    val widthPx = withDensity(density) { ovalWidth.toPx().value }
+    val heightPx = withDensity(density) { ovalHeight.toPx().value }
 
     Container(modifier = modifier, width = ovalWidth, height = ovalHeight, expanded = true) {
-        Surface(color = Color.Transparent, modifier = Size(ovalWidth, ovalHeight)) {
+        Surface(color = Color.Transparent, modifier = LayoutSize(ovalWidth, ovalHeight)) {
             DrawShape(shape = GenericShape {
                 addPolygon(
                     listOf(

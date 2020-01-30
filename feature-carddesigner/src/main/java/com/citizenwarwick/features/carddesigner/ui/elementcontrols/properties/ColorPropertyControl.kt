@@ -16,13 +16,9 @@
 package com.citizenwarwick.features.carddesigner.ui.elementcontrols.properties
 
 import androidx.compose.Composable
-import androidx.ui.core.Dp
 import androidx.ui.core.Modifier
 import androidx.ui.core.Text
-import androidx.ui.core.dp
-import androidx.ui.engine.geometry.Shape
 import androidx.ui.foundation.Clickable
-import androidx.ui.foundation.shape.border.Border
 import androidx.ui.foundation.shape.corner.RoundedCornerShape
 import androidx.ui.graphics.Color
 import androidx.ui.graphics.Color.Companion.Black
@@ -33,12 +29,16 @@ import androidx.ui.graphics.Color.Companion.Green
 import androidx.ui.graphics.Color.Companion.Red
 import androidx.ui.graphics.Color.Companion.White
 import androidx.ui.graphics.Color.Companion.Yellow
+import androidx.ui.graphics.Shape
+import androidx.ui.graphics.SolidColor
 import androidx.ui.graphics.lerp
 import androidx.ui.layout.Container
 import androidx.ui.layout.CrossAxisAlignment
 import androidx.ui.layout.FlexRow
 import androidx.ui.layout.Spacing
 import androidx.ui.material.surface.Surface
+import androidx.ui.unit.Dp
+import androidx.ui.unit.dp
 
 @Composable
 fun ColorPropertyControl(
@@ -79,7 +79,8 @@ fun ColorOptionButton(
         shape = shape,
         color = color.let { if (selected) lerp(it, White, 0.1f) else it },
         elevation = if (selected) 6.dp else 0.dp,
-        border = Border(Color.LightGray, width = if (selected) 0.dp else borderSize)
+        borderWidth = if (selected) 0.dp else borderSize,
+        borderBrush = SolidColor(Color.LightGray)
     ) {
         Clickable(onClick = {
             onClick(color)

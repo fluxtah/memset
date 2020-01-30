@@ -1,9 +1,9 @@
 package com.citizenwarwick.ui
 
 import androidx.compose.Composable
-import androidx.ui.core.IntPx
 import androidx.ui.core.Layout
-import androidx.ui.core.ipx
+import androidx.ui.unit.IntPx
+import androidx.ui.unit.ipx
 
 @Composable
 fun MeasureObserver(onMeasure: (IntPx, IntPx) -> Unit, children: @Composable() () -> Unit) {

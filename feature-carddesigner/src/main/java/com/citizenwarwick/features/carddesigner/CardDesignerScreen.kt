@@ -58,12 +58,11 @@ import kotlinx.coroutines.runBlocking
 
 @Composable
 fun CardDesignerScreen(repository: MemoryCardRepository = get(), cardUuid: String? = null) {
-    val state = remember { CardDesignerState() }
+    var state = remember { CardDesignerState() }
 
     if (cardUuid != null && cardUuid.isNotEmpty()) {
         observe({ repository.getCard(cardUuid) }) {
             state.card = it
-            state.loadingState = LoadingState.Loaded
         }
     }
 
@@ -99,13 +98,13 @@ private fun CardEditorContent(state: CardDesignerState, onCardSaved: () -> Unit)
             expanded(1f) {
                 VerticalScroller(modifier = LayoutPadding(8.dp)) {
                     when (val element = state.selectedElement) {
-                    null -> {
-                        SurfacePropertyControls(state.card.upSide)
+                        null -> {
+                            SurfacePropertyControls(state.card.upSide)
+                        }
+                        else -> {
+                            ElementControls(element)
+                        }
                     }
-                    else -> {
-                        ElementControls(element)
-                    }
-                }
                 }
             }
         }

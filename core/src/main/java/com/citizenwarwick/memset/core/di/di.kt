@@ -4,6 +4,7 @@ import android.content.Context
 import com.citizenwarwick.memset.core.MemoryCardRepository
 import com.citizenwarwick.memset.core.model.adapters.ColorAdapter
 import com.citizenwarwick.memset.core.model.adapters.MemoryCardElementAdapter
+import com.citizenwarwick.memset.core.model.adapters.MemoryCardElementModelListAdapter
 import com.citizenwarwick.memset.data.MemsetDatabase
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -22,6 +23,7 @@ fun bootstrap(context: Context) {
             .add(KotlinJsonAdapterFactory())
             .add(ColorAdapter())
             .add(MemoryCardElementAdapter())
+            .add(MemoryCardElementModelListAdapter())
             .build()
     }
 

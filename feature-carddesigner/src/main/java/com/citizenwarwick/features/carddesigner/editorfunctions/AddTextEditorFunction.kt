@@ -19,7 +19,7 @@ import androidx.ui.core.Alignment
 import com.citizenwarwick.features.carddesigner.CardDesignerState
 import com.citizenwarwick.memset.core.model.TextElement
 
-class AddTextEditorFunction(val state: CardDesignerState) : EditorFunction() {
+class AddTextEditorFunction(private val state: CardDesignerState) : EditorFunction() {
     override fun execute() {
         state.card.upSide.elements.add(
             TextElement(

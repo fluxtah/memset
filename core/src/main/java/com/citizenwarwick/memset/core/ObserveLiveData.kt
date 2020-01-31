@@ -9,12 +9,13 @@ import androidx.lifecycle.Observer
 @Composable
 fun <T> observe(observable: () -> LiveData<T>, result: (T) -> Unit) {
     val thing = stateFor<T?> { null }
+
     onActive {
-        val observer =
-            Observer<T> {
-                thing.value = it
-                result(it)
-            }
+        val observer = Observer<T> { t ->
+            thing.value = t
+            result(t)
+        }
+
         with(observable()) {
             observeForever(observer)
             onDispose {

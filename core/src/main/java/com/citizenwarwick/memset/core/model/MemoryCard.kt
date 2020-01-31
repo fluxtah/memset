@@ -16,6 +16,7 @@
 package com.citizenwarwick.memset.core.model
 
 import androidx.compose.Model
+import androidx.compose.frames.ModelList
 import androidx.compose.frames.modelListOf
 import androidx.ui.core.Alignment
 import androidx.ui.graphics.Color
@@ -37,9 +38,13 @@ data class MemoryCard(
 
 @Model
 data class CardSurface(
-    val elements: MutableList<MemoryCardElement> = modelListOf(),
+    val elements: ModelList<MemoryCardElement> = modelListOf(),
     var color: Color = Color.White
 ) {
+    init {
+        val x = 0
+    }
+
     fun moveElementUp(item: MemoryCardElement) {
         val index = elements.indexOf(item)
         if (index > 0) {

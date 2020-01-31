@@ -29,6 +29,7 @@ import androidx.ui.layout.Container
 import androidx.ui.layout.CrossAxisAlignment
 import androidx.ui.layout.FlexColumn
 import androidx.ui.layout.FlexRow
+import androidx.ui.layout.LayoutPadding
 import androidx.ui.layout.LayoutWidth
 import androidx.ui.layout.Padding
 import androidx.ui.layout.Row
@@ -96,15 +97,15 @@ private fun CardEditorContent(state: CardDesignerState, onCardSaved: () -> Unit)
                 }
             }
             expanded(1f) {
-                VerticalScroller(modifier = Spacing(8.dp)) {
+                VerticalScroller(modifier = LayoutPadding(8.dp)) {
                     when (val element = state.selectedElement) {
-                        null -> {
-                            SurfacePropertyControls(state.card.upSide)
-                        }
-                        else -> {
-                            ElementControls(element)
-                        }
+                    null -> {
+                        SurfacePropertyControls(state.card.upSide)
                     }
+                    else -> {
+                        ElementControls(element)
+                    }
+                }
                 }
             }
         }

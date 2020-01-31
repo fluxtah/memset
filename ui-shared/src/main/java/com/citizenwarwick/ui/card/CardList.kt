@@ -10,6 +10,7 @@ import androidx.ui.graphics.Color
 import androidx.ui.layout.Column
 import androidx.ui.layout.Container
 import androidx.ui.layout.LayoutGravity
+import androidx.ui.layout.LayoutHeight
 import androidx.ui.layout.LayoutPadding
 import androidx.ui.layout.Stack
 import androidx.ui.material.Divider
@@ -66,7 +67,7 @@ private fun CardDropDownMenu(card: MemoryCard, cardActions: CardActions) {
         )
         if (isOpen.value) {
             DropDownPopupMenu(
-                modifier = LayoutPadding(right = 16.dp, bottom = 16.dp),
+                modifier = LayoutPadding(right = 16.dp, bottom = 16.dp) + LayoutHeight.Constrain(120.dp, 300.dp),
                 items = items
             ) { item ->
                 Ripple(bounded = true) {

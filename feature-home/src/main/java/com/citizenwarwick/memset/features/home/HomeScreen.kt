@@ -42,9 +42,15 @@ import kotlinx.coroutines.runBlocking
 fun HomeScreen(repository: MemoryCardRepository = get()) {
 
     //
-    // We want to remember this state across re-composition, so we memo it.
+    // We want to remember this state across re-composition
     //
     val state = remember { HomeScreenState() }
+
+    //
+    // Observe for as long as HomeScreen is composed, changes
+    // will cause re-composition down but replacing HomeScreen will
+    // remove the observer from this live data
+    //
     observe(repository::getCards) {
         state.apply {
             loadingState = LoadingState.Loaded

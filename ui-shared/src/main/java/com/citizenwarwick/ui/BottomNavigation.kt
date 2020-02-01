@@ -48,14 +48,18 @@ fun MemsetBottomNavigation() {
         ) {
             FlexRow {
                 expanded(1f) {
-                    NavItem("Home", icon = vectorResource(R.drawable.ic_nav_home)) {
-                        goto(Destination.HomeScreen)
-                    }
+                    NavItem(
+                        "Home",
+                        icon = vectorResource(R.drawable.ic_nav_home),
+                        onClick = goto(Destination.HomeScreen)
+                    )
                 }
                 expanded(1f) {
-                    NavItem("Shared", icon = vectorResource(R.drawable.ic_nav_global)) {
-                        goto(Destination.QuxScreen)
-                    }
+                    NavItem(
+                        "Shared",
+                        icon = vectorResource(R.drawable.ic_nav_global),
+                        onClick = goto(Destination.QuxScreen)
+                    )
                 }
             }
         }

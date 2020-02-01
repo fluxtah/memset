@@ -17,6 +17,7 @@ package com.citizenwarwick.memset.features.home
 
 import MemsetMainTemplate
 import androidx.compose.Composable
+import androidx.compose.ambient
 import androidx.compose.remember
 import androidx.ui.core.Text
 import androidx.ui.layout.Container
@@ -33,6 +34,7 @@ import com.citizenwarwick.memset.core.model.LoadingState
 import com.citizenwarwick.memset.core.model.MemoryCard
 import com.citizenwarwick.memset.core.observe
 import com.citizenwarwick.memset.core.toModelList
+import com.citizenwarwick.memset.router.AmbientRouterContext
 import com.citizenwarwick.ui.card.CardActions
 import com.citizenwarwick.ui.card.CardList
 import com.citizenwarwick.ui.widgets.IconButton
@@ -58,6 +60,8 @@ fun HomeScreen(repository: MemoryCardRepository = get()) {
         }
     }
 
+    val router = ambient(AmbientRouterContext)
+
     val cardActions = CardActions(
         deleteCard = { card ->
             // TODO temporary solution until Compose matures with better ways to do
@@ -67,7 +71,7 @@ fun HomeScreen(repository: MemoryCardRepository = get()) {
             }
         },
         editCard = { card ->
-            goto(Destination.CardDesigner(card.uuid))
+            router.goto(Destination.CardDesigner(card.uuid))
         })
 
     HomeScreenContent(state, cardActions)
@@ -98,7 +102,8 @@ private fun CardListContainer(cards: List<MemoryCard>, cardActions: CardActions)
             FloatingActionButton(modifier = LayoutPadding(16.dp), elevation = 6.dp) {
                 IconButton(
                     vectorResourceId = R.drawable.ic_add_inverted,
-                    onClick = { goto(Destination.CardDesigner()) })
+                    onClick = goto(Destination.CardDesigner())
+                )
             }
         }
     }

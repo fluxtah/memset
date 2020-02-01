@@ -17,8 +17,14 @@ package com.citizenwarwick.memset.router
 
 import android.content.Intent
 import android.net.Uri
+import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.Ambient
 import androidx.compose.Composable
-import androidx.compose.state
+import androidx.compose.Model
+import androidx.compose.ambient
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.ui.core.ContextAmbient
 
 class Router {
     private val homeUri: Uri
@@ -76,33 +82,79 @@ class Router {
 
     @Composable
     fun startComposing(intent: Intent? = null) {
+        val model = getModel()
+        val state = model.state
+
         //
         // TODO all of this needs careful consideration, test all this for correctness
         //
         val intentUri = intent?.data
 
         when {
-            intentUri != null && currentUri == Uri.EMPTY -> {
-                currentUri = intentUri
+            intentUri != null && state.currentUri == Uri.EMPTY -> {
+                state.currentUri = intentUri
             }
-            currentUri == Uri.EMPTY -> {
-                currentUri = homeUri
+            state.currentUri == Uri.EMPTY -> {
+                state.currentUri = homeUri
             }
         }
 
-        var currentUriState by state { currentUri }
-        gotoDelegate = {
-            currentUriState = Uri.parse(it)
-            currentUri = currentUriState
+        AmbientRouterContext.Provider(value = model) {
+            state.currentUri.let {
+                findMapping(it).invoke(it)
+            }
         }
-        currentUriState.let {
-            findMapping(it).invoke(it)
-        }
+    }
+
+    private fun getModel(): RouterViewModel {
+        val context = ambient(ContextAmbient) as AppCompatActivity
+        return ViewModelProvider(context).get(RouterViewModel::class.java)
     }
 }
 
-private var currentUri: Uri = Uri.EMPTY
-private var gotoDelegate: (uri: String) -> Unit = {}
+class RouterViewModel : ViewModel(), RouterContext {
+    val state = RouterState()
 
-fun goto(uri: String) = gotoDelegate(uri)
-fun isCurrentUri(uri: String): Boolean = currentUri.toString() == uri
+    override fun goto(uri: String) {
+        state.currentUri = Uri.parse(uri)
+    }
+
+    override fun isCurrentUri(uri: String): Boolean {
+        return state.currentUri.toString() == uri
+    }
+}
+
+fun getRouter(activity: AppCompatActivity): RouterContext {
+    return ViewModelProvider(activity).get(RouterViewModel::class.java)
+}
+
+interface RouterContext {
+    fun goto(uri: String)
+    fun isCurrentUri(uri: String): Boolean
+}
+
+@Model
+data class RouterState(var currentUri: Uri = Uri.EMPTY)
+
+val AmbientRouterContext = Ambient.of<RouterContext>()
+
+@Composable
+fun goto(uri: String, context: GotoContext.() -> Unit = { go() }): () -> Unit {
+    val model = ambient(AmbientRouterContext)
+    return {
+        context(GotoContext(model, uri))
+    }
+}
+
+class GotoContext(private val routerContext: RouterContext, private val destination: String) {
+    fun go() {
+        routerContext.goto(destination)
+    }
+}
+
+fun isCurrentUri(activity: AppCompatActivity, uri: String): Boolean {
+    val model = ViewModelProvider(activity).get(RouterViewModel::class.java)
+    return model.isCurrentUri(uri)
+}
+
+

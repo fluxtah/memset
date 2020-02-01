@@ -66,11 +66,11 @@ fun CardDesignerScreen(repository: MemoryCardRepository = get(), cardUuid: Strin
         }
     }
 
-    val onCardSaved = {
+    val onCardSaved = goto(Destination.HomeScreen) {
         runBlocking {
             repository.saveCard(state.card)
-            goto(Destination.HomeScreen)
         }
+        go()
     }
 
     MemsetMainTemplate {

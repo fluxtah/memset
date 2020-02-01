@@ -11,6 +11,7 @@ import com.citizenwarwick.memset.core.goto
 import com.citizenwarwick.memset.core.isCurrentDestination
 import com.citizenwarwick.memset.features.home.HomeScreen
 import com.citizenwarwick.memset.router.Router
+import com.citizenwarwick.memset.router.getRouter
 import com.citizenwarwick.memset.router.pathSegment
 
 class MainActivity : AppCompatActivity() {
@@ -36,8 +37,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        if (isCurrentDestination(Destination.CardDesigner())) {
-            goto(Destination.HomeScreen)
+        if (isCurrentDestination(this, Destination.CardDesigner())) {
+            getRouter(this).goto(Destination.HomeScreen)
         } else {
             super.onBackPressed()
         }

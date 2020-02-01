@@ -29,11 +29,10 @@ import androidx.ui.graphics.SolidColor
 import androidx.ui.graphics.vector.DrawVector
 import androidx.ui.layout.Column
 import androidx.ui.layout.Container
-import androidx.ui.layout.CrossAxisAlignment
-import androidx.ui.layout.FlexRow
-import androidx.ui.layout.LayoutHeight
+import androidx.ui.layout.LayoutPadding
+import androidx.ui.layout.LayoutSize
 import androidx.ui.layout.LayoutWidth
-import androidx.ui.layout.Spacing
+import androidx.ui.layout.Row
 import androidx.ui.material.surface.Card
 import androidx.ui.material.surface.Surface
 import androidx.ui.res.vectorResource
@@ -60,7 +59,7 @@ fun <T> DropDownMenu(
         }
 
         if (isOpen) {
-            DropDownPopupMenu(modifier = LayoutWidth.Fill, items = items, itemTemplate = itemTemplate)
+            DropDownPopupMenu(items = items, itemTemplate = itemTemplate)
         }
     }
 }
@@ -72,16 +71,14 @@ fun <T> DropDownPopupMenu(
     itemTemplate: @Composable() (data: T) -> Unit
 ) {
     DropdownPopup(dropDownAlignment = DropDownAlignment.Left) {
-        Container {
-            Card(
-                shape = RoundedCornerShape(4.dp),
-                borderWidth = 1.dp,
-                borderBrush = SolidColor(Color.LightGray),
-                modifier = modifier,
-                elevation = 4.dp
-            ) {
-                DropDownContent(items, itemTemplate)
-            }
+        Card(
+            shape = RoundedCornerShape(4.dp),
+            borderWidth = 1.dp,
+            modifier = modifier,
+            borderBrush = SolidColor(Color.LightGray),
+            elevation = 4.dp
+        ) {
+            DropDownContent(items, itemTemplate)
         }
     }
 }
@@ -91,7 +88,7 @@ private fun <T> DropDownContent(
     items: ModelList<T>,
     itemTemplate: @Composable() (data: T) -> Unit
 ) {
-    VerticalScroller(modifier = LayoutHeight(196.dp)) {
+    VerticalScroller {
         Column {
             items.forEach {
                 itemTemplate(it)
@@ -102,48 +99,24 @@ private fun <T> DropDownContent(
 
 @Composable
 private fun DropDownBoxLabel(isOpen: Boolean, label: String = "") {
-    // TODO remove this duplication when vector bug is fixed, we have to
-    //   recompose the container when swapping the vector because of a drawing problem
-    //   in dev03 that draws the vector over a previous version of itself instead
-    //  of completely changing it
-    if (isOpen) {
-        Container {
-            Surface(
-                color = Color.White,
-                borderWidth = 1.dp,
-                borderBrush = SolidColor(Color.LightGray),
-                shape = RoundedCornerShape(4.dp)
-            ) {
-                FlexRow(crossAxisAlignment = CrossAxisAlignment.Center) {
-                    expanded(1f) {
-                        Text(modifier = Spacing(8.dp), text = label)
-                    }
-                    inflexible {
-                        Container(width = 32.dp, height = 32.dp) {
-                            DrawVector(vectorImage = vectorResource(R.drawable.ic_arrow_drop_up))
+    Container {
+        Surface(
+            color = Color.White,
+            borderWidth = 1.dp,
+            elevation = if (isOpen) 0.dp else 2.dp,
+            borderBrush = SolidColor(Color.LightGray),
+            shape = RoundedCornerShape(4.dp)
+        ) {
+            Row(modifier = LayoutWidth.Fill) {
+                Text(modifier = LayoutPadding(8.dp) + LayoutFlexible(1f), text = label)
+                Container(modifier = LayoutSize(32.dp)) {
+                    DrawVector(
+                        vectorImage = if (isOpen) {
+                            vectorResource(R.drawable.ic_arrow_drop_up)
+                        } else {
+                            vectorResource(R.drawable.ic_arrow_drop_down)
                         }
-                    }
-                }
-            }
-        }
-    } else {
-        Container {
-            Surface(
-                color = Color.White,
-                elevation = 2.dp,
-                borderWidth = 1.dp,
-                borderBrush = SolidColor(Color.LightGray),
-                shape = RoundedCornerShape(4.dp)
-            ) {
-                FlexRow(crossAxisAlignment = CrossAxisAlignment.Center) {
-                    expanded(1f) {
-                        Text(modifier = Spacing(8.dp), text = label)
-                    }
-                    inflexible {
-                        Container(width = 32.dp, height = 32.dp) {
-                            DrawVector(vectorImage = vectorResource(R.drawable.ic_arrow_drop_down))
-                        }
-                    }
+                    )
                 }
             }
         }

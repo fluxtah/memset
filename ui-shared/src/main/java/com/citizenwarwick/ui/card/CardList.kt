@@ -67,7 +67,7 @@ private fun CardDropDownMenu(card: MemoryCard, cardActions: CardActions) {
         )
         if (isOpen.value) {
             DropDownPopupMenu(
-                modifier = LayoutPadding(right = 16.dp, bottom = 16.dp) + LayoutHeight.Constrain(120.dp, 300.dp),
+                modifier = LayoutPadding(right = 16.dp, bottom = 16.dp),
                 items = items
             ) { item ->
                 Ripple(bounded = true) {

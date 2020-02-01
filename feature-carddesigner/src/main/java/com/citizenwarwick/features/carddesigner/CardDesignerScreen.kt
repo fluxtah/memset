@@ -20,6 +20,7 @@ import androidx.compose.Composable
 import androidx.compose.ambient
 import androidx.compose.frames.ModelList
 import androidx.compose.remember
+import androidx.ui.core.CoroutineContextAmbient
 import androidx.ui.core.Text
 import androidx.ui.foundation.Clickable
 import androidx.ui.foundation.VerticalScroller
@@ -27,9 +28,7 @@ import androidx.ui.graphics.Color
 import androidx.ui.layout.Arrangement
 import androidx.ui.layout.Column
 import androidx.ui.layout.Container
-import androidx.ui.layout.CrossAxisAlignment
-import androidx.ui.layout.FlexColumn
-import androidx.ui.layout.FlexRow
+import androidx.ui.layout.LayoutGravity
 import androidx.ui.layout.LayoutPadding
 import androidx.ui.layout.LayoutWidth
 import androidx.ui.layout.Padding
@@ -51,12 +50,13 @@ import com.citizenwarwick.memset.core.model.LoadingState
 import com.citizenwarwick.memset.core.model.MemoryCardElement
 import com.citizenwarwick.memset.core.nav.MemsetDestination
 import com.citizenwarwick.memset.core.observe
-import com.citizenwarwick.memset.router.AmbientRouterContext
+import com.citizenwarwick.memset.router.RouterContextAmbient
 import com.citizenwarwick.memset.router.goto
 import com.citizenwarwick.ui.card.MemoryCard
 import com.citizenwarwick.ui.widgets.DropDownMenu
 import com.citizenwarwick.ui.widgets.IconButton
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 
 @Composable
 fun CardDesignerScreen(repository: MemoryCardRepository = get(), cardUuid: String? = null) {
@@ -68,12 +68,18 @@ fun CardDesignerScreen(repository: MemoryCardRepository = get(), cardUuid: Strin
         }
     }
 
-    val router = ambient(AmbientRouterContext)
-    val onCardSaved = {
-        runBlocking {
-            repository.saveCard(state.card)
+    val router = ambient(RouterContextAmbient)
+    val coroutineContext = ambient(CoroutineContextAmbient)
+
+    val onCardSaved: () -> Unit = {
+        CoroutineScope(coroutineContext).launch {
+            if (cardUuid == state.card.uuid) {
+                repository.updateCard(state.card)
+            } else {
+                repository.saveCard(state.card)
+            }
+            router.goto(MemsetDestination.HomeScreen)
         }
-        router.goto(MemsetDestination.HomeScreen)
     }
 
     MemsetMainTemplate {
@@ -88,25 +94,22 @@ fun CardDesignerScreen(repository: MemoryCardRepository = get(), cardUuid: Strin
 @Composable
 private fun CardEditorContent(state: CardDesignerState, onCardSaved: () -> Unit) {
     Clickable(onClick = { state.layersDropDownOpen = false }) {
-        FlexColumn {
-            inflexible {
-                TopBar(onCardSaved)
-                Column(modifier = Spacing(8.dp)) {
-                    EditorToolbar(state)
-                    EditorSurface(state)
-                    Divider(height = 8.dp, color = Color.Transparent)
-                    LayersDropDown(state)
-                }
+        Column {
+            TopBar(onCardSaved)
+            Column(modifier = LayoutPadding(8.dp)) {
+                EditorToolbar(state)
+                EditorSurface(state)
+                Divider(height = 8.dp, color = Color.Transparent)
+                LayersDropDown(state)
             }
-            expanded(1f) {
-                VerticalScroller(modifier = LayoutPadding(8.dp)) {
-                    when (val element = state.selectedElement) {
-                        null -> {
-                            SurfacePropertyControls(state.card.upSide)
-                        }
-                        else -> {
-                            ElementControls(element)
-                        }
+
+            VerticalScroller(modifier = LayoutPadding(8.dp) + LayoutFlexible(1f)) {
+                when (val element = state.selectedElement) {
+                    null -> {
+                        SurfacePropertyControls(state.card.upSide)
+                    }
+                    else -> {
+                        ElementControls(element)
                     }
                 }
             }
@@ -199,38 +202,29 @@ private fun LayersDropDown(state: CardDesignerState) {
 private fun LayersDropDownItem(state: CardDesignerState, item: MemoryCardElement) {
     Surface(color = if (state.selectedElement == item) Color.LightGray else Color.Transparent) {
         Padding(padding = 2.dp) {
-            FlexRow(crossAxisAlignment = CrossAxisAlignment.Center) {
-                expanded(1f) {
-                    Ripple(bounded = true) {
+            Ripple(bounded = true) {
+                Row {
+                    Container(modifier = LayoutGravity.Center + LayoutFlexible(1f)) {
                         Clickable(onClick = { state.selectedElement = item }) {
                             Container(expanded = true) {
                                 Text(modifier = Spacing(4.dp), text = item.name)
                             }
                         }
                     }
-                }
-                inflexible {
-                    val vector = vectorResource(R.drawable.ic_move_up)
-                    val onClick = { state.card.upSide.moveElementUp(item) }
                     IconButton(
-                        iconVector = vector,
-                        onClick = onClick
+                        modifier = LayoutGravity.Center,
+                        iconVector = vectorResource(R.drawable.ic_move_up),
+                        onClick = { state.card.upSide.moveElementUp(item) }
                     )
-                }
-                inflexible {
-                    val vector = vectorResource(R.drawable.ic_move_down)
-                    val onClick = { state.card.upSide.moveElementDown(item) }
                     IconButton(
-                        iconVector = vector,
-                        onClick = onClick
+                        modifier = LayoutGravity.Center,
+                        iconVector = vectorResource(R.drawable.ic_move_down),
+                        onClick = { state.card.upSide.moveElementDown(item) }
                     )
-                }
-                inflexible {
-                    val vector = vectorResource(R.drawable.ic_editor_tool_delete)
-                    val onClick: () -> Unit = { state.card.upSide.elements.remove(item) }
                     IconButton(
-                        iconVector = vector,
-                        onClick = onClick
+                        modifier = LayoutGravity.Center,
+                        iconVector = vectorResource(R.drawable.ic_editor_tool_delete),
+                        onClick = { state.card.upSide.elements.remove(item) }
                     )
                 }
             }

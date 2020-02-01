@@ -17,6 +17,7 @@ package com.citizenwarwick.ui.widgets
 
 import androidx.annotation.DrawableRes
 import androidx.compose.Composable
+import androidx.ui.core.Modifier
 import androidx.ui.foundation.Clickable
 import androidx.ui.foundation.shape.corner.RoundedCornerShape
 import androidx.ui.graphics.Color
@@ -31,13 +32,23 @@ import androidx.ui.res.vectorResource
 import androidx.ui.unit.dp
 
 @Composable
-fun IconButton(@DrawableRes vectorResourceId: Int, selected: Boolean = false, onClick: () -> Unit) {
+fun IconButton(
+    modifier: Modifier = Modifier.None,
+    @DrawableRes vectorResourceId: Int,
+    selected: Boolean = false,
+    onClick: () -> Unit
+) {
     val vector = vectorResource(vectorResourceId)
-    IconButton(vector, selected, onClick)
+    IconButton(modifier, vector, selected, onClick)
 }
 
 @Composable
-fun IconButton(iconVector: VectorAsset, selected: Boolean = false, onClick: () -> Unit) {
+fun IconButton(
+    modifier: Modifier = Modifier.None,
+    iconVector: VectorAsset,
+    selected: Boolean = false,
+    onClick: () -> Unit
+) {
     val colors = MaterialTheme.colors()
     val selectedColor = if (selected) {
         colors.primary
@@ -52,7 +63,7 @@ fun IconButton(iconVector: VectorAsset, selected: Boolean = false, onClick: () -
     Surface(
         color = selectedColor,
         shape = RoundedCornerShape(4.dp),
-        modifier = LayoutPadding(2.dp)
+        modifier = modifier + LayoutPadding(2.dp)
     ) {
         Ripple(bounded = true) {
             Clickable(onClick = onClick) {

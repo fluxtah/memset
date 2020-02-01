@@ -8,6 +8,7 @@ import androidx.room.Entity
 import androidx.room.Insert
 import androidx.room.PrimaryKey
 import androidx.room.Query
+import androidx.room.Update
 import kotlinx.coroutines.flow.Flow
 
 @Entity(tableName = "cards")
@@ -25,11 +26,17 @@ interface MemoryCardEntityDao {
     @Query("SELECT * FROM cards where uuid = :uuid")
     fun getByUuid(uuid: String): LiveData<MemoryCardEntity>
 
+    @Query("SELECT id FROM cards where uuid = :uuid")
+    suspend fun getIdForUuid(uuid: String): Long
+
     @Query("SELECT * FROM cards order by id desc")
     fun getAllAsFlowable(): Flow<List<MemoryCardEntity>>
 
     @Insert
     suspend fun insertAll(vararg cards: MemoryCardEntity)
+
+    @Update()
+    suspend fun updateCard(vararg cards: MemoryCardEntity)
 
     @Delete
     suspend fun delete(card: MemoryCardEntity)

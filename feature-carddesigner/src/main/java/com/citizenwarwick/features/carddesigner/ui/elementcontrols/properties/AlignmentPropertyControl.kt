@@ -18,8 +18,8 @@ package com.citizenwarwick.features.carddesigner.ui.elementcontrols.properties
 import androidx.compose.Composable
 import androidx.ui.core.Alignment
 import androidx.ui.core.Text
-import androidx.ui.layout.CrossAxisAlignment
-import androidx.ui.layout.FlexRow
+import androidx.ui.layout.LayoutGravity
+import androidx.ui.layout.Row
 import com.citizenwarwick.features.carddesigner.R
 import com.citizenwarwick.ui.widgets.IconButton
 
@@ -28,125 +28,127 @@ fun AlignmentPropertyControl(
     selectedAlignment: Alignment,
     onAlignmentSelected: (Alignment) -> Unit
 ) {
-    FlexRow(crossAxisAlignment = CrossAxisAlignment.Center) {
-        expanded(1f) {
-            Text(text = "Alignment")
+    Row {
+        Text(modifier = LayoutGravity.Center + LayoutFlexible(1f), text = "Alignment")
+        IconButton(
+            modifier = LayoutGravity.Center,
+            vectorResourceId = R.drawable.ic_editor_tool_align_left,
+            selected = (selectedAlignment == Alignment.TopLeft ||
+                selectedAlignment == Alignment.CenterLeft ||
+                selectedAlignment == Alignment.BottomLeft)
+        ) {
+            onAlignmentSelected(
+                when (selectedAlignment) {
+                    Alignment.Center, Alignment.CenterRight ->
+                        Alignment.CenterLeft
+                    Alignment.BottomCenter, Alignment.BottomRight ->
+                        Alignment.BottomLeft
+                    Alignment.TopCenter, Alignment.TopRight ->
+                        Alignment.TopLeft
+                    else ->
+                        Alignment.CenterLeft
+                }
+            )
         }
-        inflexible {
-            IconButton(
-                R.drawable.ic_editor_tool_align_left,
-                (selectedAlignment == Alignment.TopLeft ||
-                    selectedAlignment == Alignment.CenterLeft ||
-                    selectedAlignment == Alignment.BottomLeft)
-            ) {
-                onAlignmentSelected(
-                    when (selectedAlignment) {
-                        Alignment.Center, Alignment.CenterRight ->
-                            Alignment.CenterLeft
-                        Alignment.BottomCenter, Alignment.BottomRight ->
-                            Alignment.BottomLeft
-                        Alignment.TopCenter, Alignment.TopRight ->
-                            Alignment.TopLeft
-                        else ->
-                            Alignment.CenterLeft
-                    }
-                )
-            }
-            IconButton(
-                R.drawable.ic_editor_tool_align_center,
-                (selectedAlignment == Alignment.TopCenter ||
-                    selectedAlignment == Alignment.BottomCenter ||
-                    selectedAlignment == Alignment.Center)
-            ) {
-                onAlignmentSelected(
-                    when (selectedAlignment) {
-                        Alignment.CenterRight, Alignment.CenterLeft ->
-                            Alignment.Center
-                        Alignment.BottomRight, Alignment.BottomLeft ->
-                            Alignment.BottomCenter
-                        Alignment.TopRight, Alignment.TopLeft ->
-                            Alignment.TopCenter
-                        else ->
-                            Alignment.Center
-                    }
-                )
-            }
-            IconButton(
-                R.drawable.ic_editor_tool_align_right,
-                (selectedAlignment == Alignment.TopRight ||
-                    selectedAlignment == Alignment.BottomRight ||
-                    selectedAlignment == Alignment.CenterRight)
-            ) {
-                onAlignmentSelected(
-                    when (selectedAlignment) {
-                        Alignment.Center, Alignment.CenterLeft ->
-                            Alignment.CenterRight
-                        Alignment.BottomCenter, Alignment.BottomLeft ->
-                            Alignment.BottomRight
-                        Alignment.TopCenter, Alignment.TopLeft ->
-                            Alignment.TopRight
-                        else ->
-                            Alignment.CenterRight
-                    }
-                )
-            }
-            IconButton(
-                R.drawable.ic_editor_tool_vertical_align_bottom,
-                (selectedAlignment == Alignment.BottomRight ||
-                    selectedAlignment == Alignment.BottomCenter ||
-                    selectedAlignment == Alignment.BottomLeft)
-            ) {
-                onAlignmentSelected(
-                    when (selectedAlignment) {
-                        Alignment.Center, Alignment.TopCenter ->
-                            Alignment.BottomCenter
-                        Alignment.CenterLeft, Alignment.TopLeft ->
-                            Alignment.BottomLeft
-                        Alignment.CenterRight, Alignment.TopRight ->
-                            Alignment.BottomRight
-                        else ->
-                            Alignment.BottomCenter
-                    }
-                )
-            }
-            IconButton(
-                R.drawable.ic_editor_tool_vertical_align_center,
-                (selectedAlignment == Alignment.Center ||
-                    selectedAlignment == Alignment.CenterLeft ||
-                    selectedAlignment == Alignment.CenterRight)
-            ) {
-                onAlignmentSelected(
-                    when (selectedAlignment) {
-                        Alignment.BottomCenter, Alignment.TopCenter ->
-                            Alignment.Center
-                        Alignment.TopLeft, Alignment.BottomLeft ->
-                            Alignment.CenterLeft
-                        Alignment.TopRight, Alignment.BottomRight ->
-                            Alignment.CenterRight
-                        else ->
-                            Alignment.Center
-                    }
-                )
-            }
-            IconButton(
-                R.drawable.ic_editor_tool_vertical_align_top,
-                (selectedAlignment == Alignment.TopRight ||
-                    selectedAlignment == Alignment.TopCenter ||
-                    selectedAlignment == Alignment.TopLeft)
-            ) {
-                onAlignmentSelected(
-                    when (selectedAlignment) {
-                        Alignment.Center, Alignment.BottomCenter ->
-                            Alignment.TopCenter
-                        Alignment.CenterRight, Alignment.BottomRight ->
-                            Alignment.TopRight
-                        Alignment.CenterLeft, Alignment.BottomLeft ->
-                            Alignment.TopLeft
-                        else ->
-                            Alignment.TopCenter
-                    }
-                )
-            }
+        IconButton(
+            modifier = LayoutGravity.Center,
+            vectorResourceId = R.drawable.ic_editor_tool_align_center,
+            selected = (selectedAlignment == Alignment.TopCenter ||
+                selectedAlignment == Alignment.BottomCenter ||
+                selectedAlignment == Alignment.Center)
+        ) {
+            onAlignmentSelected(
+                when (selectedAlignment) {
+                    Alignment.CenterRight, Alignment.CenterLeft ->
+                        Alignment.Center
+                    Alignment.BottomRight, Alignment.BottomLeft ->
+                        Alignment.BottomCenter
+                    Alignment.TopRight, Alignment.TopLeft ->
+                        Alignment.TopCenter
+                    else ->
+                        Alignment.Center
+                }
+            )
+        }
+        IconButton(
+            modifier = LayoutGravity.Center,
+            vectorResourceId = R.drawable.ic_editor_tool_align_right,
+            selected = (selectedAlignment == Alignment.TopRight ||
+                selectedAlignment == Alignment.BottomRight ||
+                selectedAlignment == Alignment.CenterRight)
+        ) {
+            onAlignmentSelected(
+                when (selectedAlignment) {
+                    Alignment.Center, Alignment.CenterLeft ->
+                        Alignment.CenterRight
+                    Alignment.BottomCenter, Alignment.BottomLeft ->
+                        Alignment.BottomRight
+                    Alignment.TopCenter, Alignment.TopLeft ->
+                        Alignment.TopRight
+                    else ->
+                        Alignment.CenterRight
+                }
+            )
+        }
+        IconButton(
+            modifier = LayoutGravity.Center,
+            vectorResourceId = R.drawable.ic_editor_tool_vertical_align_bottom,
+            selected = (selectedAlignment == Alignment.BottomRight ||
+                selectedAlignment == Alignment.BottomCenter ||
+                selectedAlignment == Alignment.BottomLeft)
+        ) {
+            onAlignmentSelected(
+                when (selectedAlignment) {
+                    Alignment.Center, Alignment.TopCenter ->
+                        Alignment.BottomCenter
+                    Alignment.CenterLeft, Alignment.TopLeft ->
+                        Alignment.BottomLeft
+                    Alignment.CenterRight, Alignment.TopRight ->
+                        Alignment.BottomRight
+                    else ->
+                        Alignment.BottomCenter
+                }
+            )
+        }
+        IconButton(
+            modifier = LayoutGravity.Center,
+            vectorResourceId = R.drawable.ic_editor_tool_vertical_align_center,
+            selected = (selectedAlignment == Alignment.Center ||
+                selectedAlignment == Alignment.CenterLeft ||
+                selectedAlignment == Alignment.CenterRight)
+        ) {
+            onAlignmentSelected(
+                when (selectedAlignment) {
+                    Alignment.BottomCenter, Alignment.TopCenter ->
+                        Alignment.Center
+                    Alignment.TopLeft, Alignment.BottomLeft ->
+                        Alignment.CenterLeft
+                    Alignment.TopRight, Alignment.BottomRight ->
+                        Alignment.CenterRight
+                    else ->
+                        Alignment.Center
+                }
+            )
+        }
+        IconButton(
+            modifier = LayoutGravity.Center,
+            vectorResourceId = R.drawable.ic_editor_tool_vertical_align_top,
+            selected = (selectedAlignment == Alignment.TopRight ||
+                selectedAlignment == Alignment.TopCenter ||
+                selectedAlignment == Alignment.TopLeft)
+        ) {
+            onAlignmentSelected(
+                when (selectedAlignment) {
+                    Alignment.Center, Alignment.BottomCenter ->
+                        Alignment.TopCenter
+                    Alignment.CenterRight, Alignment.BottomRight ->
+                        Alignment.TopRight
+                    Alignment.CenterLeft, Alignment.BottomLeft ->
+                        Alignment.TopLeft
+                    else ->
+                        Alignment.TopCenter
+                }
+            )
         }
     }
 }

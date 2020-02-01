@@ -29,6 +29,7 @@ import androidx.ui.graphics.SolidColor
 import androidx.ui.graphics.vector.DrawVector
 import androidx.ui.layout.Column
 import androidx.ui.layout.Container
+import androidx.ui.layout.LayoutGravity
 import androidx.ui.layout.LayoutPadding
 import androidx.ui.layout.LayoutSize
 import androidx.ui.layout.LayoutWidth
@@ -84,10 +85,7 @@ fun <T> DropDownPopupMenu(
 }
 
 @Composable
-private fun <T> DropDownContent(
-    items: ModelList<T>,
-    itemTemplate: @Composable() (data: T) -> Unit
-) {
+private fun <T> DropDownContent(items: ModelList<T>, itemTemplate: @Composable() (data: T) -> Unit) {
     VerticalScroller {
         Column {
             items.forEach {
@@ -108,8 +106,8 @@ private fun DropDownBoxLabel(isOpen: Boolean, label: String = "") {
             shape = RoundedCornerShape(4.dp)
         ) {
             Row(modifier = LayoutWidth.Fill) {
-                Text(modifier = LayoutPadding(8.dp) + LayoutFlexible(1f), text = label)
-                Container(modifier = LayoutSize(32.dp)) {
+                Text(modifier = LayoutGravity.Center + LayoutPadding(8.dp) + LayoutFlexible(1f), text = label)
+                Container(modifier = LayoutGravity.Center + LayoutSize(32.dp)) {
                     DrawVector(
                         vectorImage = if (isOpen) {
                             vectorResource(R.drawable.ic_arrow_drop_up)

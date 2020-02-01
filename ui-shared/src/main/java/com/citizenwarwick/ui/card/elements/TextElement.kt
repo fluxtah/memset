@@ -27,21 +27,14 @@ import com.citizenwarwick.memset.core.model.TextElement
 import com.citizenwarwick.ui.card.SelectionBorder
 
 @Composable
-fun TextElement(element: TextElement, isSelected: Boolean = false, isEditing: Boolean = false) {
-    when {
-        isEditing -> SelectionBorder {
-            Text(
-                element,
-                true
-            )
-        }
-        isSelected -> SelectionBorder {
-            Text(
-                element
-            )
-        }
-        else -> Text(element)
+fun TextElement(element: TextElement, isSelected: Boolean = false, isEditing: Boolean = false) = when {
+    isEditing -> SelectionBorder {
+        Text(element, true)
     }
+    isSelected -> SelectionBorder {
+        Text(element)
+    }
+    else -> Text(element)
 }
 
 @Composable

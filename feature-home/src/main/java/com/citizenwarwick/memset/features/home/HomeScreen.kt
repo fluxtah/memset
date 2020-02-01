@@ -23,8 +23,8 @@ import androidx.ui.core.Text
 import androidx.ui.layout.Container
 import androidx.ui.layout.LayoutGravity
 import androidx.ui.layout.LayoutPadding
+import androidx.ui.layout.LayoutWidth
 import androidx.ui.layout.Stack
-import androidx.ui.material.Button
 import androidx.ui.material.FloatingActionButton
 import androidx.ui.unit.dp
 import com.citizenwarwick.memset.core.MemoryCardRepository
@@ -34,7 +34,7 @@ import com.citizenwarwick.memset.core.model.MemoryCard
 import com.citizenwarwick.memset.core.nav.MemsetDestination
 import com.citizenwarwick.memset.core.observe
 import com.citizenwarwick.memset.core.toModelList
-import com.citizenwarwick.memset.router.AmbientRouterContext
+import com.citizenwarwick.memset.router.RouterContextAmbient
 import com.citizenwarwick.memset.router.goto
 import com.citizenwarwick.ui.card.CardActions
 import com.citizenwarwick.ui.card.CardList
@@ -43,7 +43,6 @@ import kotlinx.coroutines.runBlocking
 
 @Composable
 fun HomeScreen(repository: MemoryCardRepository = get()) {
-
     //
     // We want to remember this state across re-composition
     //
@@ -61,7 +60,7 @@ fun HomeScreen(repository: MemoryCardRepository = get()) {
         }
     }
 
-    val router = ambient(AmbientRouterContext)
+    val router = ambient(RouterContextAmbient)
 
     val cardActions = CardActions(
         deleteCard = { card ->
@@ -74,8 +73,6 @@ fun HomeScreen(repository: MemoryCardRepository = get()) {
         editCard = { card ->
             router.goto(MemsetDestination.CardDesigner(card.uuid))
         })
-
-    Button(text = "Hello", onClick = goto(MemsetDestination.CardDesigner()))
 
     HomeScreenContent(state, cardActions)
 }
@@ -99,7 +96,7 @@ fun HomeScreenContent(state: HomeScreenState, cardActions: CardActions) {
 
 @Composable
 private fun CardListContainer(cards: List<MemoryCard>, cardActions: CardActions) {
-    Stack {
+    Stack(modifier = LayoutWidth.Fill) {
         CardList(cards, cardActions)
         Container(modifier = LayoutGravity.BottomRight) {
             FloatingActionButton(modifier = LayoutPadding(16.dp), elevation = 6.dp) {

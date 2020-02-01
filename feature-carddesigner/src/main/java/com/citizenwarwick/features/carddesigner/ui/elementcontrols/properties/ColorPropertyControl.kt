@@ -33,9 +33,9 @@ import androidx.ui.graphics.Shape
 import androidx.ui.graphics.SolidColor
 import androidx.ui.graphics.lerp
 import androidx.ui.layout.Container
-import androidx.ui.layout.CrossAxisAlignment
-import androidx.ui.layout.FlexRow
-import androidx.ui.layout.Spacing
+import androidx.ui.layout.LayoutGravity
+import androidx.ui.layout.LayoutPadding
+import androidx.ui.layout.Row
 import androidx.ui.material.surface.Surface
 import androidx.ui.unit.Dp
 import androidx.ui.unit.dp
@@ -46,18 +46,15 @@ fun ColorPropertyControl(
     selectedColor: Color = White,
     onColorSelected: (Color) -> Unit
 ) {
-    FlexRow(crossAxisAlignment = CrossAxisAlignment.Center) {
-        expanded(1f) {
-            Text(text = label)
-        }
-        listOf(Black, Red, Yellow, Blue, Green, Cyan, Gray, White).forEach {
-            inflexible {
-                ColorOptionButton(
-                    color = it,
-                    selected = selectedColor == it
-                ) {
-                    onColorSelected(it)
-                }
+    Row {
+        Text(modifier = LayoutGravity.Center + LayoutFlexible(1f), text = label)
+        listOf(Black, Red, Yellow, Blue, Green, Cyan, Gray, White).forEach { color ->
+            ColorOptionButton(
+                modifier = LayoutGravity.Center,
+                color = color,
+                selected = selectedColor == color
+            ) { selectedColor ->
+                onColorSelected(selectedColor)
             }
         }
     }
@@ -65,7 +62,7 @@ fun ColorPropertyControl(
 
 @Composable
 fun ColorOptionButton(
-    modifier: Modifier = Spacing(2.dp),
+    modifier: Modifier = Modifier.None,
     shape: Shape = RoundedCornerShape(4.dp),
     width: Dp = 32.dp,
     height: Dp = 32.dp,
@@ -75,7 +72,7 @@ fun ColorOptionButton(
     onClick: (selectedColor: Color) -> Unit
 ) {
     Surface(
-        modifier = modifier,
+        modifier = LayoutPadding(2.dp) + modifier,
         shape = shape,
         color = color.let { if (selected) lerp(it, White, 0.1f) else it },
         elevation = if (selected) 6.dp else 0.dp,

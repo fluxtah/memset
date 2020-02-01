@@ -10,8 +10,8 @@ import androidx.ui.graphics.Color
 import androidx.ui.layout.Column
 import androidx.ui.layout.Container
 import androidx.ui.layout.LayoutGravity
-import androidx.ui.layout.LayoutHeight
 import androidx.ui.layout.LayoutPadding
+import androidx.ui.layout.LayoutWidth
 import androidx.ui.layout.Stack
 import androidx.ui.material.Divider
 import androidx.ui.material.ripple.Ripple
@@ -72,7 +72,7 @@ private fun CardDropDownMenu(card: MemoryCard, cardActions: CardActions) {
             ) { item ->
                 Ripple(bounded = true) {
                     Clickable(onClick = { item.second() }) {
-                        Container {
+                        Container(modifier = LayoutWidth.Fill) {
                             Text(modifier = LayoutPadding(12.dp), text = item.first)
                         }
                     }

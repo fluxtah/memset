@@ -41,10 +41,6 @@ data class CardSurface(
     val elements: ModelList<MemoryCardElement> = modelListOf(),
     var color: Color = Color.White
 ) {
-    init {
-        val x = 0
-    }
-
     fun moveElementUp(item: MemoryCardElement) {
         val index = elements.indexOf(item)
         if (index > 0) {

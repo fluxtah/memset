@@ -99,7 +99,7 @@ class Router {
             }
         }
 
-        AmbientRouterContext.Provider(value = model) {
+        RouterContextAmbient.Provider(value = model) {
             state.currentUri.let {
                 findMapping(it).invoke(it)
             }
@@ -136,11 +136,11 @@ interface RouterContext {
 @Model
 data class RouterState(var currentUri: Uri = Uri.EMPTY)
 
-val AmbientRouterContext = Ambient.of<RouterContext>()
+val RouterContextAmbient = Ambient.of<RouterContext>()
 
 @Composable
 fun goto(uri: String, context: GotoContext.() -> Unit = { go() }): () -> Unit {
-    val model = ambient(AmbientRouterContext)
+    val model = ambient(RouterContextAmbient)
     return {
         context(GotoContext(model, uri))
     }

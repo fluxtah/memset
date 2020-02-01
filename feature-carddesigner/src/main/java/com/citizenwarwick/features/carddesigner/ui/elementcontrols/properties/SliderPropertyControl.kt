@@ -17,9 +17,8 @@ package com.citizenwarwick.features.carddesigner.ui.elementcontrols.properties
 
 import androidx.compose.Composable
 import androidx.ui.core.Text
-import androidx.ui.layout.CrossAxisAlignment
-import androidx.ui.layout.FlexRow
-import androidx.ui.layout.LayoutWidth
+import androidx.ui.layout.LayoutGravity
+import androidx.ui.layout.Row
 import androidx.ui.material.Slider
 import androidx.ui.material.SliderPosition
 import kotlin.math.roundToInt
@@ -31,20 +30,14 @@ fun SliderPropertyControl(
     valueRange: ClosedFloatingPointRange<Float>,
     onValueChanged: (value: Float) -> Unit
 ) {
-    FlexRow(crossAxisAlignment = CrossAxisAlignment.Center) {
-        expanded(1f) {
-            Text(text = label)
-        }
-        expanded(2f) {
-            Slider(
-                position = SliderPosition(initial = initialValue, valueRange = valueRange),
-                modifier = LayoutWidth.Fill,
-                onValueChange = {
-                    onValueChanged(it.roundToInt().toFloat())
-                })
-        }
-        inflexible {
-            Text(text = initialValue.toString())
-        }
+    Row {
+        Text(modifier = LayoutGravity.Center + LayoutFlexible(0.5f), text = label)
+        Slider(
+            modifier = LayoutGravity.Center + LayoutFlexible(1f),
+            position = SliderPosition(initial = initialValue, valueRange = valueRange),
+            onValueChange = {
+                onValueChanged(it.roundToInt().toFloat())
+            })
+        Text(modifier = LayoutGravity.Center, text = initialValue.toString())
     }
 }

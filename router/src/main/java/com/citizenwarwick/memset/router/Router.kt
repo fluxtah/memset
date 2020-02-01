@@ -152,9 +152,3 @@ class GotoContext(private val routerContext: RouterContext, private val destinat
     }
 }
 
-fun isCurrentUri(activity: AppCompatActivity, uri: String): Boolean {
-    val model = ViewModelProvider(activity).get(RouterViewModel::class.java)
-    return model.isCurrentUri(uri)
-}
-
-

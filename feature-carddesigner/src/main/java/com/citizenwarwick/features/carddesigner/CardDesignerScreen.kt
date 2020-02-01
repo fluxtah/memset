@@ -17,6 +17,7 @@ package com.citizenwarwick.features.carddesigner
 
 import MemsetMainTemplate
 import androidx.compose.Composable
+import androidx.compose.ambient
 import androidx.compose.frames.ModelList
 import androidx.compose.remember
 import androidx.ui.core.Text
@@ -50,6 +51,7 @@ import com.citizenwarwick.memset.core.model.LoadingState
 import com.citizenwarwick.memset.core.model.MemoryCardElement
 import com.citizenwarwick.memset.core.nav.MemsetDestination
 import com.citizenwarwick.memset.core.observe
+import com.citizenwarwick.memset.router.AmbientRouterContext
 import com.citizenwarwick.memset.router.goto
 import com.citizenwarwick.ui.card.MemoryCard
 import com.citizenwarwick.ui.widgets.DropDownMenu
@@ -58,7 +60,7 @@ import kotlinx.coroutines.runBlocking
 
 @Composable
 fun CardDesignerScreen(repository: MemoryCardRepository = get(), cardUuid: String? = null) {
-    var state = remember { CardDesignerState() }
+    val state = remember { CardDesignerState() }
 
     if (cardUuid != null && cardUuid.isNotEmpty()) {
         observe({ repository.getCard(cardUuid) }) {
@@ -66,11 +68,12 @@ fun CardDesignerScreen(repository: MemoryCardRepository = get(), cardUuid: Strin
         }
     }
 
-    val onCardSaved = goto(MemsetDestination.HomeScreen) {
+    val router = ambient(AmbientRouterContext)
+    val onCardSaved = {
         runBlocking {
             repository.saveCard(state.card)
         }
-        go()
+        router.goto(MemsetDestination.HomeScreen)
     }
 
     MemsetMainTemplate {
@@ -167,14 +170,14 @@ private fun EditorToolbarButton(editorFunction: EditorFunctionConfig, onClick: (
 
 @Composable
 private fun CardEditorLoading() {
-    Column(modifier = Spacing(4.dp)) {
+    Column(modifier = LayoutPadding(4.dp)) {
         Text(text = "Loading...")
     }
 }
 
 @Composable
 private fun CardEditorLoadingError() {
-    Column(modifier = Spacing(4.dp)) {
+    Column(modifier = LayoutPadding(4.dp)) {
         Text(text = "Error...")
     }
 }

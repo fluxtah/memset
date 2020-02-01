@@ -67,6 +67,18 @@ FloatingActionButton(modifier = Spacing(16.dp), elevation = 6.dp) {
 }
 ```
 
+Since `goto` is `@Composable` it is not possible to use it within lambdas that are not composable themselves, in these scenarios you can get a reference
+to the ambient router context.
+
+```kotlin
+val router = ambient(AmbientRouterContext)
+
+val cardActions = CardActions(
+    editCard = { card ->
+        router.goto(MemsetDestination.CardDesigner(card.uuid))
+    })
+```
+
 Check out [`MainActivity`](https://github.com/fluxtah/memset/blob/master/app/src/main/java/com/citizenwarwick/memset/MainActivity.kt) in the `:app` module for a real working example of this routing pattern.
 
 TBC

@@ -31,8 +31,8 @@ import androidx.ui.material.ripple.Ripple
 import androidx.ui.material.surface.Surface
 import androidx.ui.res.vectorResource
 import androidx.ui.unit.dp
-import com.citizenwarwick.memset.core.Destination
-import com.citizenwarwick.memset.core.goto
+import com.citizenwarwick.memset.core.nav.MemsetDestination
+import com.citizenwarwick.memset.router.goto
 
 private val BottomNavigationHeight = 56.dp
 private val BottomNavigationIconHeight = 48.dp
@@ -51,14 +51,14 @@ fun MemsetBottomNavigation() {
                     NavItem(
                         "Home",
                         icon = vectorResource(R.drawable.ic_nav_home),
-                        onClick = goto(Destination.HomeScreen)
+                        onClick = goto(MemsetDestination.HomeScreen)
                     )
                 }
                 expanded(1f) {
                     NavItem(
                         "Shared",
                         icon = vectorResource(R.drawable.ic_nav_global),
-                        onClick = goto(Destination.QuxScreen)
+                        onClick = goto(MemsetDestination.QuxScreen)
                     )
                 }
             }

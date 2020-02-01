@@ -44,13 +44,13 @@ import com.citizenwarwick.features.carddesigner.config.EditorConfiguration
 import com.citizenwarwick.features.carddesigner.config.EditorFunctionConfig
 import com.citizenwarwick.features.carddesigner.ui.elementcontrols.ElementControls
 import com.citizenwarwick.features.carddesigner.ui.elementcontrols.SurfacePropertyControls
-import com.citizenwarwick.memset.core.Destination
 import com.citizenwarwick.memset.core.MemoryCardRepository
 import com.citizenwarwick.memset.core.di.get
-import com.citizenwarwick.memset.core.goto
 import com.citizenwarwick.memset.core.model.LoadingState
 import com.citizenwarwick.memset.core.model.MemoryCardElement
+import com.citizenwarwick.memset.core.nav.MemsetDestination
 import com.citizenwarwick.memset.core.observe
+import com.citizenwarwick.memset.router.goto
 import com.citizenwarwick.ui.card.MemoryCard
 import com.citizenwarwick.ui.widgets.DropDownMenu
 import com.citizenwarwick.ui.widgets.IconButton
@@ -66,7 +66,7 @@ fun CardDesignerScreen(repository: MemoryCardRepository = get(), cardUuid: Strin
         }
     }
 
-    val onCardSaved = goto(Destination.HomeScreen) {
+    val onCardSaved = goto(MemsetDestination.HomeScreen) {
         runBlocking {
             repository.saveCard(state.card)
         }

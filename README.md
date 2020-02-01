@@ -44,18 +44,17 @@ class MainActivity : AppCompatActivity() {
 }
 ```
 
-Givem the example above `Router("https://memset.com")` is defined as our starting point if no other URI is available (such as one parsed from the incoming optional `Intent` argument passed to `startComposing()` which kicks off the router. 
+Given the example above `Router("https://memset.com")` is defined as our starting point if no other URI is available (such as one parsed from the incoming optional `Intent` argument passed to `startComposing()` which kicks off the router.
 
 For inter-module navigation we add some convenience up in the `:core` module (which every module that wishes to navigate should include).
 
 ```kotlin
-sealed class Destination(val uri: String) {
-    object HomeScreen : Destination("/")
-    object QuxScreen : Destination("/qux")
-    object CardDesigner : Destination("/designer")
+sealed class MemsetDestination(uri: String) : Destination(uri) {
+    object HomeScreen : MemsetDestination("/")
+    object QuxScreen : MemsetDestination("/qux")
+    data class CardDesigner(val cardUid: String = "") :
+        MemsetDestination(if (cardUid.isEmpty()) "/designer" else "/designer/$cardUid")
 }
-
-fun goto(destination: Destination) = goto(destination.uri)
 ```
 
 With the sealed class `Destination` and its implementations we can strongly type our navigation destinations, along with a helper functions `goto` that we can use to perform the navigation.
@@ -64,7 +63,7 @@ With the sealed class `Destination` and its implementations we can strongly type
 FloatingActionButton(modifier = Spacing(16.dp), elevation = 6.dp) {
     IconButton(
         vectorResourceId = R.drawable.ic_add_inverted,
-        onClick = { goto(Destination.CardDesigner) })
+        onClick = goto(MemsetDestination.CardDesigner()))
 }
 ```
 

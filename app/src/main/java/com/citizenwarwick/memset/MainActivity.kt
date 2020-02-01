@@ -5,13 +5,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.ui.core.Text
 import androidx.ui.core.setContent
 import com.citizenwarwick.features.carddesigner.CardDesignerScreen
-import com.citizenwarwick.memset.core.Destination
 import com.citizenwarwick.memset.core.di.bootstrap
-import com.citizenwarwick.memset.core.goto
-import com.citizenwarwick.memset.core.isCurrentDestination
+import com.citizenwarwick.memset.core.nav.MemsetDestination
 import com.citizenwarwick.memset.features.home.HomeScreen
 import com.citizenwarwick.memset.router.Router
 import com.citizenwarwick.memset.router.getRouter
+import com.citizenwarwick.memset.router.goto
+import com.citizenwarwick.memset.router.isCurrentDestination
 import com.citizenwarwick.memset.router.pathSegment
 
 class MainActivity : AppCompatActivity() {
@@ -37,8 +37,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        if (isCurrentDestination(this, Destination.CardDesigner())) {
-            getRouter(this).goto(Destination.HomeScreen)
+        val router = getRouter(this)
+        if (router.isCurrentDestination(MemsetDestination.CardDesigner())) {
+            router.goto(MemsetDestination.HomeScreen)
         } else {
             super.onBackPressed()
         }

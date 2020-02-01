@@ -24,17 +24,18 @@ import androidx.ui.layout.Container
 import androidx.ui.layout.LayoutGravity
 import androidx.ui.layout.LayoutPadding
 import androidx.ui.layout.Stack
+import androidx.ui.material.Button
 import androidx.ui.material.FloatingActionButton
 import androidx.ui.unit.dp
-import com.citizenwarwick.memset.core.Destination
 import com.citizenwarwick.memset.core.MemoryCardRepository
 import com.citizenwarwick.memset.core.di.get
-import com.citizenwarwick.memset.core.goto
 import com.citizenwarwick.memset.core.model.LoadingState
 import com.citizenwarwick.memset.core.model.MemoryCard
+import com.citizenwarwick.memset.core.nav.MemsetDestination
 import com.citizenwarwick.memset.core.observe
 import com.citizenwarwick.memset.core.toModelList
 import com.citizenwarwick.memset.router.AmbientRouterContext
+import com.citizenwarwick.memset.router.goto
 import com.citizenwarwick.ui.card.CardActions
 import com.citizenwarwick.ui.card.CardList
 import com.citizenwarwick.ui.widgets.IconButton
@@ -71,8 +72,10 @@ fun HomeScreen(repository: MemoryCardRepository = get()) {
             }
         },
         editCard = { card ->
-            router.goto(Destination.CardDesigner(card.uuid))
+            router.goto(MemsetDestination.CardDesigner(card.uuid))
         })
+
+    Button(text = "Hello", onClick = goto(MemsetDestination.CardDesigner()))
 
     HomeScreenContent(state, cardActions)
 }
@@ -102,7 +105,7 @@ private fun CardListContainer(cards: List<MemoryCard>, cardActions: CardActions)
             FloatingActionButton(modifier = LayoutPadding(16.dp), elevation = 6.dp) {
                 IconButton(
                     vectorResourceId = R.drawable.ic_add_inverted,
-                    onClick = goto(Destination.CardDesigner())
+                    onClick = goto(MemsetDestination.CardDesigner())
                 )
             }
         }

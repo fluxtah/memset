@@ -50,7 +50,7 @@ import com.citizenwarwick.memset.core.model.LoadingState
 import com.citizenwarwick.memset.core.model.MemoryCardElement
 import com.citizenwarwick.memset.core.nav.MemsetDestination
 import com.citizenwarwick.memset.core.observe
-import com.citizenwarwick.memset.router.RouterContextAmbient
+import com.citizenwarwick.memset.router.RouterAmbient
 import com.citizenwarwick.memset.router.goto
 import com.citizenwarwick.ui.card.MemoryCard
 import com.citizenwarwick.ui.widgets.DropDownMenu
@@ -68,7 +68,7 @@ fun CardDesignerScreen(repository: MemoryCardRepository = get(), cardUuid: Strin
         }
     }
 
-    val router = ambient(RouterContextAmbient)
+    val router = ambient(RouterAmbient)
     val coroutineContext = ambient(CoroutineContextAmbient)
 
     val onCardSaved: () -> Unit = {

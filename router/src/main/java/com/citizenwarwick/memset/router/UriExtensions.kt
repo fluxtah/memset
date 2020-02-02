@@ -6,7 +6,7 @@ fun Uri.queryParam(name: String): String? {
     return getQueryParameter(name)
 }
 
-fun Uri.pathSegment(index: Int): String? = when {
+fun Uri.slug(index: Int): String? = when {
     index >= pathSegments.size -> null
     else -> pathSegments[index]
 }

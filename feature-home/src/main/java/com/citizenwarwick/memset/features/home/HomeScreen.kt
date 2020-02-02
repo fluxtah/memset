@@ -34,7 +34,7 @@ import com.citizenwarwick.memset.core.model.MemoryCard
 import com.citizenwarwick.memset.core.nav.MemsetDestination
 import com.citizenwarwick.memset.core.observe
 import com.citizenwarwick.memset.core.toModelList
-import com.citizenwarwick.memset.router.RouterContextAmbient
+import com.citizenwarwick.memset.router.RouterAmbient
 import com.citizenwarwick.memset.router.goto
 import com.citizenwarwick.ui.card.CardActions
 import com.citizenwarwick.ui.card.CardList
@@ -60,7 +60,7 @@ fun HomeScreen(repository: MemoryCardRepository = get()) {
         }
     }
 
-    val router = ambient(RouterContextAmbient)
+    val router = ambient(RouterAmbient)
 
     val cardActions = CardActions(
         deleteCard = { card ->

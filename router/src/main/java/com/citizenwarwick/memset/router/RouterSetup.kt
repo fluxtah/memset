@@ -20,22 +20,26 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.Ambient
 import androidx.compose.Composable
+import androidx.compose.Composition
 import androidx.compose.Model
 import androidx.compose.ambient
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.ui.core.ContextAmbient
+import androidx.ui.core.setContent
 
-class Router {
+class RouterSetup {
     private val homeUri: Uri
     private val commandGroups: MutableList<CommandGroup> = mutableListOf()
+    private val model: RouterViewModel
 
-    constructor(homeUri: String, mappings: Mapper.() -> Unit = {}) {
+    constructor(model: RouterViewModel, homeUri: String, mappings: Mapper.() -> Unit = {}) {
+        this.model = model
         this.homeUri = Uri.parse(homeUri)
         register(mappings)
     }
 
-    constructor(homeUri: String, vararg mappings: Mapper.() -> Unit) {
+    constructor(model: RouterViewModel, homeUri: String, vararg mappings: Mapper.() -> Unit) {
+        this.model = model
         this.homeUri = Uri.parse(homeUri)
         mappings.forEach {
             register(it)
@@ -43,7 +47,7 @@ class Router {
     }
 
     private data class CommandGroup(
-        val paths: MutableList<Pair<Regex, @Composable() (Uri) -> Unit>> = mutableListOf(),
+        val paths: MutableList<Pair<Regex, @Composable() RouterContext.() -> Unit>> = mutableListOf(),
         val schemes: MutableList<Regex> = mutableListOf(),
         val hosts: MutableList<Regex> = mutableListOf()
     )
@@ -59,7 +63,7 @@ class Router {
         mappings(Mapper(group.schemes, group.hosts, group.paths))
     }
 
-    private fun findMapping(uri: Uri): @Composable() (Uri) -> Unit {
+    private fun findMapping(uri: Uri): @Composable() RouterContext.() -> Unit {
         val group = if (uri.scheme != null && uri.host != null) {
             commandGroups
                 .firstOrNull { group ->
@@ -81,8 +85,7 @@ class Router {
     }
 
     @Composable
-    fun startComposing(intent: Intent? = null) {
-        val model = getModel()
+    fun start(intent: Intent? = null) {
         val state = model.state
 
         //
@@ -99,20 +102,15 @@ class Router {
             }
         }
 
-        RouterContextAmbient.Provider(value = model) {
+        RouterAmbient.Provider(value = model) {
             state.currentUri.let {
-                findMapping(it).invoke(it)
+                findMapping(it).invoke(RouterContext(it))
             }
         }
     }
-
-    private fun getModel(): RouterViewModel {
-        val context = ambient(ContextAmbient) as AppCompatActivity
-        return ViewModelProvider(context).get(RouterViewModel::class.java)
-    }
 }
 
-class RouterViewModel : ViewModel(), RouterContext {
+class RouterViewModel : ViewModel(), Router {
     val state = RouterState()
 
     override fun goto(uri: String) {
@@ -124,11 +122,11 @@ class RouterViewModel : ViewModel(), RouterContext {
     }
 }
 
-fun getRouter(activity: AppCompatActivity): RouterContext {
+fun getRouter(activity: AppCompatActivity): Router {
     return ViewModelProvider(activity).get(RouterViewModel::class.java)
 }
 
-interface RouterContext {
+interface Router {
     fun goto(uri: String)
     fun isCurrentUri(uri: String): Boolean
 }
@@ -136,19 +134,33 @@ interface RouterContext {
 @Model
 data class RouterState(var currentUri: Uri = Uri.EMPTY)
 
-val RouterContextAmbient = Ambient.of<RouterContext>()
+val RouterAmbient = Ambient.of<Router>()
 
 @Composable
 fun goto(uri: String, context: GotoContext.() -> Unit = { go() }): () -> Unit {
-    val model = ambient(RouterContextAmbient)
+    val model = ambient(RouterAmbient)
     return {
         context(GotoContext(model, uri))
     }
 }
 
-class GotoContext(private val routerContext: RouterContext, private val destination: String) {
+class GotoContext(private val router: Router, private val destination: String) {
     fun go() {
-        routerContext.goto(destination)
+        router.goto(destination)
+    }
+}
+
+fun AppCompatActivity.routings(homeUri: String, mappings: Mapper.() -> Unit = {}): Composition {
+    return setContent {
+        val model = ViewModelProvider(this).get(RouterViewModel::class.java)
+        RouterSetup(model, homeUri, mappings).start(intent)
+    }
+}
+
+fun AppCompatActivity.routings(homeUri: String, vararg mappings: Mapper.() -> Unit): Composition {
+    val model = ViewModelProvider(this).get(RouterViewModel::class.java)
+    return setContent {
+        RouterSetup(model, homeUri, *mappings).start(intent)
     }
 }
 

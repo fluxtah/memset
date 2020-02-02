@@ -21,13 +21,13 @@ import androidx.compose.Composable
 class Mapper(
     private val schemes: MutableList<Regex>,
     private val hosts: MutableList<Regex>,
-    private val paths: MutableList<Pair<Regex, @Composable() (Uri) -> Unit>>
+    private val paths: MutableList<Pair<Regex, @Composable() RouterContext.() -> Unit>>
 ) {
-    infix fun String.composeTo(content: @Composable() (Uri) -> Unit) {
+    infix fun String.routeTo(content: @Composable() RouterContext.() -> Unit) {
         paths.add(toRegex() to content)
     }
 
-    infix fun Array<String>.composeTo(content: @Composable() (Uri) -> Unit) {
+    infix fun Array<String>.routeTo(content: @Composable() RouterContext.() -> Unit) {
         this.forEach {
             paths.add(it.toRegex() to content)
         }
@@ -40,4 +40,10 @@ class Mapper(
     fun hosts(vararg hosts: String) {
         this.hosts.addAll(hosts.map { it.toRegex() })
     }
+
+}
+
+data class RouterContext(val uri: Uri) {
+    fun slug(index: Int) = uri.slug(index)
+    fun param(name: String) = uri.queryParam(name)
 }

@@ -3,6 +3,7 @@ package com.citizenwarwick.ui.card
 import androidx.compose.Composable
 import androidx.compose.frames.modelListOf
 import androidx.compose.state
+import androidx.ui.core.Modifier
 import androidx.ui.core.Text
 import androidx.ui.foundation.Clickable
 import androidx.ui.foundation.VerticalScroller
@@ -26,7 +27,7 @@ fun CardList(cards: List<MemoryCard>, cardActions: CardActions) {
     VerticalScroller {
         Column(modifier = LayoutPadding(8.dp)) {
             for (card in cards) {
-                CardContainer(card, cardActions)
+                CardContainer(LayoutGravity.Center, card, cardActions)
                 Divider(height = 8.dp, color = Color.Transparent)
             }
         }
@@ -39,8 +40,8 @@ class CardActions(
 )
 
 @Composable
-fun CardContainer(card: MemoryCard, cardActions: CardActions) {
-    Stack {
+fun CardContainer(modifier: Modifier = Modifier.None, card: MemoryCard, cardActions: CardActions) {
+    Stack(modifier = modifier + LayoutWidth.Constrain(0.dp, 496.dp)) {
         MemoryCard(
             card = card,
             onSurfaceClicked = { card.facingFront = !card.facingFront },

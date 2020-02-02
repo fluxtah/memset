@@ -20,12 +20,15 @@ import androidx.compose.Composable
 import androidx.compose.ambient
 import androidx.compose.remember
 import androidx.ui.core.Text
+import androidx.ui.layout.Column
 import androidx.ui.layout.Container
 import androidx.ui.layout.LayoutGravity
 import androidx.ui.layout.LayoutPadding
 import androidx.ui.layout.LayoutWidth
 import androidx.ui.layout.Stack
 import androidx.ui.material.FloatingActionButton
+import androidx.ui.material.MaterialTheme
+import androidx.ui.material.TopAppBar
 import androidx.ui.unit.dp
 import com.citizenwarwick.memset.core.MemoryCardRepository
 import com.citizenwarwick.memset.core.di.get
@@ -53,10 +56,13 @@ fun HomeScreen(repository: MemoryCardRepository = get()) {
     // will cause re-composition down but replacing HomeScreen will
     // remove the observer from this live data
     //
-    observe(repository::getCards) {
-        state.apply {
-            loadingState = LoadingState.Loaded
-            cards = it.toModelList()
+    observe(repository.getCards()) {
+        onStart = { state.loadingState = LoadingState.Loading }
+        onResult = { resultCards ->
+            state.apply {
+                loadingState = LoadingState.Loaded
+                cards = resultCards.toModelList()
+            }
         }
     }
 
@@ -74,15 +80,10 @@ fun HomeScreen(repository: MemoryCardRepository = get()) {
             router.goto(MemsetDestination.CardDesigner(card.uuid))
         })
 
-    HomeScreenContent(state, cardActions)
-}
-
-@Composable
-fun HomeScreenContent(state: HomeScreenState, cardActions: CardActions) {
     MemsetMainTemplate {
         when (state.loadingState) {
             LoadingState.Loaded -> {
-                CardListContainer(state.cards, cardActions)
+                HomeScreenContent(state.cards, cardActions)
             }
             LoadingState.Loading -> {
                 Text("Loading...")
@@ -95,16 +96,37 @@ fun HomeScreenContent(state: HomeScreenState, cardActions: CardActions) {
 }
 
 @Composable
-private fun CardListContainer(cards: List<MemoryCard>, cardActions: CardActions) {
-    Stack(modifier = LayoutWidth.Fill) {
-        CardList(cards, cardActions)
-        Container(modifier = LayoutGravity.BottomRight) {
-            FloatingActionButton(modifier = LayoutPadding(16.dp), elevation = 6.dp) {
-                IconButton(
-                    vectorResourceId = R.drawable.ic_add_inverted,
-                    onClick = goto(MemsetDestination.CardDesigner())
-                )
+private fun HomeScreenContent(cards: List<MemoryCard>, cardActions: CardActions) {
+    Column {
+        TopBar()
+        Stack(modifier = LayoutFlexible(1f) + LayoutWidth.Fill) {
+            if (cards.isNotEmpty()) {
+                CardList(cards, cardActions)
+            } else {
+                Container(LayoutGravity.Center + LayoutPadding(12.dp)) {
+                    Text(
+                        text = "\uD83D\uDC40 Looks like you don't have any cards yet, press the round + button below to add a card!",
+                        style = MaterialTheme.typography().h3
+                    )
+
+                }
+            }
+            Container(modifier = LayoutGravity.BottomRight) {
+                FloatingActionButton(modifier = LayoutPadding(16.dp), elevation = 6.dp) {
+                    IconButton(
+                        vectorResourceId = R.drawable.ic_add_inverted,
+                        onClick = goto(MemsetDestination.CardDesigner())
+                    )
+                }
             }
         }
     }
+}
+
+@Composable
+private fun TopBar() {
+    TopAppBar(
+        title = { Text("My Cards") },
+        actionData = listOf<String>()
+    ) {}
 }

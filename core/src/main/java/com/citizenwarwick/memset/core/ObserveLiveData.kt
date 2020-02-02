@@ -7,22 +7,35 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 
 @Composable
-fun <T> observe(observable: () -> LiveData<T>, result: (T) -> Unit) {
+fun <T> observe(data: LiveData<T>, block: ObserveContext<T>.() -> Unit) {
     val thing = stateFor<T?> { null }
-
     onActive {
-        val observer = Observer<T> { t ->
-            thing.value = t
-            result(t)
+        val context = ObserveContext<T>()
+        block(context)
+        context.onStart()
+
+        val observer = object : Observer<T> {
+            override fun onChanged(t: T) {
+                if (context.once) {
+                    data.removeObserver(this)
+                }
+                thing.value = t
+                context.onResult(t)
+            }
         }
 
-        with(observable()) {
+        with(data) {
             observeForever(observer)
             onDispose {
                 removeObserver(observer)
             }
         }
-
     }
     thing.value
+}
+
+class ObserveContext<T> {
+    var onStart: () -> Unit = {}
+    var onResult: (T) -> Unit = {}
+    var once = false
 }

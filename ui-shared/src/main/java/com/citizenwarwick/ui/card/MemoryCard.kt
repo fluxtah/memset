@@ -38,7 +38,6 @@ fun MemoryCard(
                 card.designerSurfaceWidth = withDensity(density) { x.value.toDp().value }
                 card.designerSurfaceHeight = withDensity(density) { y.value.toDp().value }
             }
-
         }) {
             Card(
                 shape = RoundedCornerShape(4.dp),

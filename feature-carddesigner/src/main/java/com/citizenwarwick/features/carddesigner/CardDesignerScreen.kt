@@ -20,7 +20,6 @@ import androidx.compose.Composable
 import androidx.compose.ambient
 import androidx.compose.frames.ModelList
 import androidx.compose.remember
-import androidx.ui.core.CoroutineContextAmbient
 import androidx.ui.core.Text
 import androidx.ui.foundation.Clickable
 import androidx.ui.foundation.VerticalScroller
@@ -56,6 +55,7 @@ import com.citizenwarwick.ui.card.MemoryCard
 import com.citizenwarwick.ui.widgets.DropDownMenu
 import com.citizenwarwick.ui.widgets.IconButton
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.launch
 
 @Composable
@@ -63,16 +63,21 @@ fun CardDesignerScreen(repository: MemoryCardRepository = get(), cardUuid: Strin
     val state = remember { CardDesignerState() }
 
     if (cardUuid != null && cardUuid.isNotEmpty()) {
-        observe({ repository.getCard(cardUuid) }) {
-            state.card = it
+        observe(repository.getCard(cardUuid)) {
+            onStart = {
+                state.loadingState = LoadingState.Loading
+            }
+            onResult = {
+                state.loadingState = LoadingState.Loaded
+                state.card = it
+            }
         }
     }
 
     val router = ambient(RouterAmbient)
-    val coroutineContext = ambient(CoroutineContextAmbient)
-
     val onCardSaved: () -> Unit = {
-        CoroutineScope(coroutineContext).launch {
+        CoroutineScope(Main).launch {
+            // TODO temporary for dev04
             if (cardUuid == state.card.uuid) {
                 repository.updateCard(state.card)
             } else {

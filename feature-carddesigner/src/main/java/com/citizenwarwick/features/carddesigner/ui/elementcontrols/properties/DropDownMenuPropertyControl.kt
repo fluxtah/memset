@@ -18,9 +18,9 @@ package com.citizenwarwick.features.carddesigner.ui.elementcontrols.properties
 import androidx.compose.Composable
 import androidx.compose.frames.ModelList
 import androidx.ui.core.Text
-import androidx.ui.layout.CrossAxisAlignment
-import androidx.ui.layout.FlexRow
+import androidx.ui.layout.LayoutGravity
 import androidx.ui.layout.LayoutPadding
+import androidx.ui.layout.Row
 import androidx.ui.unit.dp
 import com.citizenwarwick.ui.widgets.DropDownMenu
 
@@ -34,19 +34,16 @@ fun <T> DropDownMenuPropertyControl(
     onDropDownPressed: (isOpen: Boolean) -> Unit,
     itemTemplate: @Composable() (data: T) -> Unit
 ) {
-    FlexRow(modifier = LayoutPadding(top = 4.dp, bottom = 4.dp), crossAxisAlignment = CrossAxisAlignment.Center) {
-        expanded(1f) {
-            Text(text = label)
-        }
-        expanded(2f) {
-            DropDownMenu(
-                items,
-                selectedItem,
-                selectedItemLabelText,
-                isOpen,
-                onDropDownPressed,
-                itemTemplate
-            )
-        }
+    Row(modifier = LayoutPadding(top = 4.dp, bottom = 4.dp)) {
+        Text(modifier = LayoutGravity.Center + LayoutFlexible(1f), text = label)
+        DropDownMenu(
+            modifier = LayoutFlexible(2f),
+            items = items,
+            selectedItem = selectedItem,
+            selectedItemLabelText = selectedItemLabelText,
+            isOpen = isOpen,
+            onDropDownPressed = onDropDownPressed,
+            itemTemplate = itemTemplate
+        )
     }
 }

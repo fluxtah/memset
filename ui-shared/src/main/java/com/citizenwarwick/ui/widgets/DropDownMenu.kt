@@ -42,6 +42,7 @@ import com.citizenwarwick.ui.R
 
 @Composable
 fun <T> DropDownMenu(
+    modifier: Modifier = Modifier.None,
     items: ModelList<T>,
     selectedItem: T? = null,
     selectedItemLabelText: (T) -> String = { it.toString() },
@@ -49,7 +50,7 @@ fun <T> DropDownMenu(
     onDropDownPressed: (isOpen: Boolean) -> Unit,
     itemTemplate: @Composable() (data: T) -> Unit
 ) {
-    Container {
+    Container(modifier) {
         Clickable(onClick = { onDropDownPressed(!isOpen) }) {
             DropDownBoxLabel(
                 isOpen = isOpen,

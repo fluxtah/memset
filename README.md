@@ -34,7 +34,9 @@ class MainActivity : AppCompatActivity() {
             hosts("memset.com", "www.memset.com")
 
             "/" routeTo { HomeScreen() }
-            "/designer/.*" routeTo { CardDesignerScreen(cardUuid = slug(1)) }
+            "/designer/.*" routeTo { 
+                CardDesignerScreen(cardUuid = slug(1)) 
+            }
             "/designer" routeTo { CardDesignerScreen() }
             ".*" routeTo { Text("404 Not Found ($uri)") }
         }

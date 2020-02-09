@@ -20,6 +20,7 @@ import androidx.ui.core.gesture.DoubleTapGestureDetector
 import androidx.ui.foundation.Clickable
 import androidx.ui.layout.Align
 import com.citizenwarwick.memset.core.model.MemoryCardElement
+import com.citizenwarwick.memset.core.model.PianoRollElement
 import com.citizenwarwick.memset.core.model.ShapeElement
 import com.citizenwarwick.memset.core.model.TextElement
 
@@ -40,10 +41,8 @@ fun MemoryCardElement(
                         isSelected,
                         isEditing
                     )
-                    is ShapeElement -> ShapeElement(
-                        element,
-                        isSelected
-                    )
+                    is ShapeElement -> ShapeElement(element, isSelected)
+                    is PianoRollElement -> PianoRollElement(element, isSelected)
                 }
             }
         }

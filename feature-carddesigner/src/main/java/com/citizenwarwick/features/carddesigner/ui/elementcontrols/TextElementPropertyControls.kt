@@ -35,6 +35,7 @@ import com.citizenwarwick.features.carddesigner.ui.elementcontrols.properties.Co
 import com.citizenwarwick.features.carddesigner.ui.elementcontrols.properties.DropDownMenuPropertyControl
 import com.citizenwarwick.features.carddesigner.ui.elementcontrols.properties.SliderPropertyControl
 import com.citizenwarwick.features.carddesigner.ui.elementcontrols.properties.SpacingPropertyControls
+import com.citizenwarwick.features.carddesigner.ui.elementcontrols.properties.TextPropertyControl
 import com.citizenwarwick.memset.core.model.TextElement
 
 @Composable
@@ -42,28 +43,24 @@ fun TextElementPropertyControls(element: TextElement) {
     Column {
         val spacingValueRange = -64f..128f
 
+        TextPropertyControl(label = "Text", initialValue = element.text) {
+            element.text = it
+        }
+
         SliderPropertyControl(
             label = "Text Size",
             initialValue = element.fontSize,
-            valueRange = EditorConfiguration.ELEMENT_TYPE_TEXT_DEFAULT_MIN_SIZE_EM..EditorConfiguration.ELEMENT_TYPE_TEXT_DEFAULT_MAX_SIZE_EM,
-            onValueChanged = {
-                element.fontSize = it
-            }
-        )
-        AlignmentPropertyControl(
-            selectedAlignment = element.alignment,
-            onAlignmentSelected = {
-                element.alignment = it
-            }
-        )
+            valueRange = EditorConfiguration.ELEMENT_TYPE_TEXT_DEFAULT_MIN_SIZE_EM..EditorConfiguration.ELEMENT_TYPE_TEXT_DEFAULT_MAX_SIZE_EM
+        ) {
+            element.fontSize = it
+        }
+        AlignmentPropertyControl(selectedAlignment = element.alignment) {
+            element.alignment = it
+        }
 
-        ColorPropertyControl(
-            label = "Text Color",
-            selectedColor = element.color,
-            onColorSelected = {
-                element.color = it
-            }
-        )
+        ColorPropertyControl(label = "Text Color", selectedColor = element.color) {
+            element.color = it
+        }
 
         FontWeightDropDownPropertyControl(element)
 

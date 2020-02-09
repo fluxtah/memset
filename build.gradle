@@ -8,6 +8,8 @@ buildscript {
     ext.compose_ui_version = '0.1.0-dev04'
     ext.room_version = "2.2.3"
     ext.ktx_viewmodel_version = "2.2.0-rc03"
+    ext.music_version = "0.1.0"
+    ext.pianoroll_version = "0.1.43"
 
     repositories {
         google()
@@ -27,6 +29,7 @@ allprojects {
         jcenter()
         maven { url 'https://dl.bintray.com/kotlin/kotlin-eap' }
         maven { url 'https://ci.android.com/builds/submitted/6162746/androidx_snapshot/latest/ui/repository/' }
+        maven { url 'https://jitpack.io' }
     }
 }
 

@@ -5,6 +5,7 @@ import androidx.ui.graphics.Color
 import androidx.ui.graphics.toArgb
 import androidx.ui.text.font.FontWeight
 import com.citizenwarwick.memset.core.model.MemoryCardElement
+import com.citizenwarwick.memset.core.model.PianoRollElement
 import com.citizenwarwick.memset.core.model.ShapeElement
 import com.citizenwarwick.memset.core.model.ShapeType
 import com.citizenwarwick.memset.core.model.TextElement
@@ -33,6 +34,12 @@ class MemoryCardElementAdapter {
                 shapeType = jsonElement.properties["shapeType"]?.let { ShapeType.valueOf(it) } ?: ShapeType.Oval
             }
         }
+        "pianoroll" -> {
+            PianoRollElement().apply {
+                highlightedNotes = jsonElement.properties["highlightednotes"] ?: ""
+                scale = jsonElement.properties["scale"]?.toFloat() ?: 1.5f
+            }
+        }
         else -> throw RuntimeException("Not support data type")
     }.apply {
         name = jsonElement.properties["name"] ?: ""
@@ -47,6 +54,7 @@ class MemoryCardElementAdapter {
     fun toJson(card: MemoryCardElement): MemoryCardElementJson = when (card) {
         is TextElement -> MemoryCardElementJson("text", card.mapProperties())
         is ShapeElement -> MemoryCardElementJson("shape", card.mapProperties())
+        is PianoRollElement -> MemoryCardElementJson("pianoroll", card.mapProperties())
         else -> throw RuntimeException("Not support data type")
     }
 }
@@ -73,6 +81,10 @@ private fun MemoryCardElement.mapProperties(): Map<String, String> {
                 map["width"] = width.toString()
                 map["height"] = height.toString()
                 map["shapeType"] = shapeType.name
+            }
+            is PianoRollElement -> {
+                map["scale"] = scale.toString()
+                map["highlightednotes"] = highlightedNotes
             }
         }
     }

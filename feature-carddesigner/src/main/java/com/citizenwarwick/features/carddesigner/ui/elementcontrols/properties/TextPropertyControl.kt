@@ -16,33 +16,27 @@
 package com.citizenwarwick.features.carddesigner.ui.elementcontrols.properties
 
 import androidx.compose.Composable
+import androidx.ui.core.EditorModel
 import androidx.ui.core.Text
+import androidx.ui.core.TextField
+import androidx.ui.input.VisualTransformation
 import androidx.ui.layout.LayoutGravity
 import androidx.ui.layout.Row
-import androidx.ui.material.Slider
-import androidx.ui.material.SliderPosition
-import kotlin.math.roundToInt
 
 @Composable
-fun SliderPropertyControl(
+fun TextPropertyControl(
     label: String,
-    initialValue: Float,
-    valueRange: ClosedFloatingPointRange<Float>,
-    roundToNearestInteger: Boolean = true,
-    onValueChanged: (value: Float) -> Unit
+    initialValue: String,
+    onTextChanged: (value: String) -> Unit
 ) {
     Row {
         Text(modifier = LayoutGravity.Center + LayoutFlexible(0.5f), text = label)
-        Slider(
+        TextField(
             modifier = LayoutGravity.Center + LayoutFlexible(1f),
-            position = SliderPosition(initial = initialValue, valueRange = valueRange),
+            value = initialValue,
             onValueChange = {
-                if (roundToNearestInteger) {
-                    onValueChanged(it.roundToInt().toFloat())
-                } else {
-                    onValueChanged(it)
-                }
-            })
-        Text(modifier = LayoutGravity.Center, text = initialValue.toString())
+                onTextChanged(it)
+            }
+        )
     }
 }

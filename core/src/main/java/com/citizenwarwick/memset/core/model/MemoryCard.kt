@@ -112,6 +112,20 @@ data class ShapeElement(
     var shapeType: ShapeType = ShapeType.Oval
 ) : MemoryCardElement
 
+@Model
+data class PianoRollElement(
+    override val uuid: String = generateElementUUID(),
+    override var name: String = "",
+    override var alignment: Alignment = Alignment.Center,
+    override var spacingTop: Float = 0f,
+    override var spacingLeft: Float = 0f,
+    override var spacingRight: Float = 0f,
+    override var spacingBottom: Float = 0f,
+
+    var highlightedNotes: String = "",
+    var scale: Float = 1.5f
+) : MemoryCardElement
+
 enum class ShapeType {
     Oval,
     Rectangle

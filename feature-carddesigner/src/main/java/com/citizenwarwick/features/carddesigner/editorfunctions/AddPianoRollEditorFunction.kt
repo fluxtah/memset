@@ -13,26 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.citizenwarwick.features.carddesigner.ui.elementcontrols
+package com.citizenwarwick.features.carddesigner.editorfunctions
 
-import androidx.compose.Composable
-import com.citizenwarwick.memset.core.model.MemoryCardElement
+import androidx.ui.core.Alignment
+import com.citizenwarwick.features.carddesigner.CardDesignerState
 import com.citizenwarwick.memset.core.model.PianoRollElement
-import com.citizenwarwick.memset.core.model.ShapeElement
 import com.citizenwarwick.memset.core.model.TextElement
 
-@Composable
-fun ElementControls(element: MemoryCardElement) {
-    when (element) {
-        is TextElement -> {
-            TextElementPropertyControls(element)
-        }
-        is ShapeElement -> {
-            ShapeElementPropertyControls(element)
-        }
-        is PianoRollElement -> {
-            PianoRollPropertyControls(element)
-        }
+class AddPianoRollEditorFunction(private val state: CardDesignerState) : EditorFunction() {
+    override fun execute() {
+        state.card.upSide.elements.add(
+            PianoRollElement(
+                name = "Piano Roll",
+                alignment = Alignment.Center
+            )
+        )
     }
 }
-

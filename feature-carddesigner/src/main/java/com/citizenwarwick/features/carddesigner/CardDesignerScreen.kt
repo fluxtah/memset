@@ -236,4 +236,3 @@ private fun LayersDropDownItem(state: CardDesignerState, item: MemoryCardElement
         }
     }
 }
-

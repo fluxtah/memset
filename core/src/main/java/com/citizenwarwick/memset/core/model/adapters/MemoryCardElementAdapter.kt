@@ -4,6 +4,7 @@ import androidx.ui.core.Alignment
 import androidx.ui.graphics.Color
 import androidx.ui.graphics.toArgb
 import androidx.ui.text.font.FontWeight
+import com.citizenwarwick.memset.core.model.FretboardElement
 import com.citizenwarwick.memset.core.model.MemoryCardElement
 import com.citizenwarwick.memset.core.model.PianoRollElement
 import com.citizenwarwick.memset.core.model.ShapeElement
@@ -40,6 +41,12 @@ class MemoryCardElementAdapter {
                 scale = jsonElement.properties["scale"]?.toFloat() ?: 1.5f
             }
         }
+        "fretboard" -> {
+            FretboardElement().apply {
+                markers = jsonElement.properties["fingering"] ?: ""
+                scale = jsonElement.properties["scale"]?.toFloat() ?: 2.0f
+            }
+        }
         else -> throw RuntimeException("Not support data type")
     }.apply {
         name = jsonElement.properties["name"] ?: ""
@@ -55,6 +62,7 @@ class MemoryCardElementAdapter {
         is TextElement -> MemoryCardElementJson("text", card.mapProperties())
         is ShapeElement -> MemoryCardElementJson("shape", card.mapProperties())
         is PianoRollElement -> MemoryCardElementJson("pianoroll", card.mapProperties())
+        is FretboardElement -> MemoryCardElementJson("fretboard", card.mapProperties())
         else -> throw RuntimeException("Not support data type")
     }
 }
@@ -85,6 +93,10 @@ private fun MemoryCardElement.mapProperties(): Map<String, String> {
             is PianoRollElement -> {
                 map["scale"] = scale.toString()
                 map["highlightednotes"] = highlightedNotes
+            }
+            is FretboardElement -> {
+                map["scale"] = scale.toString()
+                map["fingering"] = markers
             }
         }
     }

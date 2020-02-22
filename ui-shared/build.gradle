@@ -55,6 +55,7 @@ dependencies {
 
     api "com.github.fluxtah:music:$music_version"
     api "com.github.fluxtah:pianoroll:$pianoroll_version"
+    api "com.github.fluxtah:fretboard:$fretboard_version"
 
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinx_coroutines_version"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlinx_coroutines_version"

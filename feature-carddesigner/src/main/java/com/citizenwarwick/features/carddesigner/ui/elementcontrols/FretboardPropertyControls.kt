@@ -32,13 +32,14 @@ import com.citizenwarwick.features.carddesigner.ui.elementcontrols.properties.Al
 import com.citizenwarwick.features.carddesigner.ui.elementcontrols.properties.DropDownMenuPropertyControl
 import com.citizenwarwick.features.carddesigner.ui.elementcontrols.properties.SliderPropertyControl
 import com.citizenwarwick.features.carddesigner.ui.elementcontrols.properties.SpacingPropertyControls
+import com.citizenwarwick.memset.core.model.FretboardElement
 import com.citizenwarwick.memset.core.model.PianoRollElement
 import com.citizenwarwick.memset.core.model.ShapeElement
 import com.citizenwarwick.memset.core.model.ShapeType
 import kotlin.math.roundToInt
 
 @Composable
-fun PianoRollPropertyControls(element: PianoRollElement) {
+fun FretboardPropertyControls(element: FretboardElement) {
     val spacingValueRange = -64f..128f
     val scale = element.scale * 100
 

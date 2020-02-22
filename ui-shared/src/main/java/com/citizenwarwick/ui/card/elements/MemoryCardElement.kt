@@ -19,6 +19,7 @@ import androidx.compose.Composable
 import androidx.ui.core.gesture.DoubleTapGestureDetector
 import androidx.ui.foundation.Clickable
 import androidx.ui.layout.Align
+import com.citizenwarwick.memset.core.model.FretboardElement
 import com.citizenwarwick.memset.core.model.MemoryCardElement
 import com.citizenwarwick.memset.core.model.PianoRollElement
 import com.citizenwarwick.memset.core.model.ShapeElement
@@ -43,6 +44,7 @@ fun MemoryCardElement(
                     )
                     is ShapeElement -> ShapeElement(element, isSelected)
                     is PianoRollElement -> PianoRollElement(element, isSelected)
+                    is FretboardElement -> FretboardElement(element, isSelected)
                 }
             }
         }

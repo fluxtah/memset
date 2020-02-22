@@ -13,30 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.citizenwarwick.features.carddesigner.ui.elementcontrols
+package com.citizenwarwick.features.carddesigner.editorfunctions
 
-import androidx.compose.Composable
+import androidx.ui.core.Alignment
+import com.citizenwarwick.features.carddesigner.CardDesignerState
 import com.citizenwarwick.memset.core.model.FretboardElement
-import com.citizenwarwick.memset.core.model.MemoryCardElement
 import com.citizenwarwick.memset.core.model.PianoRollElement
-import com.citizenwarwick.memset.core.model.ShapeElement
 import com.citizenwarwick.memset.core.model.TextElement
 
-@Composable
-fun ElementControls(element: MemoryCardElement) {
-    when (element) {
-        is TextElement -> {
-            TextElementPropertyControls(element)
-        }
-        is ShapeElement -> {
-            ShapeElementPropertyControls(element)
-        }
-        is PianoRollElement -> {
-            PianoRollPropertyControls(element)
-        }
-        is FretboardElement -> {
-            FretboardPropertyControls(element)
-        }
+class AddFretboardEditorFunction(private val state: CardDesignerState) : EditorFunction() {
+    override fun execute() {
+        state.card.upSide.elements.add(
+            FretboardElement(
+                name = "Fretboard",
+                alignment = Alignment.Center
+            )
+        )
     }
 }
-

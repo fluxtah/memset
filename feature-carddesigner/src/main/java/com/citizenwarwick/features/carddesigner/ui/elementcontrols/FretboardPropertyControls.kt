@@ -16,27 +16,11 @@
 package com.citizenwarwick.features.carddesigner.ui.elementcontrols
 
 import androidx.compose.Composable
-import androidx.compose.frames.ModelList
-import androidx.compose.state
-import androidx.ui.core.Text
-import androidx.ui.foundation.Clickable
-import androidx.ui.graphics.Color
 import androidx.ui.layout.Column
-import androidx.ui.layout.Container
-import androidx.ui.layout.Padding
-import androidx.ui.layout.Spacing
-import androidx.ui.material.ripple.Ripple
-import androidx.ui.material.surface.Surface
-import androidx.ui.unit.dp
 import com.citizenwarwick.features.carddesigner.ui.elementcontrols.properties.AlignmentPropertyControl
-import com.citizenwarwick.features.carddesigner.ui.elementcontrols.properties.DropDownMenuPropertyControl
 import com.citizenwarwick.features.carddesigner.ui.elementcontrols.properties.SliderPropertyControl
 import com.citizenwarwick.features.carddesigner.ui.elementcontrols.properties.SpacingPropertyControls
 import com.citizenwarwick.memset.core.model.FretboardElement
-import com.citizenwarwick.memset.core.model.PianoRollElement
-import com.citizenwarwick.memset.core.model.ShapeElement
-import com.citizenwarwick.memset.core.model.ShapeType
-import kotlin.math.roundToInt
 
 @Composable
 fun FretboardPropertyControls(element: FretboardElement) {

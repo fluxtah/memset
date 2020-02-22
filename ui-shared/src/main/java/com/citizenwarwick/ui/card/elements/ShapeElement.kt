@@ -16,8 +16,7 @@
 package com.citizenwarwick.ui.card.elements
 
 import androidx.compose.Composable
-import androidx.compose.ambient
-import androidx.ui.core.ContextAmbient
+import androidx.ui.core.DensityAmbient
 import androidx.ui.core.Modifier
 import androidx.ui.foundation.shape.DrawShape
 import androidx.ui.foundation.shape.GenericShape
@@ -28,10 +27,8 @@ import androidx.ui.layout.Container
 import androidx.ui.layout.LayoutPadding
 import androidx.ui.layout.LayoutSize
 import androidx.ui.material.surface.Surface
-import androidx.ui.unit.Density
 import androidx.ui.unit.Dp
 import androidx.ui.unit.dp
-import androidx.ui.unit.withDensity
 import com.citizenwarwick.memset.core.model.ShapeElement
 import com.citizenwarwick.memset.core.model.ShapeType
 import com.citizenwarwick.ui.card.SelectionBorder
@@ -88,15 +85,17 @@ private fun OvalShape(
     ovalHeight: Dp,
     color: Color
 ) {
-    val density = Density(ambient(ContextAmbient))
-    val widthPx = withDensity(density) { ovalWidth.toPx().value }
-    val heightPx = withDensity(density) { ovalHeight.toPx().value }
+    val density = DensityAmbient.current
+    with(density) {
+        val widthPx = ovalWidth.toPx().value
+        val heightPx = ovalHeight.toPx().value
 
-    Container(modifier = modifier, width = ovalWidth, height = ovalHeight, expanded = true) {
-        Surface(color = Color.Transparent, modifier = LayoutSize(ovalWidth, ovalHeight)) {
-            DrawShape(shape = GenericShape {
-                addOval(Rect(0f, 0f, widthPx, heightPx))
-            }, color = color)
+        Container(modifier = modifier, width = ovalWidth, height = ovalHeight, expanded = true) {
+            Surface(color = Color.Transparent, modifier = LayoutSize(ovalWidth, ovalHeight)) {
+                DrawShape(shape = GenericShape {
+                    addOval(Rect(0f, 0f, widthPx, heightPx))
+                }, color = color)
+            }
         }
     }
 }
@@ -108,15 +107,17 @@ private fun RectangleShape(
     ovalHeight: Dp,
     color: Color
 ) {
-    val density = Density(ambient(ContextAmbient))
-    val widthPx = withDensity(density) { ovalWidth.toPx().value }
-    val heightPx = withDensity(density) { ovalHeight.toPx().value }
+    val density = DensityAmbient.current
+    with(density) {
+        val widthPx = ovalWidth.toPx().value
+        val heightPx = ovalHeight.toPx().value
 
-    Container(modifier = modifier, width = ovalWidth, height = ovalHeight, expanded = true) {
-        Surface(color = Color.Transparent, modifier = LayoutSize(ovalWidth, ovalHeight)) {
-            DrawShape(shape = GenericShape {
-                addRect(Rect(0f, 0f, widthPx, heightPx))
-            }, color = color)
+        Container(modifier = modifier, width = ovalWidth, height = ovalHeight, expanded = true) {
+            Surface(color = Color.Transparent, modifier = LayoutSize(ovalWidth, ovalHeight)) {
+                DrawShape(shape = GenericShape {
+                    addRect(Rect(0f, 0f, widthPx, heightPx))
+                }, color = color)
+            }
         }
     }
 }
@@ -128,21 +129,22 @@ private fun TriangleShape(
     ovalHeight: Dp,
     color: Color
 ) {
-    val density = Density(ambient(ContextAmbient))
-    val widthPx = withDensity(density) { ovalWidth.toPx().value }
-    val heightPx = withDensity(density) { ovalHeight.toPx().value }
-
-    Container(modifier = modifier, width = ovalWidth, height = ovalHeight, expanded = true) {
-        Surface(color = Color.Transparent, modifier = LayoutSize(ovalWidth, ovalHeight)) {
-            DrawShape(shape = GenericShape {
-                addPolygon(
-                    listOf(
-                        Offset(0f, heightPx),
-                        Offset(widthPx / 2, 0f),
-                        Offset(widthPx, heightPx)
-                    ), true
-                )
-            }, color = color)
+    val density = DensityAmbient.current
+    with(density) {
+        val widthPx = ovalWidth.toPx().value
+        val heightPx = ovalHeight.toPx().value
+        Container(modifier = modifier, width = ovalWidth, height = ovalHeight, expanded = true) {
+            Surface(color = Color.Transparent, modifier = LayoutSize(ovalWidth, ovalHeight)) {
+                DrawShape(shape = GenericShape {
+                    addPolygon(
+                        listOf(
+                            Offset(0f, heightPx),
+                            Offset(widthPx / 2, 0f),
+                            Offset(widthPx, heightPx)
+                        ), true
+                    )
+                }, color = color)
+            }
         }
     }
 }

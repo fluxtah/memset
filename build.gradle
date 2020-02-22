@@ -4,13 +4,13 @@ buildscript {
     ext.build_tools = '4.0.0-alpha09'
     ext.kotlin_version = '1.3.61'
     ext.kotlinx_coroutines_version = '1.3.2'
-    ext.compose_version = '0.1.0-dev04'
-    ext.compose_ui_version = '0.1.0-dev04'
+    ext.compose_version = '0.1.0-dev05'
+    ext.compose_ui_version = '0.1.0-dev05'
     ext.room_version = "2.2.3"
     ext.ktx_viewmodel_version = "2.2.0"
     ext.music_version = "0.1.0"
-    ext.pianoroll_version = "0.1.43"
-    ext.fretboard_version = "0.1.46"
+    ext.pianoroll_version = "0.1.5"
+    ext.fretboard_version = "0.1.5"
 
     repositories {
         google()

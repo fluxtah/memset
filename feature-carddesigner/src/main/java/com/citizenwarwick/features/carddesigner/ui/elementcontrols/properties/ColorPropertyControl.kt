@@ -18,6 +18,7 @@ package com.citizenwarwick.features.carddesigner.ui.elementcontrols.properties
 import androidx.compose.Composable
 import androidx.ui.core.Modifier
 import androidx.ui.core.Text
+import androidx.ui.foundation.Border
 import androidx.ui.foundation.Clickable
 import androidx.ui.foundation.shape.corner.RoundedCornerShape
 import androidx.ui.graphics.Color
@@ -30,7 +31,6 @@ import androidx.ui.graphics.Color.Companion.Red
 import androidx.ui.graphics.Color.Companion.White
 import androidx.ui.graphics.Color.Companion.Yellow
 import androidx.ui.graphics.Shape
-import androidx.ui.graphics.SolidColor
 import androidx.ui.graphics.lerp
 import androidx.ui.layout.Container
 import androidx.ui.layout.LayoutGravity
@@ -76,8 +76,7 @@ fun ColorOptionButton(
         shape = shape,
         color = color.let { if (selected) lerp(it, White, 0.1f) else it },
         elevation = if (selected) 6.dp else 0.dp,
-        borderWidth = if (selected) 0.dp else borderSize,
-        borderBrush = SolidColor(Color.LightGray)
+        border = Border(if (selected) 0.dp else borderSize, Color.LightGray)
     ) {
         Clickable(onClick = {
             onClick(color)

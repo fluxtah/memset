@@ -23,8 +23,7 @@ import androidx.ui.foundation.Clickable
 import androidx.ui.graphics.Color
 import androidx.ui.layout.Column
 import androidx.ui.layout.Container
-import androidx.ui.layout.Padding
-import androidx.ui.layout.Spacing
+import androidx.ui.layout.LayoutPadding
 import androidx.ui.material.ripple.Ripple
 import androidx.ui.material.surface.Surface
 import androidx.ui.text.font.FontWeight
@@ -84,13 +83,14 @@ private fun FontWeightDropDownPropertyControl(element: TextElement) {
         selectedItem = fontWeights.find { it.second == element.fontWeight },
         selectedItemLabelText = { it.first },
         onDropDownPressed = { isFontWeightDropDownOpen = it }) {
-        Surface(color = if (element.fontWeight == it.second) Color.LightGray else Color.Transparent) {
-            Padding(padding = 2.dp) {
-                Ripple(bounded = true) {
-                    Clickable(onClick = { element.fontWeight = it.second }) {
-                        Container(expanded = true) {
-                            Text(modifier = Spacing(4.dp), text = it.first)
-                        }
+        Surface(
+            modifier = LayoutPadding(2.dp),
+            color = if (element.fontWeight == it.second) Color.LightGray else Color.Transparent
+        ) {
+            Ripple(bounded = true) {
+                Clickable(onClick = { element.fontWeight = it.second }) {
+                    Container(expanded = true) {
+                        Text(modifier = LayoutPadding(4.dp), text = it.first)
                     }
                 }
             }

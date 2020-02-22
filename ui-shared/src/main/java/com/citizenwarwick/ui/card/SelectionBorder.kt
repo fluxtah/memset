@@ -16,9 +16,9 @@
 package com.citizenwarwick.ui.card
 
 import androidx.compose.Composable
+import androidx.ui.foundation.Border
 import androidx.ui.foundation.shape.corner.RoundedCornerShape
 import androidx.ui.graphics.Color
-import androidx.ui.graphics.SolidColor
 import androidx.ui.material.surface.Surface
 import androidx.ui.unit.dp
 
@@ -27,8 +27,7 @@ fun SelectionBorder(child: @Composable() () -> Unit) {
     Surface(
         shape = RoundedCornerShape(2.dp),
         color = Color.Transparent,
-        borderWidth = 2.dp,
-        borderBrush = SolidColor(Color.Black)
+        border = Border(2.dp, Color.Black)
     ) {
         child()
     }

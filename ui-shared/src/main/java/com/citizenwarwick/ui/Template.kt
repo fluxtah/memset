@@ -14,16 +14,14 @@
  * limitations under the License.
  */
 import androidx.compose.Composable
-import androidx.ui.layout.FlexColumn
+import androidx.ui.layout.Column
 import androidx.ui.material.MaterialTheme
 
 @Composable
 fun MemsetMainTemplate(content: @Composable() () -> Unit) {
     MaterialTheme {
-        FlexColumn {
-            expanded(1f) {
-                content()
-            }
+        Column {
+            content()
 // TODO Maybe something for later...
 //            inflexible {
 //                MemsetBottomNavigation()

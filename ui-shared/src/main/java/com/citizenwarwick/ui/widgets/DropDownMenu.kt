@@ -21,11 +21,11 @@ import androidx.ui.core.DropDownAlignment
 import androidx.ui.core.DropdownPopup
 import androidx.ui.core.Modifier
 import androidx.ui.core.Text
+import androidx.ui.foundation.Border
 import androidx.ui.foundation.Clickable
 import androidx.ui.foundation.VerticalScroller
 import androidx.ui.foundation.shape.corner.RoundedCornerShape
 import androidx.ui.graphics.Color
-import androidx.ui.graphics.SolidColor
 import androidx.ui.graphics.vector.DrawVector
 import androidx.ui.layout.Column
 import androidx.ui.layout.Container
@@ -75,9 +75,8 @@ fun <T> DropDownPopupMenu(
     DropdownPopup(dropDownAlignment = DropDownAlignment.Left) {
         Card(
             shape = RoundedCornerShape(4.dp),
-            borderWidth = 1.dp,
+            border = Border(1.dp, Color.LightGray),
             modifier = modifier,
-            borderBrush = SolidColor(Color.LightGray),
             elevation = 4.dp
         ) {
             DropDownContent(items, itemTemplate)
@@ -101,9 +100,8 @@ private fun DropDownBoxLabel(isOpen: Boolean, label: String = "") {
     Container {
         Surface(
             color = Color.White,
-            borderWidth = 1.dp,
+            border = Border(1.dp, Color.LightGray),
             elevation = if (isOpen) 0.dp else 2.dp,
-            borderBrush = SolidColor(Color.LightGray),
             shape = RoundedCornerShape(4.dp)
         ) {
             Row(modifier = LayoutWidth.Fill) {

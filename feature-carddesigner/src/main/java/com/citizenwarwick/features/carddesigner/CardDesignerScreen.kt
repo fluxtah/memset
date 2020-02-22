@@ -30,9 +30,7 @@ import androidx.ui.layout.Container
 import androidx.ui.layout.LayoutGravity
 import androidx.ui.layout.LayoutPadding
 import androidx.ui.layout.LayoutWidth
-import androidx.ui.layout.Padding
 import androidx.ui.layout.Row
-import androidx.ui.layout.Spacing
 import androidx.ui.material.Divider
 import androidx.ui.material.TopAppBar
 import androidx.ui.material.ripple.Ripple
@@ -169,7 +167,6 @@ private fun EditorToolbar(state: CardDesignerState) {
 
 @Composable
 private fun EditorToolbarButton(editorFunction: EditorFunctionConfig, onClick: () -> Unit) {
-    val vector = vectorResource(editorFunction.icon)
     IconButton(
         vectorResourceId = editorFunction.icon,
         onClick = onClick
@@ -205,33 +202,34 @@ private fun LayersDropDown(state: CardDesignerState) {
 
 @Composable
 private fun LayersDropDownItem(state: CardDesignerState, item: MemoryCardElement) {
-    Surface(color = if (state.selectedElement == item) Color.LightGray else Color.Transparent) {
-        Padding(padding = 2.dp) {
-            Ripple(bounded = true) {
-                Row {
-                    Container(modifier = LayoutGravity.Center + LayoutFlexible(1f)) {
-                        Clickable(onClick = { state.selectedElement = item }) {
-                            Container(expanded = true) {
-                                Text(modifier = Spacing(4.dp), text = item.name)
-                            }
+    Surface(
+        modifier = LayoutPadding(2.dp),
+        color = if (state.selectedElement == item) Color.LightGray else Color.Transparent
+    ) {
+        Ripple(bounded = true) {
+            Row {
+                Container(modifier = LayoutGravity.Center + LayoutFlexible(1f)) {
+                    Clickable(onClick = { state.selectedElement = item }) {
+                        Container(expanded = true) {
+                            Text(modifier = LayoutPadding(4.dp), text = item.name)
                         }
                     }
-                    IconButton(
-                        modifier = LayoutGravity.Center,
-                        iconVector = vectorResource(R.drawable.ic_move_up),
-                        onClick = { state.card.upSide.moveElementUp(item) }
-                    )
-                    IconButton(
-                        modifier = LayoutGravity.Center,
-                        iconVector = vectorResource(R.drawable.ic_move_down),
-                        onClick = { state.card.upSide.moveElementDown(item) }
-                    )
-                    IconButton(
-                        modifier = LayoutGravity.Center,
-                        iconVector = vectorResource(R.drawable.ic_editor_tool_delete),
-                        onClick = { state.card.upSide.elements.remove(item) }
-                    )
                 }
+                IconButton(
+                    modifier = LayoutGravity.Center,
+                    iconVector = vectorResource(R.drawable.ic_move_up),
+                    onClick = { state.card.upSide.moveElementUp(item) }
+                )
+                IconButton(
+                    modifier = LayoutGravity.Center,
+                    iconVector = vectorResource(R.drawable.ic_move_down),
+                    onClick = { state.card.upSide.moveElementDown(item) }
+                )
+                IconButton(
+                    modifier = LayoutGravity.Center,
+                    iconVector = vectorResource(R.drawable.ic_editor_tool_delete),
+                    onClick = { state.card.upSide.elements.remove(item) }
+                )
             }
         }
     }

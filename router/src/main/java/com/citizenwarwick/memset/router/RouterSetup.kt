@@ -18,11 +18,12 @@ package com.citizenwarwick.memset.router
 import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.Ambient
 import androidx.compose.Composable
 import androidx.compose.Composition
 import androidx.compose.Model
+import androidx.compose.Providers
 import androidx.compose.ambient
+import androidx.compose.ambientOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.ui.core.setContent
@@ -102,7 +103,7 @@ class RouterSetup {
             }
         }
 
-        RouterAmbient.Provider(value = model) {
+        Providers(RouterAmbient provides model) {
             state.currentUri.let {
                 findMapping(it).invoke(RouterContext(it))
             }
@@ -134,7 +135,7 @@ interface Router {
 @Model
 data class RouterState(var currentUri: Uri = Uri.EMPTY)
 
-val RouterAmbient = Ambient.of<Router>()
+val RouterAmbient = ambientOf<Router>()
 
 @Composable
 fun goto(uri: String, context: GotoContext.() -> Unit = { go() }): () -> Unit {

@@ -16,10 +16,8 @@
 package com.citizenwarwick.features.carddesigner.ui.elementcontrols.properties
 
 import androidx.compose.Composable
-import androidx.ui.core.EditorModel
 import androidx.ui.core.Text
 import androidx.ui.core.TextField
-import androidx.ui.input.VisualTransformation
 import androidx.ui.layout.LayoutGravity
 import androidx.ui.layout.Row
 

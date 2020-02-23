@@ -17,7 +17,6 @@ package com.citizenwarwick.features.carddesigner
 
 import MemsetMainTemplate
 import androidx.compose.Composable
-import androidx.compose.ambient
 import androidx.compose.frames.ModelList
 import androidx.compose.remember
 import androidx.ui.core.Text
@@ -72,7 +71,7 @@ fun CardDesignerScreen(repository: MemoryCardRepository = get(), cardUuid: Strin
         }
     }
 
-    val router = ambient(RouterAmbient)
+    val router = RouterAmbient.current
     val onCardSaved: () -> Unit = {
         CoroutineScope(Main).launch {
             // TODO temporary for dev04

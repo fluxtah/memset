@@ -56,17 +56,17 @@ fun CardContainer(modifier: Modifier = Modifier.None, card: MemoryCard, cardActi
 @Composable
 private fun CardDropDownMenu(card: MemoryCard, cardActions: CardActions) {
     Container {
-        val isOpen = state { false }
+        var isOpen by state { false }
 
         IconButton(
             vectorResourceId = R.drawable.ic_more,
-            onClick = { isOpen.value = !isOpen.value })
+            onClick = { isOpen = !isOpen })
 
         val items = modelListOf(
             "Delete" to { cardActions.deleteCard(card) },
             "Edit" to { cardActions.editCard(card) }
         )
-        if (isOpen.value) {
+        if (isOpen) {
             DropDownPopupMenu(
                 modifier = LayoutPadding(right = 16.dp, bottom = 16.dp),
                 items = items

@@ -38,6 +38,7 @@ android {
         compose true
     }
     composeOptions {
+        kotlinCompilerVersion "$compose_experimental_kotlin_compiler_version"
         kotlinCompilerExtensionVersion "$compose_version"
     }
 }

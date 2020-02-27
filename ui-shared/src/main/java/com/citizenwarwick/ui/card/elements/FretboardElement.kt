@@ -7,7 +7,7 @@ import androidx.ui.unit.dp
 import com.citizenwarwick.fretboard.Fretboard
 import com.citizenwarwick.fretboard.FretboardMarker
 import com.citizenwarwick.fretboard.FretboardMarker.FrettedNote
-import com.citizenwarwick.fretboard.GuitarChord
+import com.citizenwarwick.fretboard.FretboardMarker.MutedString
 import com.citizenwarwick.fretboard.encodeFingering
 import com.citizenwarwick.fretboard.fingering
 import com.citizenwarwick.fretboard.replaceOnSameString
@@ -31,30 +31,50 @@ private fun FretboardContainer(element: FretboardElement) {
         LayoutPadding(element.spacingLeft.dp, element.spacingTop.dp, element.spacingRight.dp, element.spacingBottom.dp)
 
     val onFretboardPressed: (Int, Int) -> Unit = { string, fret ->
-        val markers: MutableList<FretboardMarker> = if (element.markers.isEmpty()) {
-            mutableListOf()
-        } else {
-            element.markers.fingering.toMutableList()
-        }
-
-        markers.replaceOnSameString(FrettedNote(string, fret))
-        element.markers = markers.encodeFingering
+        addChordNote(element, string, fret)
     }
 
     Container(modifier = spacing) {
-        if (element.markers.isEmpty()) {
-            Fretboard(
-                fromFret = 0,
-                toFret = 6,
-                scale = element.scale,
-                onFretboardPressed = onFretboardPressed
-            )
-        } else {
-            GuitarChord(
-                fretboardMarkers = element.markers.fingering,
-                scale = element.scale,
-                onFretboardPressed = onFretboardPressed
-            )
-        }
+        Fretboard(
+            fromFret = element.startFret,
+            toFret = element.endFret,
+            scale = element.scale,
+            fretboardMarkers = if (element.markers.isEmpty()) listOf() else element.markers.fingering,
+            onFretboardPressed = onFretboardPressed
+        )
+
     }
+}
+
+private fun addChordNote(
+    element: FretboardElement,
+    string: Int,
+    fret: Int
+) {
+    val markers: MutableList<FretboardMarker> = if (element.markers.isEmpty()) {
+        mutableListOf()
+    } else {
+        element.markers.fingering.toMutableList()
+    }
+    val existingMarker = markers.filterIsInstance<FrettedNote>().firstOrNull {
+        it.stringNumber == string && it.fretNumber == fret
+    }
+    val existingMute = markers.filterIsInstance<MutedString>().firstOrNull {
+        it.stringNumber == string
+    }
+
+    if (existingMarker != null) {
+        if (existingMarker.fretNumber == 0) {
+            markers.remove(existingMarker)
+            markers.add(MutedString(existingMarker.stringNumber))
+        } else {
+            markers.remove(existingMarker)
+        }
+    } else if (existingMute != null) {
+        markers.remove(existingMute)
+    } else {
+        markers.replaceOnSameString(FrettedNote(string, fret))
+    }
+
+    element.markers = markers.encodeFingering(6)
 }

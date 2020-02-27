@@ -45,6 +45,8 @@ class MemoryCardElementAdapter {
             FretboardElement().apply {
                 markers = jsonElement.properties["fingering"] ?: ""
                 scale = jsonElement.properties["scale"]?.toFloat() ?: 2.0f
+                startFret = jsonElement.properties["startFret"]?.toInt() ?: 0
+                endFret = jsonElement.properties["endFret"]?.toInt() ?: 5
             }
         }
         else -> throw RuntimeException("Not support data type")
@@ -97,6 +99,8 @@ private fun MemoryCardElement.mapProperties(): Map<String, String> {
             is FretboardElement -> {
                 map["scale"] = scale.toString()
                 map["fingering"] = markers
+                map["startFret"] = startFret.toString()
+                map["endFret"] = endFret.toString()
             }
         }
     }

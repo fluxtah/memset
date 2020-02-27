@@ -11,7 +11,7 @@ buildscript {
     ext.ktx_viewmodel_version = "2.2.0"
     ext.music_version = "0.1.0"
     ext.pianoroll_version = "0.1.5"
-    ext.fretboard_version = "0.1.5"
+    ext.fretboard_version = "0.1.51"
 
     repositories {
         google()

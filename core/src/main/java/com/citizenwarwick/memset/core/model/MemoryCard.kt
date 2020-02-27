@@ -137,7 +137,9 @@ data class FretboardElement(
     override var spacingBottom: Float = 0f,
 
     var markers: String = "",
-    var scale: Float = 2.0f
+    var scale: Float = 2.0f,
+    var startFret: Int = 0,
+    var endFret: Int = 5
 ) : MemoryCardElement
 
 enum class ShapeType {

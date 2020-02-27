@@ -16,6 +16,7 @@
 package com.citizenwarwick.features.carddesigner.ui.elementcontrols
 
 import androidx.compose.Composable
+import androidx.core.math.MathUtils.clamp
 import androidx.ui.layout.Column
 import com.citizenwarwick.features.carddesigner.ui.elementcontrols.properties.AlignmentPropertyControl
 import com.citizenwarwick.features.carddesigner.ui.elementcontrols.properties.SliderPropertyControl
@@ -34,6 +35,24 @@ fun FretboardPropertyControls(element: FretboardElement) {
             valueRange = 50f..200f,
             onValueChanged = {
                 element.scale = (it / 100)
+            }
+        )
+
+        SliderPropertyControl(
+            label = "Start Fret",
+            initialValue = element.startFret.toFloat(),
+            valueRange = 0f..30f,
+            onValueChanged = {
+                element.startFret = clamp(it.toInt(), 0, element.endFret)
+            }
+        )
+
+        SliderPropertyControl(
+            label = "End Fret",
+            initialValue = element.endFret.toFloat(),
+            valueRange = 0f..30f,
+            onValueChanged = {
+                element.endFret = clamp(it.toInt(), element.startFret, 30)
             }
         )
 

@@ -17,7 +17,6 @@ package com.citizenwarwick.memset.features.home
 
 import MemsetMainTemplate
 import androidx.compose.Composable
-import androidx.compose.ambient
 import androidx.compose.remember
 import androidx.ui.core.Text
 import androidx.ui.layout.Column
@@ -66,7 +65,7 @@ fun HomeScreen(repository: MemoryCardRepository = get()) {
         }
     }
 
-    val router = ambient(RouterAmbient)
+    val router = RouterAmbient.current
 
     val cardActions = CardActions(
         deleteCard = { card ->

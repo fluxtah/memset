@@ -1,8 +1,15 @@
 package com.citizenwarwick.ui.card
 
+import android.app.Activity
+import android.graphics.Bitmap
 import androidx.compose.Composable
+import androidx.compose.Context
+import androidx.compose.View
 import androidx.compose.frames.modelListOf
 import androidx.compose.state
+import androidx.core.view.drawToBitmap
+import androidx.print.PrintHelper
+import androidx.ui.core.ContextAmbient
 import androidx.ui.core.Modifier
 import androidx.ui.core.Text
 import androidx.ui.foundation.Clickable
@@ -62,14 +69,16 @@ private fun CardDropDownMenu(card: MemoryCard, cardActions: CardActions) {
             vectorResourceId = R.drawable.ic_more,
             onClick = { isOpen = !isOpen })
 
-        val items = modelListOf(
+        val context = ContextAmbient.current
+        val menuItems = modelListOf(
             "Delete" to { cardActions.deleteCard(card) },
-            "Edit" to { cardActions.editCard(card) }
+            "Edit" to { cardActions.editCard(card) },
+            "Print" to { print(context, card) }
         )
         if (isOpen) {
             DropDownPopupMenu(
                 modifier = LayoutPadding(right = 16.dp, bottom = 16.dp),
-                items = items
+                items = menuItems
             ) { item ->
                 Ripple(bounded = true) {
                     Clickable(onClick = { item.second() }) {
@@ -80,5 +89,15 @@ private fun CardDropDownMenu(card: MemoryCard, cardActions: CardActions) {
                 }
             }
         }
+    }
+}
+
+private fun print(context: Context, card: MemoryCard) {
+    PrintHelper(context).apply {
+        scaleMode = PrintHelper.SCALE_MODE_FIT
+    }.also { printHelper ->
+        val view = (context as Activity).window.decorView.findViewById<View>(android.R.id.content)
+        val bitmap = view.drawToBitmap(Bitmap.Config.ARGB_8888)
+        printHelper.printBitmap("Memset Card", bitmap)
     }
 }

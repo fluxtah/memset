@@ -2,9 +2,7 @@ package com.citizenwarwick.memset
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.Composable
 import androidx.ui.core.Text
-import androidx.ui.layout.Column
 import com.citizenwarwick.features.carddesigner.CardDesignerScreen
 import com.citizenwarwick.memset.core.di.bootstrap
 import com.citizenwarwick.memset.core.nav.MemsetDestination
@@ -28,17 +26,6 @@ class MainActivity : AppCompatActivity() {
             "/designer/.*" routeTo { CardDesignerScreen(cardUuid = slug(1)) }
             "/designer" routeTo { CardDesignerScreen() }
             ".*" routeTo { Text("404 Not Found ($uri)") }
-        }
-    }
-
-    @Composable
-    private fun StackHellos() {
-        Column {
-            Text(text = "Hello, World")
-            Text(text = "Hello, World")
-            Text(text = "Hello, World")
-            Text(text = "Hello, World")
-            Text(text = "Hello, World")
         }
     }
 

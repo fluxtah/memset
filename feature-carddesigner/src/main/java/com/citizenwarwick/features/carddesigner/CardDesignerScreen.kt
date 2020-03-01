@@ -61,12 +61,12 @@ fun CardDesignerScreen(repository: MemoryCardRepository = get(), cardUuid: Strin
 
     if (cardUuid != null && cardUuid.isNotEmpty()) {
         observe(repository.getCard(cardUuid)) {
-            onStart = {
+            onStart {
                 state.loadingState = LoadingState.Loading
             }
-            onResult = {
+            onResult {
                 state.loadingState = LoadingState.Loaded
-                state.card = it
+                state.card = result
             }
         }
     }

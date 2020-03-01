@@ -17,7 +17,9 @@ package com.citizenwarwick.memset.features.home
 
 import MemsetMainTemplate
 import androidx.compose.Composable
+import androidx.compose.Recompose
 import androidx.compose.remember
+import androidx.compose.state
 import androidx.ui.core.Text
 import androidx.ui.layout.Column
 import androidx.ui.layout.Container
@@ -25,6 +27,7 @@ import androidx.ui.layout.LayoutGravity
 import androidx.ui.layout.LayoutPadding
 import androidx.ui.layout.LayoutWidth
 import androidx.ui.layout.Stack
+import androidx.ui.material.Button
 import androidx.ui.material.FloatingActionButton
 import androidx.ui.material.MaterialTheme
 import androidx.ui.material.TopAppBar
@@ -35,6 +38,7 @@ import com.citizenwarwick.memset.core.model.LoadingState
 import com.citizenwarwick.memset.core.model.MemoryCard
 import com.citizenwarwick.memset.core.nav.MemsetDestination
 import com.citizenwarwick.memset.core.observe
+import com.citizenwarwick.memset.core.observeCounter
 import com.citizenwarwick.memset.core.toModelList
 import com.citizenwarwick.memset.router.RouterAmbient
 import com.citizenwarwick.memset.router.goto
@@ -45,27 +49,9 @@ import kotlinx.coroutines.runBlocking
 
 @Composable
 fun HomeScreen(repository: MemoryCardRepository = get()) {
-    //
-    // We want to remember this state across re-composition
-    //
-    val state = remember { HomeScreenState() }
-
-    //
-    // Observe for as long as HomeScreen is composed, changes
-    // will cause re-composition down but replacing HomeScreen will
-    // remove the observer from this live data
-    //
-    observe(repository.getCards()) {
-        onStart = { state.loadingState = LoadingState.Loading }
-        onResult = { resultCards ->
-            state.apply {
-                loadingState = LoadingState.Loaded
-                cards = resultCards.toModelList()
-            }
-        }
-    }
-
     val router = RouterAmbient.current
+    val screenState = remember { HomeScreenState() }
+    var error by state { false } // TODO just a silly flag for debugging something, set to true to see an error retry :) can be removed and usages
 
     val cardActions = CardActions(
         deleteCard = { card ->
@@ -79,16 +65,40 @@ fun HomeScreen(repository: MemoryCardRepository = get()) {
             router.goto(MemsetDestination.CardDesigner(card.uuid))
         })
 
-    MemsetMainTemplate {
-        when (state.loadingState) {
-            LoadingState.Loaded -> {
-                HomeScreenContent(state.cards, cardActions)
+    Recompose { recompose ->
+        //
+        // Observe for as long as HomeScreen is composed, changes
+        // will cause re-composition down but replacing HomeScreen will
+        // remove the observer from this live data
+        //
+        observe(repository.getCards()) {
+            onStart { screenState.loadingState = LoadingState.Loading }
+            onResult {
+                screenState.apply {
+                    loadingState = if (error) LoadingState.Error else LoadingState.Loaded
+                    cards = result.toModelList()
+                    error = false
+                }
             }
-            LoadingState.Loading -> {
-                Text("Loading...")
-            }
-            LoadingState.Error -> {
-                Text("Error")
+        }
+
+        MemsetMainTemplate {
+            Text(observeCounter.toString())
+            when (screenState.loadingState) {
+                LoadingState.Loaded -> {
+                    HomeScreenContent(screenState.cards, cardActions)
+                }
+                LoadingState.Loading -> {
+                    Text("Loading...")
+                }
+                LoadingState.Error -> {
+                    Column {
+                        Text("Error")
+                        Button(onClick = { recompose() }) {
+                            Text("Retry")
+                        }
+                    }
+                }
             }
         }
     }
@@ -107,7 +117,6 @@ private fun HomeScreenContent(cards: List<MemoryCard>, cardActions: CardActions)
                         text = "\uD83D\uDC40 Looks like you don't have any cards yet, press the round + button below to add a card!",
                         style = MaterialTheme.typography().h3
                     )
-
                 }
             }
             Container(modifier = LayoutGravity.BottomRight) {

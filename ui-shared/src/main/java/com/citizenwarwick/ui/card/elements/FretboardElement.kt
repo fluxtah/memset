@@ -42,7 +42,6 @@ private fun FretboardContainer(element: FretboardElement) {
             fretboardMarkers = if (element.markers.isEmpty()) listOf() else element.markers.fingering,
             onFretboardPressed = onFretboardPressed
         )
-
     }
 }
 
@@ -72,6 +71,9 @@ private fun addChordNote(
         }
     } else if (existingMute != null) {
         markers.remove(existingMute)
+        if (fret > 0) {
+            markers.add(FrettedNote(string, fret))
+        }
     } else {
         markers.replaceOnSameString(FrettedNote(string, fret))
     }

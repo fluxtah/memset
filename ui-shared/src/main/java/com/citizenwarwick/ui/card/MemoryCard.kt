@@ -40,7 +40,7 @@ fun MemoryCard(
             Card(
                 shape = RoundedCornerShape(4.dp),
                 elevation = 4.dp,
-                modifier = LayoutAspectRatio(1.7f) + LayoutWidth.Fill,
+                modifier = LayoutAspectRatio(1.78f) + LayoutWidth.Fill,
                 color = card.upSide.color
             ) {
                 Container {

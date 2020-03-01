@@ -1,26 +1,24 @@
 package com.citizenwarwick.memset.core
 
 import androidx.compose.Composable
+import androidx.compose.Pivotal
 import androidx.compose.onActive
-import androidx.compose.stateFor
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 
+var observeCounter = 0
 @Composable
-fun <T> observe(data: LiveData<T>, block: ObserveContext<T>.() -> Unit) {
-    val thing = stateFor<T?> { null }
+fun <T> observe(@Pivotal data: LiveData<T>, block: ObserveScope<T>.() -> Unit) {
+    observeCounter++
     onActive {
-        val context = ObserveContext<T>()
+        val context = ObserveScope<T>()
         block(context)
-        context.onStart()
+        context.onStartBlock()
 
         val observer = object : Observer<T> {
             override fun onChanged(t: T) {
-                if (context.once) {
-                    data.removeObserver(this)
-                }
-                thing.value = t
-                context.onResult(t)
+                val resultScope = ObserveScope.OnResultScope(this, data, t)
+                context.onResultBlock(resultScope)
             }
         }
 
@@ -31,11 +29,26 @@ fun <T> observe(data: LiveData<T>, block: ObserveContext<T>.() -> Unit) {
             }
         }
     }
-    thing.value
 }
 
-class ObserveContext<T> {
-    var onStart: () -> Unit = {}
-    var onResult: (T) -> Unit = {}
-    var once = false
+class ObserveScope<T> {
+    internal var onStartBlock: () -> Unit = {}
+    fun onStart(block: () -> Unit) {
+        onStartBlock = block
+    }
+
+    internal var onResultBlock: OnResultScope<T>.() -> Unit = {}
+    fun onResult(block: OnResultScope<T>.() -> Unit) {
+        onResultBlock = block
+    }
+
+    class OnResultScope<T>(
+        private val observer: Observer<T>,
+        private val data: LiveData<T>,
+        val result: T
+    ) {
+        fun stopObserving() {
+            data.removeObserver(observer)
+        }
+    }
 }

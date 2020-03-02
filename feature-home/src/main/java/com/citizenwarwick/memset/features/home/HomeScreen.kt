@@ -38,7 +38,6 @@ import com.citizenwarwick.memset.core.model.LoadingState
 import com.citizenwarwick.memset.core.model.MemoryCard
 import com.citizenwarwick.memset.core.nav.MemsetDestination
 import com.citizenwarwick.memset.core.observe
-import com.citizenwarwick.memset.core.observeCounter
 import com.citizenwarwick.memset.core.toModelList
 import com.citizenwarwick.memset.router.RouterAmbient
 import com.citizenwarwick.memset.router.goto
@@ -51,7 +50,7 @@ import kotlinx.coroutines.runBlocking
 fun HomeScreen(repository: MemoryCardRepository = get()) {
     val router = RouterAmbient.current
     val screenState = remember { HomeScreenState() }
-    var error by state { false } // TODO just a silly flag for debugging something, set to true to see an error retry :) can be removed and usages
+    var error by state { true } // TODO just a silly flag for debugging something, set to true to see an error retry :) can be removed and usages
 
     val cardActions = CardActions(
         deleteCard = { card ->
@@ -83,7 +82,6 @@ fun HomeScreen(repository: MemoryCardRepository = get()) {
         }
 
         MemsetMainTemplate {
-            Text(observeCounter.toString())
             when (screenState.loadingState) {
                 LoadingState.Loaded -> {
                     HomeScreenContent(screenState.cards, cardActions)

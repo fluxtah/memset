@@ -6,10 +6,8 @@ import androidx.compose.onActive
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 
-var observeCounter = 0
 @Composable
 fun <T> observe(@Pivotal data: LiveData<T>, block: ObserveScope<T>.() -> Unit) {
-    observeCounter++
     onActive {
         val context = ObserveScope<T>()
         block(context)

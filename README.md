@@ -29,16 +29,14 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        routings("https://memset.com/") {
+        routing("https://memset.com/") {
             schemes("https", "http")
             hosts("memset.com", "www.memset.com")
 
-            "/" routeTo { HomeScreen() }
-            "/designer/.*" routeTo { 
-                CardDesignerScreen(cardUuid = slug(1)) 
-            }
-            "/designer" routeTo { CardDesignerScreen() }
-            ".*" routeTo { Text("404 Not Found ($uri)") }
+            "/" to { HomeScreen() }
+            "/designer/.*" to { CardDesignerScreen(cardUuid = slug(1)) }
+            "/designer" to { CardDesignerScreen() }
+            ".*" to { Text("404 Not Found ($uri)") }
         }
     }
 }

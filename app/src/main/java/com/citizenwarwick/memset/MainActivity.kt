@@ -10,7 +10,7 @@ import com.citizenwarwick.memset.features.home.HomeScreen
 import com.citizenwarwick.memset.router.getRouter
 import com.citizenwarwick.memset.router.goto
 import com.citizenwarwick.memset.router.isCurrentDestination
-import com.citizenwarwick.memset.router.routings
+import com.citizenwarwick.memset.router.routing
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -18,14 +18,14 @@ class MainActivity : AppCompatActivity() {
 
         bootstrap(this)
 
-        routings("https://memset.com/") {
+        routing("https://memset.com/") {
             schemes("https", "http")
             hosts("memset.com", "www.memset.com")
 
-            "/" routeTo { HomeScreen() }
-            "/designer/.*" routeTo { CardDesignerScreen(cardUuid = slug(1)) }
-            "/designer" routeTo { CardDesignerScreen() }
-            ".*" routeTo { Text("404 Not Found ($uri)") }
+            "/" to { HomeScreen() }
+            "/designer/.*" to { CardDesignerScreen(cardUuid = slug(1)) }
+            "/designer" to { CardDesignerScreen() }
+            ".*" to { Text("404 Not Found ($uri)") }
         }
     }
 

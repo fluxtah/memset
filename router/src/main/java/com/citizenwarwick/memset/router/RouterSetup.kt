@@ -48,7 +48,7 @@ class RouterSetup {
     }
 
     private data class CommandGroup(
-        val paths: MutableList<Pair<Regex, @Composable() RouterContext.() -> Unit>> = mutableListOf(),
+        val paths: MutableList<Pair<Regex, @Composable() RouterScope.() -> Unit>> = mutableListOf(),
         val schemes: MutableList<Regex> = mutableListOf(),
         val hosts: MutableList<Regex> = mutableListOf()
     )
@@ -64,7 +64,7 @@ class RouterSetup {
         mappings(Mapper(group.schemes, group.hosts, group.paths))
     }
 
-    private fun findMapping(uri: Uri): @Composable() RouterContext.() -> Unit {
+    private fun findMapping(uri: Uri): @Composable() RouterScope.() -> Unit {
         val group = if (uri.scheme != null && uri.host != null) {
             commandGroups
                 .firstOrNull { group ->
@@ -105,7 +105,7 @@ class RouterSetup {
 
         Providers(RouterAmbient provides model) {
             state.currentUri.let {
-                findMapping(it).invoke(RouterContext(it))
+                findMapping(it).invoke(RouterScope(model, it))
             }
         }
     }
@@ -151,14 +151,14 @@ class GotoContext(private val router: Router, private val destination: String) {
     }
 }
 
-fun AppCompatActivity.routings(homeUri: String, mappings: Mapper.() -> Unit = {}): Composition {
+fun AppCompatActivity.routing(homeUri: String, mappings: Mapper.() -> Unit = {}): Composition {
     return setContent {
         val model = ViewModelProvider(this).get(RouterViewModel::class.java)
         RouterSetup(model, homeUri, mappings).start(intent)
     }
 }
 
-fun AppCompatActivity.routings(homeUri: String, vararg mappings: Mapper.() -> Unit): Composition {
+fun AppCompatActivity.routing(homeUri: String, vararg mappings: Mapper.() -> Unit): Composition {
     val model = ViewModelProvider(this).get(RouterViewModel::class.java)
     return setContent {
         RouterSetup(model, homeUri, *mappings).start(intent)

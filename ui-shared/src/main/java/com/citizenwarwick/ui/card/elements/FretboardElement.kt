@@ -31,7 +31,11 @@ private fun FretboardContainer(element: FretboardElement) {
         LayoutPadding(element.spacingLeft.dp, element.spacingTop.dp, element.spacingRight.dp, element.spacingBottom.dp)
 
     val onFretboardPressed: (Int, Int) -> Unit = { string, fret ->
-        addChordNote(element, string, fret)
+        if (element.mode == "chord") {
+            addChordNote(element, string, fret)
+        } else {
+            addScaleNote(element, string, fret)
+        }
     }
 
     Container(modifier = spacing) {
@@ -45,11 +49,7 @@ private fun FretboardContainer(element: FretboardElement) {
     }
 }
 
-private fun addChordNote(
-    element: FretboardElement,
-    string: Int,
-    fret: Int
-) {
+private fun addChordNote(element: FretboardElement, string: Int, fret: Int) {
     val markers: MutableList<FretboardMarker> = if (element.markers.isEmpty()) {
         mutableListOf()
     } else {
@@ -79,4 +79,26 @@ private fun addChordNote(
     }
 
     element.markers = markers.encodeFingering(6)
+}
+
+fun addScaleNote(element: FretboardElement, string: Int, fret: Int) {
+    val markers: MutableList<FretboardMarker> = if (element.markers.isEmpty()) {
+        mutableListOf()
+    } else {
+        element.markers.fingering.toMutableList()
+    }
+    val existingMarker = markers.filterIsInstance<FrettedNote>().firstOrNull {
+        it.stringNumber == string && it.fretNumber == fret
+    }
+
+    if (existingMarker != null) {
+        if (existingMarker.fretNumber == 0) {
+            markers.remove(existingMarker)
+            markers.add(MutedString(existingMarker.stringNumber))
+        } else {
+            markers.remove(existingMarker)
+        }
+    } else {
+        markers.add(FrettedNote(string, fret))
+    }
 }

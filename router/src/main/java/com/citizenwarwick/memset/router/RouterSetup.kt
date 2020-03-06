@@ -22,7 +22,6 @@ import androidx.compose.Composable
 import androidx.compose.Composition
 import androidx.compose.Model
 import androidx.compose.Providers
-import androidx.compose.ambient
 import androidx.compose.ambientOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -104,8 +103,8 @@ class RouterSetup {
         }
 
         Providers(RouterAmbient provides model) {
-            state.currentUri.let {
-                findMapping(it).invoke(RouterScope(model, it))
+            state.currentUri.let { uri ->
+                findMapping(uri)(RouterScope(model, uri))
             }
         }
     }
@@ -139,7 +138,7 @@ val RouterAmbient = ambientOf<Router>()
 
 @Composable
 fun goto(uri: String, context: GotoContext.() -> Unit = { go() }): () -> Unit {
-    val model = ambient(RouterAmbient)
+    val model = RouterAmbient.current
     return {
         context(GotoContext(model, uri))
     }

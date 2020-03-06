@@ -33,20 +33,20 @@ fun AlignmentPropertyControl(
         IconButton(
             modifier = LayoutGravity.Center,
             vectorResourceId = R.drawable.ic_editor_tool_align_left,
-            selected = (selectedAlignment == Alignment.TopLeft ||
-                selectedAlignment == Alignment.CenterLeft ||
-                selectedAlignment == Alignment.BottomLeft)
+            selected = (selectedAlignment == Alignment.TopStart ||
+                selectedAlignment == Alignment.CenterStart ||
+                selectedAlignment == Alignment.BottomStart)
         ) {
             onAlignmentSelected(
                 when (selectedAlignment) {
-                    Alignment.Center, Alignment.CenterRight ->
-                        Alignment.CenterLeft
-                    Alignment.BottomCenter, Alignment.BottomRight ->
-                        Alignment.BottomLeft
-                    Alignment.TopCenter, Alignment.TopRight ->
-                        Alignment.TopLeft
+                    Alignment.Center, Alignment.CenterEnd ->
+                        Alignment.CenterStart
+                    Alignment.BottomCenter, Alignment.BottomEnd ->
+                        Alignment.BottomStart
+                    Alignment.TopCenter, Alignment.TopEnd ->
+                        Alignment.TopStart
                     else ->
-                        Alignment.CenterLeft
+                        Alignment.CenterStart
                 }
             )
         }
@@ -59,11 +59,11 @@ fun AlignmentPropertyControl(
         ) {
             onAlignmentSelected(
                 when (selectedAlignment) {
-                    Alignment.CenterRight, Alignment.CenterLeft ->
+                    Alignment.CenterEnd, Alignment.CenterStart ->
                         Alignment.Center
-                    Alignment.BottomRight, Alignment.BottomLeft ->
+                    Alignment.BottomEnd, Alignment.BottomStart ->
                         Alignment.BottomCenter
-                    Alignment.TopRight, Alignment.TopLeft ->
+                    Alignment.TopEnd, Alignment.TopStart ->
                         Alignment.TopCenter
                     else ->
                         Alignment.Center
@@ -73,38 +73,38 @@ fun AlignmentPropertyControl(
         IconButton(
             modifier = LayoutGravity.Center,
             vectorResourceId = R.drawable.ic_editor_tool_align_right,
-            selected = (selectedAlignment == Alignment.TopRight ||
-                selectedAlignment == Alignment.BottomRight ||
-                selectedAlignment == Alignment.CenterRight)
+            selected = (selectedAlignment == Alignment.TopEnd ||
+                selectedAlignment == Alignment.BottomEnd ||
+                selectedAlignment == Alignment.CenterEnd)
         ) {
             onAlignmentSelected(
                 when (selectedAlignment) {
-                    Alignment.Center, Alignment.CenterLeft ->
-                        Alignment.CenterRight
-                    Alignment.BottomCenter, Alignment.BottomLeft ->
-                        Alignment.BottomRight
-                    Alignment.TopCenter, Alignment.TopLeft ->
-                        Alignment.TopRight
+                    Alignment.Center, Alignment.CenterStart ->
+                        Alignment.CenterEnd
+                    Alignment.BottomCenter, Alignment.BottomStart ->
+                        Alignment.BottomEnd
+                    Alignment.TopCenter, Alignment.TopStart ->
+                        Alignment.TopEnd
                     else ->
-                        Alignment.CenterRight
+                        Alignment.CenterEnd
                 }
             )
         }
         IconButton(
             modifier = LayoutGravity.Center,
             vectorResourceId = R.drawable.ic_editor_tool_vertical_align_bottom,
-            selected = (selectedAlignment == Alignment.BottomRight ||
+            selected = (selectedAlignment == Alignment.BottomEnd ||
                 selectedAlignment == Alignment.BottomCenter ||
-                selectedAlignment == Alignment.BottomLeft)
+                selectedAlignment == Alignment.BottomStart)
         ) {
             onAlignmentSelected(
                 when (selectedAlignment) {
                     Alignment.Center, Alignment.TopCenter ->
                         Alignment.BottomCenter
-                    Alignment.CenterLeft, Alignment.TopLeft ->
-                        Alignment.BottomLeft
-                    Alignment.CenterRight, Alignment.TopRight ->
-                        Alignment.BottomRight
+                    Alignment.CenterStart, Alignment.TopStart ->
+                        Alignment.BottomStart
+                    Alignment.CenterEnd, Alignment.TopEnd ->
+                        Alignment.BottomEnd
                     else ->
                         Alignment.BottomCenter
                 }
@@ -114,17 +114,17 @@ fun AlignmentPropertyControl(
             modifier = LayoutGravity.Center,
             vectorResourceId = R.drawable.ic_editor_tool_vertical_align_center,
             selected = (selectedAlignment == Alignment.Center ||
-                selectedAlignment == Alignment.CenterLeft ||
-                selectedAlignment == Alignment.CenterRight)
+                selectedAlignment == Alignment.CenterStart ||
+                selectedAlignment == Alignment.CenterEnd)
         ) {
             onAlignmentSelected(
                 when (selectedAlignment) {
                     Alignment.BottomCenter, Alignment.TopCenter ->
                         Alignment.Center
-                    Alignment.TopLeft, Alignment.BottomLeft ->
-                        Alignment.CenterLeft
-                    Alignment.TopRight, Alignment.BottomRight ->
-                        Alignment.CenterRight
+                    Alignment.TopStart, Alignment.BottomStart ->
+                        Alignment.CenterStart
+                    Alignment.TopEnd, Alignment.BottomEnd ->
+                        Alignment.CenterEnd
                     else ->
                         Alignment.Center
                 }
@@ -133,18 +133,18 @@ fun AlignmentPropertyControl(
         IconButton(
             modifier = LayoutGravity.Center,
             vectorResourceId = R.drawable.ic_editor_tool_vertical_align_top,
-            selected = (selectedAlignment == Alignment.TopRight ||
+            selected = (selectedAlignment == Alignment.TopEnd ||
                 selectedAlignment == Alignment.TopCenter ||
-                selectedAlignment == Alignment.TopLeft)
+                selectedAlignment == Alignment.TopStart)
         ) {
             onAlignmentSelected(
                 when (selectedAlignment) {
                     Alignment.Center, Alignment.BottomCenter ->
                         Alignment.TopCenter
-                    Alignment.CenterRight, Alignment.BottomRight ->
-                        Alignment.TopRight
-                    Alignment.CenterLeft, Alignment.BottomLeft ->
-                        Alignment.TopLeft
+                    Alignment.CenterEnd, Alignment.BottomEnd ->
+                        Alignment.TopEnd
+                    Alignment.CenterStart, Alignment.BottomStart ->
+                        Alignment.TopStart
                     else ->
                         Alignment.TopCenter
                 }

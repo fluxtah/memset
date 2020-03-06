@@ -1,14 +1,8 @@
 package com.citizenwarwick.ui.card
 
-import android.app.Activity
-import android.graphics.Bitmap
 import androidx.compose.Composable
-import androidx.compose.Context
-import androidx.compose.View
 import androidx.compose.frames.modelListOf
 import androidx.compose.state
-import androidx.core.view.drawToBitmap
-import androidx.print.PrintHelper
 import androidx.ui.core.ContextAmbient
 import androidx.ui.core.Modifier
 import androidx.ui.core.Text
@@ -54,7 +48,7 @@ fun CardContainer(modifier: Modifier = Modifier.None, card: MemoryCard, cardActi
             onSurfaceClicked = { card.facingFront = !card.facingFront },
             onElementClick = { card.facingFront = !card.facingFront })
 
-        Container(LayoutGravity.TopRight) {
+        Container(LayoutGravity.TopEnd) {
             CardDropDownMenu(card, cardActions)
         }
     }
@@ -72,12 +66,12 @@ private fun CardDropDownMenu(card: MemoryCard, cardActions: CardActions) {
         val context = ContextAmbient.current
         val menuItems = modelListOf(
             "Delete" to { cardActions.deleteCard(card) },
-            "Edit" to { cardActions.editCard(card) },
-            "Print" to { print(context, card) }
+            "Edit" to { cardActions.editCard(card) }
+            //   "Print" to { print(context, card) }
         )
         if (isOpen) {
             DropDownPopupMenu(
-                modifier = LayoutPadding(right = 16.dp, bottom = 16.dp),
+                modifier = LayoutPadding(end = 16.dp, bottom = 16.dp),
                 items = menuItems
             ) { item ->
                 Ripple(bounded = true) {
@@ -91,13 +85,13 @@ private fun CardDropDownMenu(card: MemoryCard, cardActions: CardActions) {
         }
     }
 }
-
-private fun print(context: Context, card: MemoryCard) {
-    PrintHelper(context).apply {
-        scaleMode = PrintHelper.SCALE_MODE_FIT
-    }.also { printHelper ->
-        val view = (context as Activity).window.decorView.findViewById<View>(android.R.id.content)
-        val bitmap = view.drawToBitmap(Bitmap.Config.ARGB_8888)
-        printHelper.printBitmap("Memset Card", bitmap)
-    }
-}
+//
+//private fun print(context: Context, card: MemoryCard) {
+//    PrintHelper(context).apply {
+//        scaleMode = PrintHelper.SCALE_MODE_FIT
+//    }.also { printHelper ->
+//        val view = (context as Activity).window.decorView.findViewById<View>(android.R.id.content)
+//        val bitmap = view.drawToBitmap(Bitmap.Config.ARGB_8888)
+//        printHelper.printBitmap("Memset Card", bitmap)
+//    }
+//}

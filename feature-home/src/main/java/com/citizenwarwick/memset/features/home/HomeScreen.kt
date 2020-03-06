@@ -117,7 +117,7 @@ private fun HomeScreenContent(cards: List<MemoryCard>, cardActions: CardActions)
                     )
                 }
             }
-            Container(modifier = LayoutGravity.BottomRight) {
+            Container(modifier = LayoutGravity.BottomEnd) {
                 FloatingActionButton(modifier = LayoutPadding(16.dp), elevation = 6.dp) {
                     IconButton(
                         vectorResourceId = R.drawable.ic_add_inverted,
@@ -132,7 +132,6 @@ private fun HomeScreenContent(cards: List<MemoryCard>, cardActions: CardActions)
 @Composable
 private fun TopBar() {
     TopAppBar(
-        title = { Text("My Cards") },
-        actionData = listOf<String>()
-    ) {}
+        title = { Text("My Cards") }
+    )
 }

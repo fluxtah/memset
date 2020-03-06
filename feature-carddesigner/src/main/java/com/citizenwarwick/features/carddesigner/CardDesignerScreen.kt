@@ -123,17 +123,13 @@ private fun CardEditorContent(state: CardDesignerState, onCardSaved: () -> Unit)
 private fun TopBar(onCardSaved: () -> Unit) {
     TopAppBar(
         title = { Text("Card Designer") },
-        actionData = listOf("Save")
-    ) {
-        when (it) {
-            "Save" -> {
-                IconButton(
-                    vectorResourceId = R.drawable.ic_save_light,
-                    onClick = onCardSaved
-                )
-            }
+        actions = {
+            IconButton(
+                vectorResourceId = R.drawable.ic_save_light,
+                onClick = onCardSaved
+            )
         }
-    }
+    )
 }
 
 @Composable

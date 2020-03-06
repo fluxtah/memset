@@ -16,9 +16,20 @@
 package com.citizenwarwick.features.carddesigner.ui.elementcontrols
 
 import androidx.compose.Composable
+import androidx.compose.frames.ModelList
+import androidx.compose.state
 import androidx.core.math.MathUtils.clamp
+import androidx.ui.core.Text
+import androidx.ui.foundation.Clickable
+import androidx.ui.graphics.Color
 import androidx.ui.layout.Column
+import androidx.ui.layout.Container
+import androidx.ui.layout.LayoutPadding
+import androidx.ui.material.ripple.Ripple
+import androidx.ui.material.surface.Surface
+import androidx.ui.unit.dp
 import com.citizenwarwick.features.carddesigner.ui.elementcontrols.properties.AlignmentPropertyControl
+import com.citizenwarwick.features.carddesigner.ui.elementcontrols.properties.DropDownMenuPropertyControl
 import com.citizenwarwick.features.carddesigner.ui.elementcontrols.properties.SliderPropertyControl
 import com.citizenwarwick.features.carddesigner.ui.elementcontrols.properties.SpacingPropertyControls
 import com.citizenwarwick.memset.core.model.FretboardElement
@@ -29,6 +40,8 @@ fun FretboardPropertyControls(element: FretboardElement) {
     val scale = element.scale * 100
 
     Column {
+        FretboardModeDropDownPropertyControl(element)
+
         SliderPropertyControl(
             label = "Scale",
             initialValue = scale,
@@ -64,5 +77,36 @@ fun FretboardPropertyControls(element: FretboardElement) {
         )
 
         SpacingPropertyControls(element, spacingValueRange)
+    }
+}
+
+@Composable
+private fun FretboardModeDropDownPropertyControl(element: FretboardElement) {
+    val shapeTypes = ModelList<String>().apply {
+        add("chord")
+        add("scale")
+    }
+
+    var isFretboardModeDropDownOpen by state { false }
+
+    DropDownMenuPropertyControl(
+        label = "Shape",
+        items = shapeTypes,
+        isOpen = isFretboardModeDropDownOpen,
+        selectedItem = shapeTypes.find { it == element.mode },
+        selectedItemLabelText = { it },
+        onDropDownPressed = { isFretboardModeDropDownOpen = it }) {
+        Surface(
+            modifier = LayoutPadding(2.dp),
+            color = if (element.mode == it) Color.LightGray else Color.Transparent
+        ) {
+            Ripple(bounded = true) {
+                Clickable(onClick = { element.mode = it }) {
+                    Container(expanded = true) {
+                        Text(modifier = LayoutPadding(4.dp), text = it)
+                    }
+                }
+            }
+        }
     }
 }
